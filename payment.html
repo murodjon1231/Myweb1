@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - TuronMarket</title>
+    <link rel="icon" href="./logo.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Stripe SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<style>
+    :root {
+        --primary-color: #1a365d;
+        --secondary-color: #2d5a87;
+        --accent-color: #e53e3e;
+        --gold-color: #ffd700;
+        --text-dark: #2d3748;
+        --text-light: #718096;
+        --bg-light: #f7fafc;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        transition: all 0.3s ease;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #e53e3e, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .payment-section {
+        padding: 80px 0;
+        min-height: 80vh;
+    }
+
+    .section-title {
+        color: #fff;
+        text-align: center;
+        margin-bottom: 50px;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .payment-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .order-summary {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .summary-title {
+        color: #fff;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        color: #fff;
+        font-size: 1rem;
+    }
+
+    .advance-payment {
+        border-top: 2px solid rgba(255, 255, 255, 0.3);
+        padding-top: 15px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #4CAF50;
+    }
+
+    .payment-methods {
+        margin-bottom: 30px;
+    }
+
+    .method-title {
+        color: #fff;
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .payment-method {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .payment-method:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #4CAF50;
+        transform: translateY(-2px);
+    }
+
+    .payment-method.selected {
+        border-color: #4CAF50;
+        background: rgba(76, 175, 80, 0.1);
+    }
+
+    .payment-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .payment-info {
+        flex-grow: 1;
+    }
+
+    .payment-name {
+        color: #fff;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .payment-desc {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+    }
+
+    .card-form {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: none;
+    }
+
+    .form-label {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 12px 16px;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        color: #fff;
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .pay-btn {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .pay-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+        background: linear-gradient(45deg, #45a049, #4CAF50);
+    }
+
+    .pay-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    .back-btn {
+        background: linear-gradient(45deg, #6c757d, #5a6268);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 15px;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+        color: white;
+    }
+
+    .security-info {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
+        border-left: 4px solid #4CAF50;
+    }
+
+    .security-info i {
+        color: #4CAF50;
+        margin-right: 8px;
+    }
+
+    .security-info p {
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .uzbek-payment {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 20px;
+        display: none;
+        text-align: center;
+    }
+
+    .uzbek-payment h4 {
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .payment-qr {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        display: inline-block;
+        margin: 20px 0;
+    }
+
+    .payment-details {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .payment-details h5 {
+        color: #4CAF50;
+        margin-bottom: 15px;
+    }
+
+    .payment-details p {
+        color: #fff;
+        margin-bottom: 8px;
+    }
+
+    .payment-copy {
+        background: #4CAF50;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    /* Stripe Elements Styling */
+    .StripeElement {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 12px 16px;
+        color: #fff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .StripeElement--focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+    }
+
+    .success-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+    }
+
+    .success-content {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        margin: 20px;
+    }
+
+    .success-icon {
+        font-size: 4rem;
+        color: #4CAF50;
+        margin-bottom: 20px;
+        animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 60%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-20px); }
+        80% { transform: translateY(-10px); }
+    }
+
+    @media (max-width: 768px) {
+        .payment-container {
+            padding: 20px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .payment-method {
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+        }
+    }
+
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s linear infinite;
+        margin-left: 10px;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+        max-width: 400px;
+    }
+
+    .notification.success { background: #4CAF50; }
+    .notification.error { background: #f44336; }
+    .notification.warning { background: #ff9800; }
+
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+</style>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="payment-section">
+            <div class="container">
+                <h1 class="section-title">
+                    <i class="fas fa-credit-card"></i> Payment
+                </h1>
+
+                <div class="payment-container">
+                    <div class="order-summary">
+                        <h3 class="summary-title">Order Summary</h3>
+                        <div id="orderItems"></div>
+                        <div class="summary-row">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">$0.00</span>
+                        </div>
+                        <div class="summary-row advance-payment">
+                            <span>Advance Payment (30%):</span>
+                            <span id="advanceAmount">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <h3 class="method-title">Choose Payment Method</h3>
+                        
+                        <div class="payment-method" data-method="card" onclick="selectPaymentMethod('card')">
+                            <div class="payment-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">International Card</div>
+                                <div class="payment-desc">Visa, MasterCard, American Express</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method" data-method="click" onclick="selectPaymentMethod('click')">
+                            <div class="payment-icon" style="background: linear-gradient(45deg, #0066CC, #004499);">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">Click</div>
+                                <div class="payment-desc">O'zbekiston milliy to'lov tizimi</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method" data-method="payme" onclick="selectPaymentMethod('payme')">
+                            <div class="payment-icon" style="background: linear-gradient(45deg, #00C6FF, #0072FF);">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">Payme</div>
+                                <div class="payment-desc">Payme hisobvaraq orqali to'lash</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method" data-method="uzum" onclick="selectPaymentMethod('uzum')">
+                            <div class="payment-icon" style="background: linear-gradient(45deg, #7B68EE, #9370DB);">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">Uzum Bank</div>
+                                <div class="payment-desc">Uzum Bank ilovasi orqali to'lash</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method" data-method="apelsin" onclick="selectPaymentMethod('apelsin')">
+                            <div class="payment-icon" style="background: linear-gradient(45deg, #FF6B6B, #FF8E53);">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">Apelsin</div>
+                                <div class="payment-desc">Apelsin ilovasi orqali to'lash</div>
+                            </div>
+                        </div>
+
+                        <div class="payment-method" data-method="transfer" onclick="selectPaymentMethod('transfer')">
+                            <div class="payment-icon" style="background: linear-gradient(45deg, #20B2AA, #48D1CC);">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="payment-info">
+                                <div class="payment-name">Bank Transfer</div>
+                                <div class="payment-desc">Istalgan bankdan o'tkazma</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- International Card Form -->
+                    <div id="cardForm" class="card-form">
+                        <h4 style="color: #fff; margin-bottom: 20px;">
+                            <i class="fas fa-credit-card"></i> Card Information
+                        </h4>
+                        <form id="paymentForm">
+                            <div class="mb-3">
+                                <label for="cardElement" class="form-label">Card Details</label>
+                                <div id="cardElement" class="StripeElement">
+                                    <!-- Stripe Elements will create form elements here -->
+                                </div>
+                                <div id="cardErrors" role="alert" style="color: #ff6b6b; margin-top: 10px;"></div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Uzbek Payment Methods -->
+                    <div id="uzbekPayment" class="uzbek-payment">
+                        <h4 id="uzbekPaymentTitle">To'lov ma'lumotlari</h4>
+                        
+                        <div class="payment-qr">
+                            <div style="width: 200px; height: 200px; background: #f0f0f0; border: 2px dashed #ccc; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                                <i class="fas fa-qrcode" style="font-size: 3rem; color: #666;"></i>
+                            </div>
+                            <p style="color: #333; margin: 10px 0;">QR kodni skanerlang</p>
+                            <p style="color: #4CAF50; font-weight: bold; font-size: 1.2rem;" id="qrAmount">$0.00</p>
+                        </div>
+
+                        <div class="payment-details">
+                            <h5>To'lov ma'lumotlari:</h5>
+                            <p id="paymentPhone">Telefon: +998 90 123 45 67 
+                                <button class="payment-copy" onclick="copyToClipboard('+998901234567')">Nusxa</button>
+                            </p>
+                            <p id="paymentCard">Karta: 8600 1234 5678 9012 
+                                <button class="payment-copy" onclick="copyToClipboard('8600123456789012')">Nusxa</button>
+                            </p>
+                            <p>Miqdor: <span id="paymentAmountUzb" style="color: #4CAF50; font-weight: bold;">$0.00</span></p>
+                            <p style="color: #ffd700; font-weight: bold;">
+                                <i class="fas fa-exclamation-triangle"></i> 
+                                To'lovdan keyin skrinshot yuboring!
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="security-info">
+                        <p><i class="fas fa-shield-alt"></i> Barcha to'lov ma'lumotlari shifrlangan va himoyalangan</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <a href="cart.html" class="back-btn">
+                            <i class="fas fa-arrow-left"></i> Orqaga
+                        </a>
+                        <button id="payBtn" class="pay-btn" onclick="processPayment()" disabled>
+                            <i class="fas fa-lock"></i> To'lash
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>To'lov muvaffaqiyatli!</h3>
+            <p>Buyurtmangiz qabul qilindi. Tez orada sizga aloqaga chiqamiz.</p>
+            <button onclick="closeSuccessModal()" style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; margin-top: 20px;">
+                Yaxshi
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Telegram Bot Configuration
+        const TELEGRAM_BOT_TOKEN = '7670633072:AAFqhahrboKp7w3k3tSsk4SQP1RFrXUq1m4';
+        const TELEGRAM_CHAT_ID = '6226950895';
+
+        // Stripe Configuration (Test Mode)
+        const stripe = Stripe('pk_test_51234567890abcdef...'); // Replace with your Stripe publishable key
+        let cardElement;
+        let selectedMethod = null;
+        let orderData = null;
+        let paymentAmount = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOrderData();
+            setupStripe();
+        });
+
+        function setupStripe() {
+            const elements = stripe.elements({
+                appearance: {
+                    theme: 'night',
+                    variables: {
+                        colorPrimary: '#4CAF50',
+                        colorBackground: 'rgba(255, 255, 255, 0.1)',
+                        colorText: '#ffffff',
+                        colorDanger: '#ff6b6b',
+                        borderRadius: '10px',
+                    },
+                },
+            });
+
+            cardElement = elements.create('card');
+            cardElement.mount('#cardElement');
+
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('cardErrors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+        }
+
+        function loadOrderData() {
+            try {
+                const storedData = sessionStorage.getItem('orderData');
+                if (storedData) {
+                    orderData = JSON.parse(storedData);
+                } else {
+                    // Fallback to localStorage cart
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    if (cart.length === 0) {
+                        showNotification('Buyurtma topilmadi. Savatchaga yo\'naltirilmoqda...', 'warning');
+                        setTimeout(() => window.location.href = 'cart.html', 2000);
+                        return;
+                    }
+                    
+                    const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+                    orderData = {
+                        cart: cart,
+                        subtotal: subtotal,
+                        advancePayment: subtotal * 0.3,
+                        customer: {}
+                    };
+                }
+
+                displayOrderSummary();
+            } catch (error) {
+                console.error('Error loading order data:', error);
+                showNotification('Xatolik yuz berdi. Iltimos qaytadan urinib ko\'ring.', 'error');
+            }
+        }
+
+        function displayOrderSummary() {
+            if (!orderData) return;
+
+            const orderItemsContainer = document.getElementById('orderItems');
+            
+            if (orderData.cart && orderData.cart.length > 0) {
+                orderItemsContainer.innerHTML = orderData.cart.map(item => `
+                    <div class="summary-row">
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('totalAmount').textContent = `$${orderData.subtotal.toFixed(2)}`;
+            document.getElementById('advanceAmount').textContent = `$${orderData.advancePayment.toFixed(2)}`;
+            
+            paymentAmount = orderData.advancePayment;
+            
+            // Update uzbek payment amounts
+            document.getElementById('qrAmount').textContent = `$${paymentAmount.toFixed(2)}`;
+            document.getElementById('paymentAmountUzb').textContent = `$${paymentAmount.toFixed(2)}`;
+        }
+
+        function selectPaymentMethod(method) {
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+
+            document.querySelector(`[data-method="${method}"]`).classList.add('selected');
+            selectedMethod = method;
+
+            // Hide all payment forms
+            document.getElementById('cardForm').style.display = 'none';
+            document.getElementById('uzbekPayment').style.display = 'none';
+
+            // Show relevant form
+            if (method === 'card') {
+                document.getElementById('cardForm').style.display = 'block';
+            } else {
+                document.getElementById('uzbekPayment').style.display = 'block';
+                
+                // Update payment details based on method
+                const phoneEl = document.getElementById('paymentPhone');
+                const cardEl = document.getElementById('paymentCard');
+                const titleEl = document.getElementById('uzbekPaymentTitle');
+                
+                switch(method) {
+                    case 'click':
+                        titleEl.textContent = 'Click orqali to\'lash';
+                        phoneEl.innerHTML = 'Click raqam: +998 90 123 45 67 <button class="payment-copy" onclick="copyToClipboard(\'+998901234567\')">Nusxa</button>';
+                        cardEl.style.display = 'none';
+                        break;
+                    case 'payme':
+                        titleEl.textContent = 'Payme orqali to\'lash';
+                        phoneEl.innerHTML = 'Payme raqam: +998 90 123 45 67 <button class="payment-copy" onclick="copyToClipboard(\'+998901234567\')">Nusxa</button>';
+                        cardEl.style.display = 'none';
+                        break;
+                    case 'uzum':
+                        titleEl.textContent = 'Uzum Bank orqali to\'lash';
+                        phoneEl.innerHTML = 'Telefon: +998 90 123 45 67 <button class="payment-copy" onclick="copyToClipboard(\'+998901234567\')">Nusxa</button>';
+                        cardEl.innerHTML = 'Karta: 8600 1234 5678 9012 <button class="payment-copy" onclick="copyToClipboard(\'8600123456789012\')">Nusxa</button>';
+                        cardEl.style.display = 'block';
+                        break;
+                    case 'apelsin':
+                        titleEl.textContent = 'Apelsin orqali to\'lash';
+                        phoneEl.innerHTML = 'Apelsin raqam: +998 90 123 45 67 <button class="payment-copy" onclick="copyToClipboard(\'+998901234567\')">Nusxa</button>';
+                        cardEl.style.display = 'none';
+                        break;
+                    case 'transfer':
+                        titleEl.textContent = 'Bank o\'tkazmasi';
+                        phoneEl.innerHTML = 'Telefon: +998 90 123 45 67 <button class="payment-copy" onclick="copyToClipboard(\'+998901234567\')">Nusxa</button>';
+                        cardEl.innerHTML = 'Karta: 8600 1234 5678 9012 <button class="payment-copy" onclick="copyToClipboard(\'8600123456789012\')">Nusxa</button>';
+                        cardEl.style.display = 'block';
+                        break;
+                    default:
+                        titleEl.textContent = 'To\'lash turi tanlanmagan';
+                        phoneEl.innerHTML = '';
+                        cardEl.style.display = 'none';
+                }
+                document.getElementById('payBtn').disabled = false;
+            }
+            document.getElementById('payBtn').disabled = false;
+        }
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('Nusxa olindi!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification('Nusxa olishda xatolik yuz berdi.', 'error');
+            });
+        }
+        function payOrder() {
+            if (selectedMethod === null) {
+                showNotification('To\'lash turi tanlanmagan.', 'error');
+                return;
+            }
+            if (selectedMethod === 'card') {
+                processCardPayment();
+            } else {
+                showNotification('To\'lov muvaffaqiyatli!', 'success');
+                sendTelegramNotification();
+                showSuccessModal();
+            }
+        }
+        function processCardPayment() {
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCVC = document.getElementById('cardCVC').value;
+            const cardName = document.getElementById('cardName').value;
+            const cardAddress = document.getElementById('cardAddress').value;
+            const cardZipCode = document.getElementById('cardZipCode').value;
+            const cardEmail = document.getElementById('cardEmail').value;
+            if (!cardNumber || !cardExpiry || !cardCVC || !cardName || !cardAddress || !cardZipCode || !cardEmail) {
+                showNotification('Iltimos, barcha maydonlarni to\'ldiring.', 'error');
+                return;
+            }
+            stripe.createToken(cardElement).then(function(result) {
+                if (result.error) {
+                    document.getElementById('cardErrors').textContent = result.error.message;
+                } else {
+                    // Send token to server for processing
+                    const token = result.token.id;
+                    processPayment(token);
+                }
+            });
+        }
+        function processPayment(token) {
+            // Send token to server for processing
+            const orderData = JSON.stringify({
+                cart: orderData.cart,
+                subtotal: orderData.subtotal,
+                advancePayment: orderData.advancePayment,
+                customer: {
+                    token: token,
+                    name: orderData.customer.name,
+                    email: orderData.customer.email,
+                    phone: orderData.customer.phone
+                }
+            });
+            fetch('/api/process_payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: orderData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('To\'lov muvaffaqiyatli!', 'success');
+                    sendTelegramNotification();
+                    showSuccessModal();
+                } else {
+                    showNotification('To\'lovda xatolik yuz berdi: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error processing payment:', error);
+                showNotification('To\'lovda xatolik yuz berdi.', 'error');
+            });
+        }
+        function sendTelegramNotification() {
+            const orderDetails = {
+                items: orderData.cart.map(item => `${item.name} x${item.quantity}`).join(', '),
+                total: orderData.subtotal.toFixed(2),
+                advancePayment: orderData.advancePayment.toFixed(2),
+                method: selectedMethod,
+                customer: orderData.customer
+            };
+            const message = `
+            *Новый заказ:*
+            ${orderDetails.items}
+            *Итого:* $${orderDetails.total}
+            *Аванс:* $${orderDetails.advancePayment}
+            *Тип оплаты:* ${orderDetails.method}
+            *Имя клиента:* ${orderDetails.customer.name}
+            *Email клиента:* ${orderDetails.customer.email}
+            *Телефон клиента:* ${orderDetails.customer.phone}
+            `;
+            fetch('/api/send_telegram_notification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Authorization': 'Bearer YOUR_TELEGRAM_BOT_TOKEN'
+                    // Add your Telegram Bot API token here
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+                // Add your Telegram Chat ID here
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Telegram notification sent successfully');
+                } else {
+                    console.error('Error sending Telegram notification:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending Telegram notification:', error);
+            });
+            // Replace YOUR_TELEGRAM_BOT_TOKEN and YOUR_TELEGRAM_CHAT_ID with your actual Telegram Bot API token and chat ID
+        }
+        function showSuccessModal() {
+            document.getElementById('successModal').style.display = 'flex';
+        }
+        function hideSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        // Initialize Stripe
+        document.getElementById('payBtn').addEventListener('click', payOrder);
+        document.getElementById('successModal').addEventListener('click', hideSuccessModal);
+        // Load saved customer data
+        const savedCustomer = JSON.parse(sessionStorage.getItem('customerData'));
+        if (savedCustomer) {
+            orderData.customer = savedCustomer;
+        } else {
+            orderData.customer = {
+                name: '',
+                email: '',
+                phone: ''
+            };
+        }
+        document.getElementById('customerName').value = orderData.customer.name;
+        document.getElementById('customerEmail').value = orderData.customer.email;
+        document.getElementById('customerPhone').value = orderData.customer.phone;
+        // Initialize Stripe
+
+        cardElement.mount('#card-element');
+        cardElement.addEventListener('change', function(event) {
+            const { error } = event;
+            document.getElementById('cardErrors').textContent = error ? error.message : '';
+        });
+        // Add event listener for form submission
+
+        // Add smooth scrolling animation to hero elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-hero');
+            
+            heroElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+    </body>
+    </html>

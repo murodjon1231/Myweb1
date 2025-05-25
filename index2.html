@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="icon" href="./logo.png">
+    <link rel="stylesheet" href="home.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<style>
+    @media screen and (max-width: 430px) {
+        .container {
+            flex-direction: column;
+        }
+
+        #addProductForm {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #productList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 300px;
+        }
+
+        .modal-dialog {
+            width: 300px;
+        }
+
+        .divcha {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        header {
+            padding: 20px 10px;
+        }
+    }
+
+    @media screen and (max-width: 375px) {
+        .container {
+            flex-direction: column;
+        }
+
+        #addProductForm {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        #productList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 280px;
+        }
+
+        .divcha {
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .modal-dialog {
+            width: 300px;
+        }
+
+        header {
+            padding: 20px 10px;
+        }
+    }
+
+    @media screen and (max-width: 320px) {
+        .container {
+            flex-direction: column;
+        }
+
+        #addProductForm {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        #productList {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            width: 270px;
+        }
+
+        .divcha {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .modal-dialog {
+            width: 280px;
+        }
+
+        .hero {
+            padding: 100px 10px;
+        }
+
+        .logo img {
+            width: 80px;
+        }
+
+        .ul li {
+            flex-direction: column;
+        }
+    }
+
+    .divcha {
+        width: 100%;
+        max-width: 900px;
+    }
+
+    .admin-section {
+        padding: 60px 0;
+        min-height: calc(100vh - 200px);
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+</style>
+<style>
+    :root {
+        --primary-color: #1a365d;
+        --secondary-color: #2d5a87;
+        --accent-color: #e53e3e;
+        --gold-color: #ffd700;
+        --text-dark: #2d3748;
+        --text-light: #718096;
+        --bg-light: #f7fafc;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        transition: all 0.3s ease;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #e53e3e, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-link {
+        font-weight: 600;
+        color: var(--text-dark) !important;
+        margin: 0 15px;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: var(--accent-color) !important;
+        transform: translateY(-2px);
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 50%;
+        background: var(--accent-color);
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+        left: 0;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, rgba(26, 54, 93, 0.8), rgba(229, 62, 62, 0.8)),
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+        color: white;
+        padding: 150px 0;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s"/></circle><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="2s"/></circle></svg>');
+        pointer-events: none;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        animation: fadeInUp 1s ease;
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        animation: fadeInUp 1s ease 0.2s both;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .btn-hero {
+        background: linear-gradient(45deg, #e53e3e, #ffd700);
+        border: none;
+        padding: 18px 45px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 50px;
+        color: white;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
+        animation: fadeInUp 1s ease 0.4s both;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(229, 62, 62, 0.4);
+        color: white;
+    }
+
+    .btn-login {
+        background: linear-gradient(45deg, #2d5a87, #1a365d);
+        border: none;
+        padding: 10px 25px;
+        border-radius: 25px;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-left: 15px;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(45, 90, 135, 0.3);
+        color: white;
+    }
+
+    .theme-toggle {
+        background: none;
+        border: 2px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 8px 16px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .theme-toggle:hover {
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .floating-elements::before,
+    .floating-elements::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-elements::before {
+        width: 120px;
+        height: 120px;
+        background: rgba(255, 215, 0, 0.1);
+        top: 20%;
+        left: 10%;
+        animation-delay: -2s;
+    }
+
+    .floating-elements::after {
+        width: 80px;
+        height: 80px;
+        background: rgba(229, 62, 62, 0.1);
+        top: 60%;
+        right: 15%;
+        animation-delay: -4s;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-30px) rotate(180deg);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .features-section {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 80px 0;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+        font-size: 3.5rem;
+        margin-bottom: 25px;
+        background: linear-gradient(45deg, #e53e3e, #ffd700);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .feature-title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: var(--text-dark);
+    }
+
+    .feature-description {
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    /* Dark theme */
+    body.dark-theme {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    }
+
+    body.dark-theme .navbar {
+        background: rgba(26, 32, 44, 0.95) !important;
+    }
+
+    body.dark-theme .nav-link {
+        color: #e2e8f0 !important;
+    }
+
+    body.dark-theme .feature-card {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .feature-title {
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .feature-description {
+        color: #a0aec0;
+    }
+
+    body.dark-theme .theme-toggle {
+        border-color: #ffd700;
+        color: #ffd700;
+    }
+
+    body.dark-theme .theme-toggle:hover {
+        background: #ffd700;
+        color: #1a202c;
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            padding: 0 20px;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+        }
+
+        .btn-hero {
+            padding: 15px 35px;
+            font-size: 1.1rem;
+        }
+
+        .feature-card {
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 430px) {
+        .navbar-nav {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .hero-section {
+            padding: 120px 0;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+        }
+
+        .btn-hero {
+            padding: 12px 30px;
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 375px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .feature-icon {
+            font-size: 2.8rem;
+        }
+    }
+
+    @media (max-width: 320px) {
+        .hero-title {
+            font-size: 1.8rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+        }
+
+        .btn-hero {
+            padding: 10px 25px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html">Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contacts.html">Contact us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="cart.html">Cart</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                            <i class="fas fa-moon"></i> Dark-mode
+                        </button>
+
+                        <button class="btn-login" onclick="login()">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="admin-section">
+            <div class="container">
+                <h1 class="section-title">Admin Panel</h1>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card p-4">
+                            <h3 class="mb-4 text-center">Add New Product</h3>
+                            <form id="addProductForm">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <input type="text" id="productName" placeholder="Product Name"
+                                            class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <input type="number" id="productPrice" placeholder="Price ($)"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="text" id="productDescription" placeholder="Product Description"
+                                        class="form-control" required>
+                                </div>
+                                <div class="mb-4">
+                                    <input type="url" id="productImageURL" placeholder="Image URL" class="form-control"
+                                        required>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="addProduct()">Add
+                                        Product</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="products-grid">
+            <div class="container">
+                <h2 class="section-title">Manage Products</h2>
+                <div id="productList" class="row g-4"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm">
+                        <input type="hidden" id="editProductId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductName" class="form-label">Product Name</label>
+                                <input type="text" id="editProductName" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductPrice" class="form-label">Price ($)</label>
+                                <input type="number" id="editProductPrice" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductDescription" class="form-label">Description</label>
+                            <textarea id="editProductDescription" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductImageURL" class="form-label">Image URL</label>
+                            <input type="url" id="editProductImageURL" class="form-control" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="updateProduct()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script>
+        function login() {
+            window.location.href = 'login.html';
+        }
+    </script>
+    <script src="script.js"></script>
+    <script src="theme.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+
+            body.classList.toggle('dark-theme');
+
+            if (body.classList.contains('dark-theme')) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark-mode';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
+            }
+        });
+
+        // Login redirect
+        function login() {
+            window.location.href = 'login.html';
+        }
+
+        // Add smooth scrolling animation to hero elements
+        document.addEventListener('DOMContentLoaded', function () {
+            const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-hero');
+
+            heroElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+
+</html>
