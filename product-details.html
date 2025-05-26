@@ -7,416 +7,7 @@
     <link rel="icon" href="./logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #1a365d;
-            --secondary-color: #2d5a87;
-            --accent-color: #e53e3e;
-            --gold-color: #ffd700;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --bg-light: #f7fafc;
-            --success-color: #4CAF50;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            transition: all 0.3s ease;
-        }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #e53e3e, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-link {
-            font-weight: 600;
-            color: var(--text-dark) !important;
-            margin: 0 15px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--accent-color) !important;
-            transform: translateY(-2px);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background: var(--accent-color);
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 2px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .theme-toggle:hover {
-            background: var(--accent-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .btn-login {
-            background: linear-gradient(45deg, #2d5a87, #1a365d);
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
-            color: white;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-left: 15px;
-        }
-
-        .btn-login:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(45, 90, 135, 0.3);
-            color: white;
-        }
-
-        .product-details-section {
-            padding: 80px 0;
-            min-height: 80vh;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            margin-bottom: 30px;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            color: white;
-        }
-
-        .product-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 25px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-image {
-            width: 100%;
-            max-width: 500px;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .product-image:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-info {
-            color: white;
-            padding-left: 30px;
-        }
-
-        .product-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #fff, #f0f0f0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-description {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 25px;
-            opacity: 0.9;
-        }
-
-        .product-price {
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: var(--success-color);
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .quantity-section {
-            margin-bottom: 30px;
-        }
-
-        .quantity-label {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .quantity-btn {
-            background: linear-gradient(45deg, var(--success-color), #45a049);
-            border: none;
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .quantity-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
-        }
-
-        .quantity-btn:disabled {
-            background: #666;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .quantity-display {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            text-align: center;
-            min-width: 80px;
-        }
-
-        .total-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--gold-color);
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(255, 215, 0, 0.1);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .add-to-cart-btn {
-            background: linear-gradient(45deg, var(--success-color), #45a049);
-            border: none;
-            padding: 18px 35px;
-            border-radius: 25px;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            justify-content: center;
-            min-width: 200px;
-        }
-
-        .add-to-cart-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
-        }
-
-        .buy-now-btn {
-            background: linear-gradient(45deg, var(--accent-color), #c53030);
-            border: none;
-            padding: 18px 35px;
-            border-radius: 25px;
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            justify-content: center;
-            min-width: 200px;
-        }
-
-        .buy-now-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(229, 62, 62, 0.4);
-        }
-
-        .loading {
-            text-align: center;
-            color: white;
-            padding: 100px 20px;
-            font-size: 1.3rem;
-        }
-
-        .loading::after {
-            content: '';
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--success-color);
-            animation: spin 1s linear infinite;
-            margin-left: 15px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            text-align: center;
-            color: white;
-            padding: 60px 20px;
-        }
-
-        .error-message i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Dark theme */
-        body.dark-theme {
-            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-        }
-
-        body.dark-theme .navbar {
-            background: rgba(26, 32, 44, 0.95) !important;
-        }
-
-        body.dark-theme .nav-link {
-            color: #e2e8f0 !important;
-        }
-
-        body.dark-theme .theme-toggle {
-            border-color: #ffd700;
-            color: #ffd700;
-        }
-
-        body.dark-theme .theme-toggle:hover {
-            background: #ffd700;
-            color: #1a202c;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .product-info {
-                padding-left: 0;
-                margin-top: 30px;
-            }
-
-            .product-title {
-                font-size: 2rem;
-            }
-
-            .product-price {
-                font-size: 1.8rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .add-to-cart-btn,
-            .buy-now-btn {
-                min-width: auto;
-            }
-
-            .product-container {
-                padding: 25px;
-            }
-        }
-
-        @media (max-width: 430px) {
-            .product-title {
-                font-size: 1.8rem;
-            }
-
-            .product-description {
-                font-size: 1rem;
-            }
-
-            .product-container {
-                padding: 20px;
-            }
-
-            .quantity-controls {
-                justify-content: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="product-deatils.css">
 </head>
 <body>
     <header>
@@ -460,7 +51,7 @@
 
     <main>
         <section class="product-details-section">
-            <div class="container">
+            <div class="container-fluid px-4">
                 <a href="products.html" class="back-btn">
                     <i class="fas fa-arrow-left"></i> Back to Products
                 </a>
@@ -478,6 +69,8 @@
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let currentProduct = null;
         let quantity = 1;
+        let selectedSize = null;
+        let currentImageIndex = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -511,18 +104,92 @@
         function displayProductDetails(product) {
             const productContent = document.getElementById('productContent');
             
+            // Generate multiple product images for gallery
+            const productImages = [
+                product.image,
+                product.image,
+                product.image,
+                product.image,
+                product.image
+            ];
+
+            // Generate size options
+            const sizes = ['7', '7.5', '8', '8.5', '9', '9.5', '10', '10.5', '11', '11.5', '12', '12.5', '13', '14', '15'];
+            
             productContent.innerHTML = `
-                <div class="product-container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 text-center">
-                            <img src="${product.image}" alt="${product.name}" class="product-image" onerror="this.src='./logo.png'">
+                <div class="product-detail-container">
+                    <div class="row">
+                        <!-- Left side - Image Gallery -->
+                        <div class="col-lg-7">
+                            <div class="image-gallery">
+                                <div class="thumbnail-list">
+                                    ${productImages.map((img, index) => `
+                                        <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeMainImage(${index})">
+                                            <img src="${img}" alt="Product view ${index + 1}" onerror="this.src='./logo.png'">
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                
+                                <div class="main-image-container">
+                                    <img id="mainImage" src="${product.image}" alt="${product.name}" onerror="this.src='./logo.png'">
+                                    <div class="image-navigation">
+                                        <button class="nav-btn prev" onclick="previousImage()">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button class="nav-btn next" onclick="nextImage()">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-lg-6">
+
+                        <!-- Right side - Product Info -->
+                        <div class="col-lg-5">
                             <div class="product-info">
+                                <div class="rating-badge">
+                                    <i class="fas fa-star"></i> Highly Rated
+                                </div>
+                                
                                 <h1 class="product-title">${product.name}</h1>
-                                <p class="product-description">${product.description}</p>
+                                <p class="product-category">${product.gender || 'Unisex'}</p>
+                                
                                 <div class="product-price">$${product.price}</div>
                                 
+                                <div class="product-description">
+                                    <p>${product.description}</p>
+                                </div>
+
+                                <!-- Color Options -->
+                                <div class="color-section">
+                                    <div class="color-options">
+                                        <div class="color-option active" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24)"></div>
+                                        <div class="color-option" style="background: linear-gradient(45deg, #74b9ff, #0984e3)"></div>
+                                        <div class="color-option" style="background: linear-gradient(45deg, #6c5ce7, #5f3dc4)"></div>
+                                        <div class="color-option" style="background: linear-gradient(45deg, #00b894, #00a085)"></div>
+                                        <div class="color-option" style="background: linear-gradient(45deg, #fdcb6e, #e17055)"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Size Selection -->
+                                <div class="size-section">
+                                    <div class="size-header">
+                                        <label class="size-label">Select Size</label>
+                                        <button class="size-guide-btn">
+                                            <i class="fas fa-ruler"></i> Size Guide
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="size-grid">
+                                        ${sizes.map(size => `
+                                            <button class="size-option" onclick="selectSize('${size}')" data-size="${size}">
+                                                ${size}
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                
+                                <!-- Quantity Selection -->
                                 <div class="quantity-section">
                                     <label class="quantity-label">
                                         <i class="fas fa-sort-numeric-up"></i> Quantity:
@@ -550,11 +217,72 @@
                                         <i class="fas fa-bolt"></i> Buy Now
                                     </button>
                                 </div>
+
+                                <!-- Payment Options -->
+                                <div class="payment-info">
+                                    <p class="payment-text">
+                                        <i class="fas fa-credit-card"></i> 
+                                        4 interest-free payments of $${(product.price / 4).toFixed(2)} with 
+                                        <strong>Klarna</strong>
+                                    </p>
+                                </div>
+
+                                <!-- Product Features -->
+                                <div class="product-features">
+                                    <div class="feature">
+                                        <i class="fas fa-truck"></i>
+                                        <span>Free delivery</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-undo"></i>
+                                        <span>Free 30-day returns</span>
+                                    </div>
+                                    <div class="feature">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>2-year warranty</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
+        }
+
+        function changeMainImage(index) {
+            if (!currentProduct) return;
+            
+            currentImageIndex = index;
+            document.getElementById('mainImage').src = currentProduct.image;
+            
+            // Update thumbnail active state
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+        }
+
+        function previousImage() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            currentImageIndex = currentImageIndex > 0 ? currentImageIndex - 1 : thumbnails.length - 1;
+            changeMainImage(currentImageIndex);
+        }
+
+        function nextImage() {
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            currentImageIndex = currentImageIndex < thumbnails.length - 1 ? currentImageIndex + 1 : 0;
+            changeMainImage(currentImageIndex);
+        }
+
+        function selectSize(size) {
+            selectedSize = size;
+            
+            // Update size button states
+            document.querySelectorAll('.size-option').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.dataset.size === size) {
+                    btn.classList.add('selected');
+                }
+            });
         }
 
         function updateQuantity(change) {
@@ -580,21 +308,27 @@
 
         function addToCart() {
             if (!currentProduct) return;
+            
+            if (!selectedSize) {
+                showNotification('Please select a size first!', 'warning');
+                return;
+            }
 
-            const existingItem = cart.find(item => item.id === currentProduct.id);
+            const existingItem = cart.find(item => item.id === currentProduct.id && item.size === selectedSize);
             
             if (existingItem) {
                 existingItem.quantity += quantity;
-                showNotification(`Updated ${currentProduct.name} quantity in cart! (${existingItem.quantity} total)`, 'success');
+                showNotification(`Updated ${currentProduct.name} (Size ${selectedSize}) quantity in cart! (${existingItem.quantity} total)`, 'success');
             } else {
                 cart.push({
                     id: currentProduct.id,
                     name: currentProduct.name,
                     price: currentProduct.price,
                     image: currentProduct.image,
-                    quantity: quantity
+                    quantity: quantity,
+                    size: selectedSize
                 });
-                showNotification(`${currentProduct.name} added to cart! (${quantity} items)`, 'success');
+                showNotification(`${currentProduct.name} (Size ${selectedSize}) added to cart! (${quantity} items)`, 'success');
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
@@ -608,6 +342,11 @@
 
         function buyNow() {
             if (!currentProduct) return;
+            
+            if (!selectedSize) {
+                showNotification('Please select a size first!', 'warning');
+                return;
+            }
 
             // Add to cart first
             addToCart();

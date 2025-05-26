@@ -1,6 +1,6 @@
 const API_URL = "https://6782ae7cc51d092c3dd06dbd.mockapi.io/product/auto_parts";
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
@@ -25,24 +25,7 @@ async function fetchProducts() {
             return;
         }
 
-        productList.innerHTML = products.map(product => `
-            <div class="product-card">
-                <img src="${product.image}" alt="${product.name}" onerror="this.src='./logo.png'">
-                <div class="card-body">
-                    <h5 class="card-title">${product.name}</h5>
-                    <p class="card-text">${product.description}</p>
-                    <p class="price">$${product.price}</p>
-                    <div class="card-buttons d-flex justify-content-between gap-3"> 
-                        <button class="btn btn-primary" onclick="viewProductDetails(${product.id})">
-                            <i class="fas fa-eye"></i> View Details
-                        </button>
-                        <button class="btn btn-success" onclick="quickAddToCart(${product.id}, '${escapeHtml(product.name)}', ${product.price}, '${escapeHtml(product.image)}')">
-                            <i class="fas fa-cart-plus"></i> Quick Add
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        displayProducts(products);
     } catch (error) {
         console.error("Error fetching products:", error);
         const productList = document.getElementById('product-list');
@@ -56,10 +39,70 @@ async function fetchProducts() {
     }
 }
 
+function displayProducts(products) {
+    const productList = document.getElementById('product-list');
+    
+    productList.innerHTML = products.map(product => `
+        <div class="col-lg-4 col-md-6">
+            <div class="card product-card h-100">
+                <img src="${product.image || 'https://via.placeholder.com/300x250'}" class="card-img-top" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x250'">
+                <div class="card-body d-flex flex-column">
+                    <div class="mb-2">
+                        <span class="status-badge ${product.status === 'available' ? 'status-available' : 'status-order'}">
+                            <i class="fas ${product.status === 'available' ? 'fa-check-circle' : 'fa-clock'}"></i>
+                            ${product.status === 'available' ? 'Available' : 'On Order'}
+                        </span>
+                        <span class="gender-badge gender-${product.gender || 'unisex'}">
+                            <i class="fas ${getGenderIcon(product.gender)}"></i>
+                            ${product.gender || 'Unisex'}
+                        </span>
+                    </div>
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text">${product.description}</p>
+                    ${product.descriptionURL ? `<p class="card-text"><small><a href="${product.descriptionURL}" target="_blank" class="text-decoration-none"><i class="fas fa-external-link-alt"></i> More Details</a></small></p>` : ''}
+                    ${product.website ? `<p class="card-text"><small><a href="${product.website}" target="_blank" class="text-decoration-none"><i class="fas fa-globe"></i> Website</a></small></p>` : ''}
+                    <p class="card-text fw-bold text-success fs-5">Price: $${product.price}</p>
+                    <div class="mt-auto">
+                        <div class="card-buttons d-flex justify-content-between gap-3"> 
+                            <button class="btn btn-primary" onclick="viewProductDetails(${product.id})">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
+                            <button class="btn btn-success" onclick="quickAddToCart(${product.id}, '${escapeHtml(product.name)}', ${product.price}, '${escapeHtml(product.image)}')">
+                                <i class="fas fa-cart-plus"></i> Quick Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Helper function to get gender icon
+function getGenderIcon(gender) {
+    switch (gender?.toLowerCase()) {
+        case 'male':
+        case 'erkak':
+            return 'fa-mars';
+        case 'female':
+        case 'ayol':
+            return 'fa-venus';
+        case 'kids':
+        case 'bola':
+            return 'fa-child';
+        default:
+            return 'fa-genderless';
+    }
+}
+
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+function escapeQuotes(text) {
+    return text?.replace(/'/g, "\\'").replace(/"/g, '\\"') || '';
 }
 
 // New function to redirect to product details page
@@ -84,7 +127,7 @@ function quickAddToCart(productId, productName, productPrice, productImage) {
         showNotification(`${productName} added to cart!`, 'success');
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+    sessionStorage.setItem('cart', JSON.stringify(cart));
 
     updateCartUI();
     updateCartCount();
@@ -102,7 +145,7 @@ function removeFromCart(productId) {
     const item = cart.find(item => item.id === productId);
     cart = cart.filter(item => item.id !== productId);
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+    sessionStorage.setItem('cart', JSON.stringify(cart));
 
     if (item) {
         showNotification(`${item.name} removed from cart!`, 'info');
@@ -119,7 +162,7 @@ function updateQuantity(productId, change) {
         if (item.quantity <= 0) {
             removeFromCart(productId);
         } else {
-            localStorage.setItem('cart', JSON.stringify(cart));
+            sessionStorage.setItem('cart', JSON.stringify(cart));
             updateCartUI();
             updateCartCount();
         }
@@ -207,7 +250,7 @@ function clearCart() {
 
     if (confirm("Are you sure you want to clear your cart?")) {
         cart = [];
-        localStorage.setItem('cart', JSON.stringify(cart));
+        sessionStorage.setItem('cart', JSON.stringify(cart));
         updateCartUI();
         updateCartCount();
         showNotification("Cart cleared successfully!", 'success');
@@ -312,35 +355,63 @@ function filterByPrice(minPrice, maxPrice) {
     });
 }
 
-// Sort products
+// Sort products functionality
 function sortProducts(sortBy) {
-    const productList = document.getElementById('product-list');
-    const products = Array.from(productList.children);
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(products => {
+            let sortedProducts = [...products];
 
-    products.sort((a, b) => {
-        switch (sortBy) {
-            case 'name':
-                const nameA = a.querySelector('.card-title').textContent;
-                const nameB = b.querySelector('.card-title').textContent;
-                return nameA.localeCompare(nameB);
-            
-            case 'price-low':
-                const priceA = parseFloat(a.querySelector('.price').textContent.replace('$', ''));
-                const priceB = parseFloat(b.querySelector('.price').textContent.replace('$', ''));
-                return priceA - priceB;
-            
-            case 'price-high':
-                const priceC = parseFloat(a.querySelector('.price').textContent.replace('$', ''));
-                const priceD = parseFloat(b.querySelector('.price').textContent.replace('$', ''));
-                return priceD - priceC;
-            
-            default:
-                return 0;
-        }
-    });
+            switch (sortBy) {
+                case 'name':
+                    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                
+                case 'price-low':
+                    sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    break;
+                
+                case 'price-high':
+                    sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    break;
+                
+                case 'gender-male':
+                    sortedProducts = products.filter(p => 
+                        p.gender?.toLowerCase() === 'male' || p.gender?.toLowerCase() === 'erkak'
+                    );
+                    break;
+                
+                case 'gender-female':
+                    sortedProducts = products.filter(p => 
+                        p.gender?.toLowerCase() === 'female' || p.gender?.toLowerCase() === 'ayol'
+                    );
+                    break;
+                
+                case 'gender-kids':
+                    sortedProducts = products.filter(p => 
+                        p.gender?.toLowerCase() === 'kids' || p.gender?.toLowerCase() === 'bola'
+                    );
+                    break;
+                
+                case 'status-available':
+                    sortedProducts = products.filter(p => p.status === 'available');
+                    break;
+                
+                case 'status-order':
+                    sortedProducts = products.filter(p => p.status !== 'available');
+                    break;
+                
+                default:
+                    // Default sorting by ID
+                    sortedProducts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+            }
 
-    // Re-append sorted products
-    products.forEach(product => productList.appendChild(product));
+            displayProducts(sortedProducts);
+        })
+        .catch(error => {
+            console.error('Error sorting products:', error);
+            showNotification('Error sorting products', 'error');
+        });
 }
 
 // Checkout functionality
@@ -362,7 +433,7 @@ function proceedToCheckout() {
         // Clear cart after successful checkout
         setTimeout(() => {
             cart = [];
-            localStorage.setItem('cart', JSON.stringify(cart));
+            sessionStorage.setItem('cart', JSON.stringify(cart));
             updateCartUI();
             updateCartCount();
         }, 2000);
@@ -378,10 +449,10 @@ function toggleTheme() {
 
     if (body.classList.contains('dark-theme')) {
         themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
-        localStorage.setItem('theme', 'dark');
+        sessionStorage.setItem('theme', 'dark');
     } else {
         themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark-mode';
-        localStorage.setItem('theme', 'light');
+        sessionStorage.setItem('theme', 'light');
     }
 }
 
@@ -392,7 +463,7 @@ function login() {
 
 // Load saved theme on page load
 document.addEventListener('DOMContentLoaded', function() {
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = sessionStorage.getItem('theme');
     const themeToggle = document.getElementById('themeToggle');
     
     if (savedTheme === 'dark' && themeToggle) {
@@ -434,3 +505,20 @@ window.addEventListener('click', function(event) {
         closeCartModal();
     }
 });
+
+// Reset all filters and sorting
+function resetFilters() {
+    // Reset all dropdowns
+    const sortSelect = document.getElementById('sortSelect');
+    const genderFilter = document.getElementById('genderFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    
+    if (sortSelect) sortSelect.value = 'default';
+    if (genderFilter) genderFilter.value = 'default';
+    if (statusFilter) statusFilter.value = 'default';
+    
+    // Reload original products
+    fetchProducts();
+    
+    showNotification('Filters reset successfully!', 'info');
+}

@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Enhanced Admin Panel</title>
     <link rel="icon" href="./logo.png">
-    <link rel="stylesheet" href="home.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <style>
     @media screen and (max-width: 430px) {
         .container {
@@ -138,8 +139,7 @@
         font-size: 2.5rem;
         font-weight: 700;
     }
-</style>
-<style>
+
     :root {
         --primary-color: #1a365d;
         --secondary-color: #2d5a87;
@@ -211,83 +211,6 @@
         left: 0;
     }
 
-    .hero-section {
-        background: linear-gradient(135deg, rgba(26, 54, 93, 0.8), rgba(229, 62, 62, 0.8)),
-            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-        color: white;
-        padding: 150px 0;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s"/></circle><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="2s"/></circle></svg>');
-        pointer-events: none;
-    }
-
-    .hero-title {
-        font-size: 4rem;
-        font-weight: bold;
-        margin-bottom: 1.5rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        animation: fadeInUp 1s ease;
-    }
-
-    .hero-subtitle {
-        font-size: 1.4rem;
-        margin-bottom: 2.5rem;
-        opacity: 0.9;
-        animation: fadeInUp 1s ease 0.2s both;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .btn-hero {
-        background: linear-gradient(45deg, #e53e3e, #ffd700);
-        border: none;
-        padding: 18px 45px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        border-radius: 50px;
-        color: white;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
-        animation: fadeInUp 1s ease 0.4s both;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-hero:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(229, 62, 62, 0.4);
-        color: white;
-    }
-
-    .btn-login {
-        background: linear-gradient(45deg, #2d5a87, #1a365d);
-        border: none;
-        padding: 10px 25px;
-        border-radius: 25px;
-        color: white;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        margin-left: 15px;
-    }
-
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(45, 90, 135, 0.3);
-        color: white;
-    }
-
     .theme-toggle {
         background: none;
         border: 2px solid var(--accent-color);
@@ -304,70 +227,6 @@
         transform: translateY(-2px);
     }
 
-    .floating-elements {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        pointer-events: none;
-    }
-
-    .floating-elements::before,
-    .floating-elements::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .floating-elements::before {
-        width: 120px;
-        height: 120px;
-        background: rgba(255, 215, 0, 0.1);
-        top: 20%;
-        left: 10%;
-        animation-delay: -2s;
-    }
-
-    .floating-elements::after {
-        width: 80px;
-        height: 80px;
-        background: rgba(229, 62, 62, 0.1);
-        top: 60%;
-        right: 15%;
-        animation-delay: -4s;
-    }
-
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0px) rotate(0deg);
-        }
-
-        50% {
-            transform: translateY(-30px) rotate(180deg);
-        }
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .features-section {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        padding: 80px 0;
-    }
-
     .feature-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 20px;
@@ -382,26 +241,6 @@
     .feature-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    }
-
-    .feature-icon {
-        font-size: 3.5rem;
-        margin-bottom: 25px;
-        background: linear-gradient(45deg, #e53e3e, #ffd700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .feature-title {
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-bottom: 15px;
-        color: var(--text-dark);
-    }
-
-    .feature-description {
-        color: var(--text-light);
-        line-height: 1.6;
     }
 
     /* Dark theme */
@@ -422,12 +261,8 @@
         color: #e2e8f0;
     }
 
-    body.dark-theme .feature-title {
+    body.dark-theme .section-title {
         color: #e2e8f0;
-    }
-
-    body.dark-theme .feature-description {
-        color: #a0aec0;
     }
 
     body.dark-theme .theme-toggle {
@@ -440,72 +275,184 @@
         color: #1a202c;
     }
 
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.8rem;
-        }
+    body.dark-theme .card {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+        border-color: #4a5568;
+    }
 
-        .hero-subtitle {
-            font-size: 1.1rem;
-            padding: 0 20px;
+    body.dark-theme .form-control {
+        background: rgba(45, 55, 72, 0.8);
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .form-control:focus {
+        background: rgba(45, 55, 72, 0.9);
+        border-color: #ffd700;
+        color: #e2e8f0;
+    }
+
+    body.dark-theme .modal-content {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+    }
+
+    /* Image upload styles */
+    .image-upload-section {
+        border: 2px dashed #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .image-upload-section:hover {
+        border-color: var(--accent-color);
+    }
+
+    .image-preview {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 10px;
+        margin: 10px 0;
+    }
+
+    .upload-btn {
+        background: linear-gradient(45deg, #e53e3e, #ffd700);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .upload-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
+    }
+
+    /* Status badges */
+    .status-badge {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-weight: bold;
+    }
+
+    .status-available {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-order {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .gender-badge {
+        font-size: 0.75rem;
+        padding: 3px 8px;
+        border-radius: 10px;
+        margin: 2px;
+        display: inline-block;
+    }
+
+    .gender-male {
+        background: #cce5ff;
+        color: #0066cc;
+    }
+
+    .gender-female {
+        background: #ffe6f0;
+        color: #cc0066;
+    }
+
+    .gender-child {
+        background: #fff0e6;
+        color: #cc6600;
+    }
+
+    /* Enhanced card styling */
+    .product-card {
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-img-top {
+        height: 250px;
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .btn-delete {
+        background: linear-gradient(45deg, #dc3545, #c82333);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .btn-delete:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        color: white;
+    }
+
+    /* Statistics section */
+    .stats-section {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        padding: 30px 0;
+        margin-bottom: 30px;
+        border-radius: 20px;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--accent-color);
+    }
+
+    .stat-label {
+        color: var(--text-light);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+        .section-title {
+            font-size: 2rem;
         }
 
         .navbar-brand {
             font-size: 1.4rem;
         }
 
-        .btn-hero {
-            padding: 15px 35px;
-            font-size: 1.1rem;
-        }
-
-        .feature-card {
-            margin-bottom: 20px;
-        }
-    }
-
-    @media (max-width: 430px) {
-        .navbar-nav {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .hero-section {
-            padding: 120px 0;
-        }
-
-        .hero-title {
-            font-size: 2.2rem;
-        }
-
-        .btn-hero {
-            padding: 12px 30px;
-            font-size: 1rem;
-        }
-    }
-
-    @media (max-width: 375px) {
-        .hero-title {
+        .stat-number {
             font-size: 2rem;
-        }
-
-        .feature-icon {
-            font-size: 2.8rem;
-        }
-    }
-
-    @media (max-width: 320px) {
-        .hero-title {
-            font-size: 1.8rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1rem;
-        }
-
-        .btn-hero {
-            padding: 10px 25px;
-            font-size: 0.9rem;
         }
     }
 </style>
@@ -514,7 +461,7 @@
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
+                <a class="navbar-brand" href="index.html">TuronMarket-Adminka</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -522,27 +469,12 @@
 
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.html">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contacts.html">Contact us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="cart.html">Cart</a>
-                        </li>
+                        
                     </ul>
 
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
                             <i class="fas fa-moon"></i> Dark-mode
-                        </button>
-
-                        <button class="btn-login" onclick="login()">
-                            <i class="fas fa-sign-in-alt"></i> Login
                         </button>
                     </div>
                 </div>
@@ -550,13 +482,45 @@
         </nav>
     </header>
 
-    <main>
+    <main style="padding: 20px;">
+        <!-- Statistics Section -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalProducts">0</div>
+                            <div class="stat-label">Total Products</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number" id="availableProducts">0</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number" id="orderProducts">0</div>
+                            <div class="stat-label">On Order</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="stat-card">
+                            <div class="stat-number" id="avgPrice">$0</div>
+                            <div class="stat-label">Avg Price</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="admin-section">
             <div class="container">
                 <h1 class="section-title">Admin Panel</h1>
 
                 <div class="row justify-content-center">
-                    <div class="col-lg-8">
+                    <div class="col-lg-10">
                         <div class="card p-4">
                             <h3 class="mb-4 text-center">Add New Product</h3>
                             <form id="addProductForm">
@@ -567,20 +531,63 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <input type="number" id="productPrice" placeholder="Price ($)"
-                                            class="form-control" required>
+                                            class="form-control" required step="0.01">
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <select id="productGender" class="form-control" required>
+                                            <option value="">Select Target Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="child">Child</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <select id="productStatus" class="form-control" required>
+                                            <option value="">Select Status</option>
+                                            <option value="available">Available</option>
+                                            <option value="order">On Order</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="mb-3">
-                                    <input type="text" id="productDescription" placeholder="Product Description"
-                                        class="form-control" required>
+                                    <textarea id="productDescription" placeholder="Product Description"
+                                        class="form-control" rows="3" required></textarea>
                                 </div>
-                                <div class="mb-4">
-                                    <input type="url" id="productImageURL" placeholder="Image URL" class="form-control"
-                                        required>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <input type="url" id="productDescriptionURL" placeholder="Description URL (optional)" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <input type="url" id="productWebsite" placeholder="Product Website (optional)" class="form-control">
+                                    </div>
                                 </div>
+
+                                <!-- Image Upload Section -->
+                                <div class="image-upload-section">
+                                    <h5>Product Image</h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h6>Upload Image File</h6>
+                                            <input type="file" id="productImageFile" class="form-control mb-2" accept="image/*">
+                                            <img id="imagePreview" class="image-preview" style="display: none;">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6>Or Use Image URL</h6>
+                                            <input type="url" id="productImageURL" placeholder="Image URL" class="form-control">
+                                            <small class="text-muted">You can use either file upload or URL, not both</small>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-primary btn-lg" onclick="addProduct()">Add
-                                        Product</button>
+                                    <button type="button" class="btn btn-primary btn-lg" onclick="addProduct()">
+                                        <i class="fas fa-plus"></i> Add Product
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -589,7 +596,7 @@
             </div>
         </section>
 
-        <section class="products-grid">
+        <section style="display: flex; justify-content: center;" class="products-grid">
             <div class="container">
                 <h2 class="section-title">Manage Products</h2>
                 <div id="productList" class="row g-4"></div>
@@ -597,7 +604,6 @@
         </section>
     </main>
 
-    <!-- Edit Product Modal -->
     <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -616,13 +622,44 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="editProductPrice" class="form-label">Price ($)</label>
-                                <input type="number" id="editProductPrice" class="form-control" required>
+                                <input type="number" id="editProductPrice" class="form-control" required step="0.01">
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductGender" class="form-label">Target Gender</label>
+                                <select id="editProductGender" class="form-control" required>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="child">Child</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductStatus" class="form-label">Status</label>
+                                <select id="editProductStatus" class="form-control" required>
+                                    <option value="available">Available</option>
+                                    <option value="order">On Order</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="editProductDescription" class="form-label">Description</label>
                             <textarea id="editProductDescription" class="form-control" rows="3" required></textarea>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductDescriptionURL" class="form-label">Description URL</label>
+                                <input type="url" id="editProductDescriptionURL" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editProductWebsite" class="form-label">Product Website</label>
+                                <input type="url" id="editProductWebsite" class="form-control">
+                            </div>
+                        </div>
+
                         <div class="mb-3">
                             <label for="editProductImageURL" class="form-label">Image URL</label>
                             <input type="url" id="editProductImageURL" class="form-control" required>
@@ -640,15 +677,300 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+    
     <script>
-        function login() {
-            window.location.href = 'login.html';
+        const API_URL = "https://6782ae7cc51d092c3dd06dbd.mockapi.io/product/auto_parts";
+
+        // Image file handling
+        document.getElementById('productImageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    // Clear URL input when file is selected
+                    document.getElementById('productImageURL').value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        async function fetchProducts() {
+            try {
+                const response = await axios.get(API_URL);
+                const products = response.data;
+                const productList = document.getElementById('productList');
+                
+                updateStatistics(products);
+
+                productList.innerHTML = products.map(product => `
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card product-card h-100">
+                            <img src="${product.image || 'https://via.placeholder.com/300x250'}" class="card-img-top" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x250'">
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-2">
+                                    <span class="status-badge ${product.status === 'available' ? 'status-available' : 'status-order'}">
+                                        <i class="fas ${product.status === 'available' ? 'fa-check-circle' : 'fa-clock'}"></i>
+                                        ${product.status === 'available' ? 'Available' : 'On Order'}
+                                    </span>
+                                    <span class="gender-badge gender-${product.gender || 'unisex'}">
+                                        <i class="fas ${getGenderIcon(product.gender)}"></i>
+                                        ${product.gender || 'Unisex'}
+                                    </span>
+                                </div>
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                ${product.descriptionURL ? `<p class="card-text"><small><a href="${product.descriptionURL}" target="_blank" class="text-decoration-none"><i class="fas fa-external-link-alt"></i> More Details</a></small></p>` : ''}
+                                ${product.website ? `<p class="card-text"><small><a href="${product.website}" target="_blank" class="text-decoration-none"><i class="fas fa-globe"></i> Website</a></small></p>` : ''}
+                                <p class="card-text fw-bold text-success fs-5">Price: $${product.price}</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button class="btn btn-warning flex-fill" onclick="openEditModal('${product.id}', '${escapeQuotes(product.name)}', '${escapeQuotes(product.description)}', ${product.price}, '${product.image}', '${product.gender || 'unisex'}', '${product.status || 'available'}', '${product.descriptionURL || ''}', '${product.website || ''}')">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </button>
+                                        <bu'tton class="btn btn-delete flex-fill" onclick="deleteProduct('${product.id}')">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                    </div>
+                                    <button class="btn btn-success w-100 mt-2" onclick="addToCart('${product.id}')">
+                                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                showNotification('Error fetching products', 'error');
+            }
         }
-    </script>
-    <script src="script.js"></script>
-    <script src="theme.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+
+        function updateStatistics(products) {
+            const totalProducts = products.length;
+            const availableProducts = products.filter(p => p.status === 'available').length;
+            const orderProducts = products.filter(p => p.status === 'order').length;
+            const avgPrice = totalProducts > 0 ? (products.reduce((sum, p) => sum + parseFloat(p.price || 0), 0) / totalProducts).toFixed(2) : 0;
+
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('availableProducts').textContent = availableProducts;
+            document.getElementById('orderProducts').textContent = orderProducts;
+            document.getElementById('avgPrice').textContent = `$${avgPrice}`;
+        }
+
+        function getGenderIcon(gender) {
+            switch(gender) {
+                case 'male': return 'fa-mars';
+                case 'female': return 'fa-venus';
+                case 'child': return 'fa-child';
+                default: return 'fa-users';
+            }
+        }
+
+        function escapeQuotes(str) {
+            return str ? str.replace(/'/g, "\\'").replace(/"/g, '\\"') : '';
+        }
+
+        async function addProduct() {
+            const name = document.getElementById('productName').value.trim();
+            const description = document.getElementById('productDescription').value.trim();
+            const price = document.getElementById('productPrice').value.trim();
+            const gender = document.getElementById('productGender').value;
+            const status = document.getElementById('productStatus').value;
+            const descriptionURL = document.getElementById('productDescriptionURL').value.trim();
+            const website = document.getElementById('productWebsite').value.trim();
+            
+            // Get image (either from file or URL)
+            const imageFile = document.getElementById('productImageFile').files[0];
+            const imageURL = document.getElementById('productImageURL').value.trim();
+
+            if (!name || !description || !price || !gender || !status) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (!imageFile && !imageURL) {
+                showNotification('Please provide either an image file or image URL', 'error');
+                return;
+            }
+
+            try {
+                let finalImageURL = imageURL;
+                
+                // If file is selected, convert to base64 (for demo purposes)
+                // In production, you'd upload to a proper image hosting service
+                if (imageFile) {
+                    finalImageURL = await convertFileToBase64(imageFile);
+                }
+
+                const productData = {
+                    name,
+                    description,
+                    price: parseFloat(price),
+                    image: finalImageURL,
+                    gender,
+                    status,
+                    descriptionURL: descriptionURL || null,
+                    website: website || null
+                };
+
+                await axios.post(API_URL, productData);
+                showNotification('Product added successfully!', 'success');
+                
+                // Reset form
+                document.getElementById('addProductForm').reset();
+                document.getElementById('imagePreview').style.display = 'none';
+                
+                fetchProducts();
+            } catch (error) {
+                console.error('Error adding product:', error);
+                showNotification('Error adding product. Please try again.', 'error');
+            }
+        }
+
+        function convertFileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                await axios.delete(`${API_URL}/${productId}`);
+                showNotification('Product deleted successfully!', 'success');
+                fetchProducts();
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showNotification('Error deleting product. Please try again.', 'error');
+            }
+        }
+
+        function openEditModal(id, name, description, price, image, gender, status, descriptionURL, website) {
+            document.getElementById('editProductId').value = id;
+            document.getElementById('editProductName').value = name;
+            document.getElementById('editProductDescription').value = description;
+            document.getElementById('editProductPrice').value = price;
+            document.getElementById('editProductImageURL').value = image;
+            document.getElementById('editProductGender').value = gender || 'unisex';
+            document.getElementById('editProductStatus').value = status || 'available';
+            document.getElementById('editProductDescriptionURL').value = descriptionURL || '';
+            document.getElementById('editProductWebsite').value = website || '';
+
+            const editModal = new bootstrap.Modal(document.getElementById('editProductModal'));
+            editModal.show();
+        }
+
+        async function updateProduct() {
+            const id = document.getElementById('editProductId').value;
+            const name = document.getElementById('editProductName').value.trim();
+            const description = document.getElementById('editProductDescription').value.trim();
+            const price = document.getElementById('editProductPrice').value.trim();
+            const imageURL = document.getElementById('editProductImageURL').value.trim();
+            const gender = document.getElementById('editProductGender').value;
+            const status = document.getElementById('editProductStatus').value;
+            const descriptionURL = document.getElementById('editProductDescriptionURL').value.trim();
+            const website = document.getElementById('editProductWebsite').value.trim();
+
+            if (!name || !description || !price || !imageURL || !gender || !status) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+
+            try {
+                const productData = {
+                    name,
+                    description,
+                    price: parseFloat(price),
+                    image: imageURL,
+                    gender,
+                    status,
+                    descriptionURL: descriptionURL || null,
+                    website: website || null
+                };
+
+                await axios.put(`${API_URL}/${id}`, productData);
+                showNotification('Product updated successfully!', 'success');
+                fetchProducts();
+
+                const editModal = bootstrap.Modal.getInstance(document.getElementById('editProductModal'));
+                editModal.hide();
+            } catch (error) {
+                console.error('Error updating product:', error);
+                showNotification('Error updating product. Please try again.', 'error');
+            }
+        }
+
+        // Cart functionality (stored in memory for demo)
+        let cart = [];
+
+        function addToCart(productId) {
+            // Find product in current products list
+            axios.get(`${API_URL}/${productId}`)
+                .then(response => {
+                    const product = response.data;
+                    const existingItem = cart.find(item => item.id === productId);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                        showNotification(`${product.name} quantity increased in cart!`, 'success');
+                    } else {
+                        cart.push({
+                            id: productId,
+                            name: product.name,
+                            price: product.price,
+                            image: product.image,
+                            quantity: 1
+                        });
+                        showNotification(`${product.name} added to cart!`, 'success');
+                    }
+                    
+                    updateCartDisplay();
+                })
+                .catch(error => {
+                    console.error('Error adding to cart:', error);
+                    showNotification('Error adding to cart', 'error');
+                });
+        }
+
+        function updateCartDisplay() {
+            // You can implement a cart display here
+            console.log('Cart updated:', cart);
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'success' ? 'success' : 'info'} alert-dismissible fade show position-fixed`;
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.minWidth = '300px';
+            
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
         // Theme toggle functionality
         function toggleTheme() {
             const body = document.body;
@@ -674,21 +996,159 @@
                 document.body.classList.add('dark-theme');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
             }
+
+            // Load products on page load
+            fetchProducts();
         });
 
-        // Login redirect
-        function login() {
-            window.location.href = 'login.html';
+        // Search and filter functionality
+        function filterProducts() {
+            const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            const genderFilter = document.getElementById('genderFilter')?.value || '';
+            const statusFilter = document.getElementById('statusFilter')?.value || '';
+            
+            // This would filter the displayed products
+            // Implementation depends on your specific needs
         }
 
-        // Add smooth scrolling animation to hero elements
-        document.addEventListener('DOMContentLoaded', function () {
-            const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-hero');
+        // Export data functionality
+        function exportData() {
+            axios.get(API_URL)
+                .then(response => {
+                    const products = response.data;
+                    const dataStr = JSON.stringify(products, null, 2);
+                    const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'products_export.json';
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    showNotification('Data exported successfully!', 'success');
+                })
+                .catch(error => {
+                    console.error('Error exporting data:', error);
+                    showNotification('Error exporting data', 'error');
+                });
+        }
 
-            heroElements.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.2}s`;
-            });
+        // Bulk operations
+        function bulkDelete() {
+            const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+            if (checkboxes.length === 0) {
+                showNotification('Please select products to delete', 'error');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to delete ${checkboxes.length} products?`)) {
+                return;
+            }
+
+            const deletePromises = Array.from(checkboxes).map(checkbox => 
+                axios.delete(`${API_URL}/${checkbox.value}`)
+            );
+
+            Promise.all(deletePromises)
+                .then(() => {
+                    showNotification(`${checkboxes.length} products deleted successfully!`, 'success');
+                    fetchProducts();
+                })
+                .catch(error => {
+                    console.error('Error in bulk delete:', error);
+                    showNotification('Error deleting some products', 'error');
+                });
+        }
+
+        // Advanced search with debouncing
+        let searchTimeout;
+        function handleSearch(event) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchTerm = event.target.value.toLowerCase();
+                // Implement search logic here
+                filterProducts();
+            }, 300);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Ctrl/Cmd + N to add new product
+            if ((event.ctrlKey || event.metaKey) && event.key === 'n') {
+                event.preventDefault();
+                document.getElementById('productName').focus();
+            }
+            
+            // Escape to close modals
+            if (event.key === 'Escape') {
+                const openModal = document.querySelector('.modal.show');
+                if (openModal) {
+                    const modal = bootstrap.Modal.getInstance(openModal);
+                    modal.hide();
+                }
+            }
         });
+
+        // Form validation enhancement
+        function validateForm(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            return isValid;
+        }
+
+        // Auto-save draft functionality
+        function saveDraft() {
+            const formData = {
+                name: document.getElementById('productName').value,
+                description: document.getElementById('productDescription').value,
+                price: document.getElementById('productPrice').value,
+                gender: document.getElementById('productGender').value,
+                status: document.getElementById('productStatus').value,
+                descriptionURL: document.getElementById('productDescriptionURL').value,
+                website: document.getElementById('productWebsite').value,
+                imageURL: document.getElementById('productImageURL').value
+            };
+            
+            sessionStorage.setItem('productDraft', JSON.stringify(formData));
+        }
+
+        function loadDraft() {
+            const draft = sessionStorage.getItem('productDraft');
+            if (draft) {
+                const formData = JSON.parse(draft);
+                document.getElementById('productName').value = formData.name || '';
+                document.getElementById('productDescription').value = formData.description || '';
+                document.getElementById('productPrice').value = formData.price || '';
+                document.getElementById('productGender').value = formData.gender || '';
+                document.getElementById('productStatus').value = formData.status || '';
+                document.getElementById('productDescriptionURL').value = formData.descriptionURL || '';
+                document.getElementById('productWebsite').value = formData.website || '';
+                document.getElementById('productImageURL').value = formData.imageURL || '';
+            }
+        }
+
+        // Load draft on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDraft();
+            
+            // Auto-save every 30 seconds
+            setInterval(saveDraft, 30000);
+        });
+
+        // Clear draft when product is successfully added
+        function clearDraft() {
+            sessionStorage.removeItem('productDraft');
+        }
     </script>
 </body>
 
