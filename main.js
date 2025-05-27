@@ -4,11 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmButton = document.getElementById('confirmButton');
 
     const users = [
-        { name: "Murod", surname: "Shavkatov",  password: "0890" },
-        { name: "Abdumalik", surname: "Ergashev",  password: "1234" },
-        { name: "Bobur", surname: "Rahxmatov",  password: "2222" },
-        { name: "Bakhodir", surname: " Abdukakhkhorov",  password: "0000" },
-        { name: "Davron", surname: "Rasulyev",  password: "1111" }
+        { name: "Murod",  password: "0890" },
+        { name: "Alisher",  password: "1111" },
     ];
 
     function checkInputs() {
