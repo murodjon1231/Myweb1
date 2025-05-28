@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -74,8 +75,7 @@
         .api-main-image-container {
             position: relative;
             width: 100%;
-            height: 500px;
-            border-radius: 20px;
+            border-radius: 30px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -262,7 +262,7 @@
             transition: all 0.3s ease;
             max-width: 350px;
             word-wrap: break-word;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .cart-notification.success {
@@ -282,30 +282,49 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
-        
+
         @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
         }
 
         @media (max-width: 768px) {
             .api-main-image-container {
                 height: 300px;
             }
-            
+
             .api-thumbnail {
                 min-width: 60px;
                 height: 60px;
             }
-            
+
             .api-images-section {
                 padding: 20px;
             }
@@ -316,6 +335,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg">
@@ -382,7 +402,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const productId = urlParams.get('id');
-            
+
             if (productId) {
                 fetchProductDetails(productId);
             } else {
@@ -394,9 +414,9 @@
             try {
                 const response = await fetch(API_URL);
                 allProducts = await response.json();
-                
+
                 currentProduct = allProducts.find(product => product.id == productId);
-                
+
                 if (currentProduct) {
                     productImages = getProductImages(currentProduct);
                     displayProductDetails(currentProduct);
@@ -411,11 +431,11 @@
 
         function getProductImages(product) {
             const images = [];
-            
+
             if (product.image) {
                 images.push(product.image);
             }
-            
+
             if (product.images && Array.isArray(product.images)) {
                 product.images.forEach(img => {
                     if (img && !images.includes(img)) {
@@ -423,25 +443,25 @@
                     }
                 });
             }
-            
+
             if (images.length === 1) {
                 for (let i = 0; i < 4; i++) {
                     images.push(product.image);
                 }
             }
-            
+
             return images;
         }
 
         function displayProductDetails(product) {
             const productContent = document.getElementById('productContent');
-            
+
             // Create size options if it's footwear/clothing
             const sizeOptions = ['7', '8', '9', '10', '11', '12'];
-            const showSizes = product.gender && (product.gender.toLowerCase().includes('shoes') || 
-                                              product.name.toLowerCase().includes('shoe') || 
-                                              product.name.toLowerCase().includes('sneaker'));
-            
+            const showSizes = product.gender && (product.gender.toLowerCase().includes('shoes') ||
+                product.name.toLowerCase().includes('shoe') ||
+                product.name.toLowerCase().includes('sneaker'));
+
             productContent.innerHTML = `
                 <div class="product-detail-container">
                     <div class="row">
@@ -548,34 +568,34 @@
 
         function selectSize(size) {
             selectedSize = size;
-            
+
             // Update visual selection
             document.querySelectorAll('.size-option').forEach(option => {
                 option.classList.remove('selected');
             });
-            
+
             document.querySelector(`[data-size="${size}"]`).classList.add('selected');
         }
 
         function changeMainImage(index) {
             if (!productImages.length) return;
-            
+
             currentImageIndex = index;
             const mainImage = document.getElementById('mainImage');
             const imageCounter = document.getElementById('imageCounter');
-            
+
             if (mainImage && imageCounter) {
                 mainImage.src = productImages[index];
                 imageCounter.textContent = `${index + 1} / ${productImages.length}`;
-                
+
                 document.querySelectorAll('.api-thumbnail').forEach((thumb, i) => {
                     thumb.classList.toggle('active', i === index);
                 });
-                
+
                 document.querySelectorAll('.api-grid-image').forEach((gridImg, i) => {
                     gridImg.classList.toggle('active', i === index);
                 });
-                
+
                 if (window.innerWidth <= 768) {
                     document.querySelector('.api-main-image-container').scrollIntoView({
                         behavior: 'smooth',
@@ -602,10 +622,10 @@
             }
 
             // Check if size is required but not selected
-            const showSizes = currentProduct.gender && (currentProduct.gender.toLowerCase().includes('shoes') || 
-                                                      currentProduct.name.toLowerCase().includes('shoe') || 
-                                                      currentProduct.name.toLowerCase().includes('sneaker'));
-            
+            const showSizes = currentProduct.gender && (currentProduct.gender.toLowerCase().includes('shoes') ||
+                currentProduct.name.toLowerCase().includes('shoe') ||
+                currentProduct.name.toLowerCase().includes('sneaker'));
+
             if (showSizes && !selectedSize) {
                 showNotification('Please select a size!', 'warning');
                 return;
@@ -613,7 +633,7 @@
 
             // Get existing cart from localStorage
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
+
             // Create cart item
             const cartItem = {
                 id: currentProduct.id,
@@ -625,8 +645,8 @@
             };
 
             // Check if item already exists in cart
-            const existingItemIndex = cart.findIndex(item => 
-                item.id === cartItem.id && 
+            const existingItemIndex = cart.findIndex(item =>
+                item.id === cartItem.id &&
                 (!selectedSize || item.size === selectedSize)
             );
 
@@ -651,10 +671,10 @@
             }
 
             // Check if size is required but not selected
-            const showSizes = currentProduct.gender && (currentProduct.gender.toLowerCase().includes('shoes') || 
-                                                      currentProduct.name.toLowerCase().includes('shoe') || 
-                                                      currentProduct.name.toLowerCase().includes('sneaker'));
-            
+            const showSizes = currentProduct.gender && (currentProduct.gender.toLowerCase().includes('shoes') ||
+                currentProduct.name.toLowerCase().includes('shoe') ||
+                currentProduct.name.toLowerCase().includes('sneaker'));
+
             if (showSizes && !selectedSize) {
                 showNotification('Please select a size!', 'warning');
                 return;
@@ -662,10 +682,10 @@
 
             // Add to cart first
             addToCart();
-            
+
             // Show notification and redirect
             showNotification('Redirecting to checkout...', 'info');
-            
+
             setTimeout(() => {
                 window.location.href = 'cart.html';
             }, 1500);
@@ -720,4 +740,5 @@
         }
     </script>
 </body>
+
 </html>

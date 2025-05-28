@@ -43,7 +43,7 @@ function displayProducts(products) {
     const productList = document.getElementById('product-list');
     
     productList.innerHTML = products.map(product => `
-        <div class="col-lg-4 col-md-6">
+        <div class="col-lg-4 col-md-6 mt-3">
             <div class="card product-card h-100">
                 <img src="${product.image || 'https://via.placeholder.com/300x250'}" class="card-img-top" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x250'">
                 <div class="card-body d-flex flex-column">

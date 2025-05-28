@@ -16,7 +16,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #a29d9d 0%, #666666 100%);
     min-height: 100vh;
     transition: all 0.3s ease;
 }
@@ -417,6 +417,7 @@ body.dark-theme .theme-toggle:hover {
         padding: 20px;
     }
 }
+
 /* Enhanced Cart Item Styles - Add these to your cart.css file */
 
 .cart-item {
@@ -601,28 +602,28 @@ body.dark-theme .theme-toggle:hover {
         gap: 15px;
         padding: 20px;
     }
-    
+
     .item-image {
         width: 100px;
         height: 100px;
         align-self: center;
     }
-    
+
     .item-header {
         text-align: center;
         flex-direction: column;
         gap: 8px;
     }
-    
+
     .item-name {
         font-size: 1.2rem;
     }
-    
+
     .item-actions {
         flex-direction: column;
         gap: 12px;
     }
-    
+
     .quantity-controls {
         justify-self: center;
     }
@@ -632,18 +633,18 @@ body.dark-theme .theme-toggle:hover {
     .cart-item {
         padding: 15px;
     }
-    
+
     .item-image {
         width: 80px;
         height: 80px;
     }
-    
+
     .quantity-btn {
         width: 30px;
         height: 30px;
         font-size: 0.8rem;
     }
-    
+
     .remove-btn {
         padding: 8px 15px;
         font-size: 0.85rem;
