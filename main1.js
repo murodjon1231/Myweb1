@@ -1,6 +1,7 @@
 const API_URL = "https://6782ae7cc51d092c3dd06dbd.mockapi.io/product/auto_parts";
 
 let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+let allProducts = []; // Store all products for filtering/sorting
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchProducts();
@@ -12,6 +13,9 @@ async function fetchProducts() {
     try {
         const response = await fetch(API_URL);
         const products = await response.json();
+        
+        // Store all products globally
+        allProducts = products;
 
         const productList = document.getElementById('product-list');
         
@@ -54,7 +58,7 @@ function displayProducts(products) {
                         </span>
                         <span class="gender-badge gender-${product.gender || 'unisex'}">
                             <i class="fas ${getGenderIcon(product.gender)}"></i>
-                            ${product.gender || 'Unisex'}
+                            ${getGenderDisplayName(product.gender)}
                         </span>
                     </div>
                     <h5 class="card-title">${product.name}</h5>
@@ -88,10 +92,29 @@ function getGenderIcon(gender) {
         case 'ayol':
             return 'fa-venus';
         case 'kids':
+        case 'child':
         case 'bola':
             return 'fa-child';
         default:
             return 'fa-genderless';
+    }
+}
+
+// Helper function to get gender display name
+function getGenderDisplayName(gender) {
+    switch (gender?.toLowerCase()) {
+        case 'male':
+        case 'erkak':
+            return 'Male';
+        case 'female':
+        case 'ayol':
+            return 'Female';
+        case 'kids':
+        case 'child':
+        case 'bola':
+            return 'Child';
+        default:
+            return 'Unisex';
     }
 }
 
@@ -355,63 +378,91 @@ function filterByPrice(minPrice, maxPrice) {
     });
 }
 
-// Sort products functionality
+// Improved sort products functionality - works with all filters
 function sortProducts(sortBy) {
-    fetch(API_URL)
-        .then(response => response.json())
-        .then(products => {
-            let sortedProducts = [...products];
+    if (!allProducts || allProducts.length === 0) {
+        console.warn('No products loaded yet');
+        return;
+    }
 
-            switch (sortBy) {
-                case 'name':
-                    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-                    break;
-                
-                case 'price-low':
-                    sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-                    break;
-                
-                case 'price-high':
-                    sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
-                    break;
-                
-                case 'gender-male':
-                    sortedProducts = products.filter(p => 
-                        p.gender?.toLowerCase() === 'male' || p.gender?.toLowerCase() === 'erkak'
-                    );
-                    break;
-                
-                case 'gender-female':
-                    sortedProducts = products.filter(p => 
-                        p.gender?.toLowerCase() === 'female' || p.gender?.toLowerCase() === 'ayol'
-                    );
-                    break;
-                
-                case 'gender-kids':
-                    sortedProducts = products.filter(p => 
-                        p.gender?.toLowerCase() === 'kids' || p.gender?.toLowerCase() === 'bola'
-                    );
-                    break;
-                
-                case 'status-available':
-                    sortedProducts = products.filter(p => p.status === 'available');
-                    break;
-                
-                case 'status-order':
-                    sortedProducts = products.filter(p => p.status !== 'available');
-                    break;
-                
-                default:
-                    // Default sorting by ID
-                    sortedProducts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-            }
+    let filteredProducts = [...allProducts];
 
-            displayProducts(sortedProducts);
-        })
-        .catch(error => {
-            console.error('Error sorting products:', error);
-            showNotification('Error sorting products', 'error');
-        });
+    // Get current filter values
+    const sortSelect = document.getElementById('sortSelect');
+    const genderFilter = document.getElementById('genderFilter');
+    const statusFilter = document.getElementById('statusFilter');
+
+    const currentSort = sortSelect ? sortSelect.value : sortBy;
+    const currentGender = genderFilter ? genderFilter.value : 'default';
+    const currentStatus = statusFilter ? statusFilter.value : 'default';
+
+    // Apply gender filter first
+    if (currentGender !== 'default') {
+        switch (currentGender) {
+            case 'gender-male':
+                filteredProducts = filteredProducts.filter(p => 
+                    p.gender?.toLowerCase() === 'male' || p.gender?.toLowerCase() === 'erkak'
+                );
+                break;
+            case 'gender-female':
+                filteredProducts = filteredProducts.filter(p => 
+                    p.gender?.toLowerCase() === 'female' || p.gender?.toLowerCase() === 'ayol'
+                );
+                break;
+            case 'gender-kids':
+                filteredProducts = filteredProducts.filter(p => 
+                    p.gender?.toLowerCase() === 'kids' || 
+                    p.gender?.toLowerCase() === 'child' || 
+                    p.gender?.toLowerCase() === 'bola'
+                );
+                break;
+        }
+    }
+
+    // Apply status filter
+    if (currentStatus !== 'default') {
+        switch (currentStatus) {
+            case 'status-available':
+                filteredProducts = filteredProducts.filter(p => p.status === 'available');
+                break;
+            case 'status-order':
+                filteredProducts = filteredProducts.filter(p => p.status !== 'available');
+                break;
+        }
+    }
+
+    // Apply sorting
+    switch (currentSort) {
+        case 'name':
+            filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        
+        case 'price-low':
+            filteredProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            break;
+        
+        case 'price-high':
+            filteredProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            break;
+        
+        default:
+            // Default sorting by ID
+            filteredProducts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+    }
+
+    // Display filtered and sorted products
+    displayProducts(filteredProducts);
+    
+    // Update product count
+    const productCountText = filteredProducts.length === 1 ? '1 product found' : `${filteredProducts.length} products found`;
+    console.log(productCountText);
+    
+    // Show notification for filter results
+    if (filteredProducts.length === 0) {
+        showNotification('No products match your filters', 'info');
+    } else if (filteredProducts.length < allProducts.length) {
+        showNotification(productCountText, 'info');
+    }
 }
 
 // Checkout functionality
@@ -506,7 +557,7 @@ window.addEventListener('click', function(event) {
     }
 });
 
-// Reset all filters and sorting
+// Reset all filters and sorting - improved version
 function resetFilters() {
     // Reset all dropdowns
     const sortSelect = document.getElementById('sortSelect');
@@ -517,8 +568,15 @@ function resetFilters() {
     if (genderFilter) genderFilter.value = 'default';
     if (statusFilter) statusFilter.value = 'default';
     
-    // Reload original products
-    fetchProducts();
+    // Display original products with default sorting
+    if (allProducts && allProducts.length > 0) {
+        let sortedProducts = [...allProducts];
+        sortedProducts.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+        displayProducts(sortedProducts);
+    } else {
+        // If no products loaded, fetch them
+        fetchProducts();
+    }
     
     showNotification('Filters reset successfully!', 'info');
 }

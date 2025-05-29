@@ -132,7 +132,13 @@
 
     <script>
         const TELEGRAM_BOT_TOKEN = '7670633072:AAFqhahrboKp7w3k3tSsk4SQP1RFrXUq1m4';
-        const TELEGRAM_CHAT_ID = '6226950895'; // Replace with your channel/group chat ID
+        
+        // Multiple recipients - add your chat IDs here
+        const TELEGRAM_RECIPIENTS = [
+            '6226950895',  // First recipient
+            '7856355769',  // Second recipient (replace with actual chat ID)
+            '0987654321'   // Third recipient (replace with actual chat ID)
+        ];
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -453,55 +459,118 @@
 
         async function sendOrderToTelegram(orderData) {
             const { firstName, lastName, birthDate, phone, address, notes, cart, subtotal, advancePayment } = orderData;
-
-            let orderMessage = `🛒 *NEW ORDER RECEIVED*\n\n`;
-            orderMessage += `👤 *Customer Information:*\n`;
-            orderMessage += `• Name: ${firstName} ${lastName}\n`;
-            orderMessage += `• Date of Birth: ${birthDate}\n`;
-            orderMessage += `• Phone: ${phone}\n`;
-            orderMessage += `• Address: ${address}\n`;
-            if (notes) {
-                orderMessage += `• Notes: ${notes}\n`;
-            }
-
-            orderMessage += `\n📦 *Ordered Items:*\n`;
-            cart.forEach((item, index) => {
-                orderMessage += `${index + 1}. ${item.name}\n`;
-                orderMessage += `   • Price: $${item.price}\n`;
-                orderMessage += `   • Quantity: ${item.quantity}\n`;
-                if (item.size) {
-                    orderMessage += `   • Size: ${item.size}\n`;
-                }
-                orderMessage += `   • Total: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+            const orderNumber = '#' + Date.now().toString().slice(-6);
+            const currentDate = new Date();
+            const formattedDate = currentDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const formattedTime = currentDate.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit'
             });
 
-            orderMessage += `💰 *Payment Details:*\n`;
-            orderMessage += `• Subtotal: $${subtotal.toFixed(2)}\n`;
-            orderMessage += `• Advance Payment (30%): $${advancePayment.toFixed(2)}\n`;
-            orderMessage += `• Total Amount: $${subtotal.toFixed(2)}\n\n`;
-            orderMessage += `📅 Order Date: ${new Date().toLocaleString()}\n`;
-            orderMessage += `\n#NewOrder #TuronMarket`;
+            // Create beautiful message with emojis and formatting
+            let orderMessage = `🎉 *NEW ORDER RECEIVED* 🎉\n`;
+            orderMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+            
+            orderMessage += `📋 *Order Details:*\n`;
+            orderMessage += `🔢 Order Number: \`${orderNumber}\`\n`;
+            orderMessage += `📅 Date: ${formattedDate}\n`;
+            orderMessage += `⏰ Time: ${formattedTime}\n\n`;
+            
+            orderMessage += `👤 *Customer Information:*\n`;
+            orderMessage += `┌─────────────────────────────────────┐\n`;
+            orderMessage += `│ 🧑‍💼 Name: *${firstName} ${lastName}*\n`;
+            orderMessage += `│ 🎂 Date of Birth: ${birthDate}\n`;
+            orderMessage += `│ 📱 Phone: \`${phone}\`\n`;
+            orderMessage += `│ 🏠 Address: ${address}\n`;
+            if (notes) {
+                orderMessage += `│ 📝 Notes: _${notes}_\n`;
+            }
+            orderMessage += `└─────────────────────────────────────┘\n\n`;
+
+            orderMessage += `🛒 *Ordered Items:*\n`;
+            orderMessage += `┌─────────────────────────────────────┐\n`;
+            cart.forEach((item, index) => {
+                orderMessage += `│ ${index + 1}️⃣ *${item.name}*\n`;
+                orderMessage += `│    💰 Price: $${item.price}\n`;
+                orderMessage += `│    📦 Quantity: ${item.quantity}\n`;
+                if (item.size) {
+                    orderMessage += `│    👟 Size: ${item.size}\n`;
+                }
+                orderMessage += `│    💵 Total: *$${(item.price * item.quantity).toFixed(2)}*\n`;
+                if (index < cart.length - 1) {
+                    orderMessage += `│    ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n`;
+                }
+            });
+            orderMessage += `└─────────────────────────────────────┘\n\n`;
+
+            orderMessage += `💰 *Payment Summary:*\n`;
+            orderMessage += `┌─────────────────────────────────────┐\n`;
+            orderMessage += `│ 💸 Subtotal: *$${subtotal.toFixed(2)}*\n`;
+            orderMessage += `│ 🏦 Advance Payment (30%): *$${advancePayment.toFixed(2)}*\n`;
+            orderMessage += `│ 💎 Total Amount: *$${subtotal.toFixed(2)}*\n`;
+            orderMessage += `└─────────────────────────────────────┘\n\n`;
+            
+            orderMessage += `🏪 *TuronMarket* 🇺🇸🇺🇿\n`;
+            orderMessage += `✅ Status: *PENDING CONFIRMATION*\n`;
+            orderMessage += `⚡ Priority: *HIGH*\n\n`;
+            orderMessage += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            orderMessage += `#NewOrder #TuronMarket #Order${orderNumber.slice(1)} #CustomerOrder`;
 
             const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
-            const response = await fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: TELEGRAM_CHAT_ID,
-                    text: orderMessage,
-                    parse_mode: 'Markdown'
-                })
+            // Send to all recipients
+            const sendPromises = TELEGRAM_RECIPIENTS.map(async (chatId) => {
+                try {
+                    const response = await fetch(telegramUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            chat_id: chatId,
+                            text: orderMessage,
+                            parse_mode: 'Markdown'
+                        })
+                    });
+
+                    if (!response.ok) {
+                        console.warn(`Failed to send message to chat ID: ${chatId}`);
+                        return { success: false, chatId };
+                    }
+
+                    return { success: true, chatId, data: await response.json() };
+                } catch (error) {
+                    console.error(`Error sending to chat ID ${chatId}:`, error);
+                    return { success: false, chatId, error };
+                }
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to send message to Telegram');
+            // Wait for all messages to be sent
+            const results = await Promise.all(sendPromises);
+            
+            // Check if at least one message was sent successfully
+            const successful = results.filter(result => result.success);
+            const failed = results.filter(result => !result.success);
+
+            if (successful.length === 0) {
+                throw new Error('Failed to send message to any recipient');
             }
+
+            if (failed.length > 0) {
+                console.warn(`Failed to send to ${failed.length} recipients:`, failed);
+            }
+
+            console.log(`Order sent successfully to ${successful.length} recipients`);
+            
+            // Redirect to payment page
             window.location.href = 'payment.html';
 
-            return await response.json();
+            return results;
         }
 
         // Handle navbar collapse on mobile after click
@@ -514,6 +583,7 @@
                 }
             });
         });
+        
         // Add scroll effect to navbar
         window.addEventListener('scroll', function () {
             const navbar = document.querySelector('.navbar');
