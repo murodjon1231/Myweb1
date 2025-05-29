@@ -71,9 +71,6 @@ function displayProducts(products) {
                             <button class="btn btn-primary" onclick="viewProductDetails(${product.id})">
                                 <i class="fas fa-eye"></i> View Details
                             </button>
-                            <button class="btn btn-success" onclick="quickAddToCart(${product.id}, '${escapeHtml(product.name)}', ${product.price}, '${escapeHtml(product.image)}')">
-                                <i class="fas fa-cart-plus"></i> Quick Add
-                            </button>
                         </div>
                     </div>
                 </div>
