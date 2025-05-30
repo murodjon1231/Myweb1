@@ -10,7 +10,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="Theme.css">
+    <link rel="stylesheet" href="cart-counter.css">
 </head>
 
 <body>
@@ -29,24 +32,30 @@
                             <a class="nav-link" href="index.html">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="products.html">Products</a>
+                            <a class="nav-link active" href="products.html">Products</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contacts.html">Contact us</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="cart.html">Cart</a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a class="nav-link" href="know-the-price.html">Know the price</a>
                         </li>
                     </ul>
 
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="d-flex align-items-center gap-2 flex-wrap" id="navbarActions">
+                        <!-- Cart Icon with Counter -->
+                        <a href="cart.html" class="cart-icon-container">
+                            <i class="fas fa-shopping-cart cart-icon"></i>
+                            <span class="cart-counter" id="cartCounter">0</span>
+                        </a>
+
+                        <!-- Theme Toggle -->
                         <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
                             <i class="fas fa-moon"></i> Dark-mode
                         </button>
 
+                        <!-- Login Button -->
                         <button class="btn-login" onclick="login()">
                             <i class="fas fa-sign-in-alt"></i> Login
                         </button>
@@ -60,7 +69,8 @@
         <section class="products-section">
             <div class="container">
                 <h1 class="section-title">Our Products</h1>
-                <!-- Add this right after <h1 class="section-title">Our Products</h1> -->
+                
+                <!-- Sorting Controls -->
                 <div class="sorting-controls mb-4">
                     <div class="row justify-content-center">
                         <div class="col-lg-8 col-md-10">
@@ -104,6 +114,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Products Grid -->
                 <div id="product-list" class="products-grid">
                     <div class="loading">Loading products...</div>
                 </div>
@@ -111,17 +123,6 @@
         </section>
     </main>
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="cart-modal">
-        <div class="cart-content">
-            <button class="close-btn" onclick="closeCartModal()">✕</button>
-            <h4>My Cart</h4>
-            <div id="cartItems">
-                <div class="empty-cart">Your cart is empty</div>
-            </div>
-            <p id="totalPrice" class="text-end">Total: $0.00</p>
-        </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -129,8 +130,8 @@
     <script src="main1.js"></script>
     <script src="theme.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Enhanced theme toggle with better functionality
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
@@ -146,30 +147,90 @@
             }
         }
 
+        // Initialize theme on page load
         document.addEventListener('DOMContentLoaded', function () {
             const savedTheme = localStorage.getItem('theme');
             const themeToggle = document.getElementById('themeToggle');
 
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' && themeToggle) {
                 document.body.classList.add('dark-theme');
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
             }
+
+            // Initialize cart counter
+            updateCartCountDisplay();
+            
+            // Add cart update listener
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'cart') {
+                    updateCartCountDisplay();
+                }
+            });
         });
+
+        // Enhanced cart counter update function
+        function updateCartCountDisplay() {
+            const cartCounter = document.getElementById('cartCounter');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if (cartCounter) {
+                cartCounter.textContent = totalItems;
+                
+                // Add pulsing animation when count changes
+                if (totalItems > 0) {
+                    cartCounter.classList.add('has-items');
+                    cartCounter.style.transform = 'scale(1.2)';
+                    setTimeout(() => {
+                        cartCounter.style.transform = 'scale(1)';
+                    }, 200);
+                } else {
+                    cartCounter.classList.remove('has-items');
+                }
+            }
+        }
+
+        // Override the existing updateCartCount function to use our new one
+        function updateCartCount() {
+            updateCartCountDisplay();
+        }
 
         function login() {
             window.location.href = 'login.html';
         }
 
+        // Animation for hero elements
         document.addEventListener('DOMContentLoaded', function () {
             const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-hero');
 
             heroElements.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.2}s`;
+                if (element) {
+                    element.style.animationDelay = `${index * 0.2}s`;
+                }
             });
         });
+
+       
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const cartModal = document.getElementById('cartModal');
+            if (event.target === cartModal) {
+                closeCartModal();
+            }
+        });
+
+        // Add click event to cart icon
+        document.addEventListener('DOMContentLoaded', function() {
+            const cartIcon = document.querySelector('.cart-icon-container');
+            if (cartIcon) {
+                cartIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = 'cart.html';
+                });
+            }
+        });
     </script>
-
-
 </body>
 
 </html>

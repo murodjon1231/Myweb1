@@ -4,643 +4,545 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact</title>
+    <title>🇺🇸TuronMarket🇺🇿 - Contact</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="./ChatGPT Image 28 мая 2025 г., 22_39_24.png">
-    <link rel="stylesheet" href="home.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-</head>
-<style>
-    @media screen and (max-width: 430px) {
-        .container {
-            flex-direction: column;
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --secondary-color: #2d5a87;
+            --accent-color: #e53e3e;
+            --gold-color: #ffd700;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
         }
 
-        .contact-cards {
-            flex-direction: column;
-            align-items: center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .contact-card {
-            width: 100%;
-            max-width: 350px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a29d9d 0%, #666666 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            padding-top: 80px;
         }
 
-        header {
-            padding: 20px 10px;
-        }
-    }
-
-    @media screen and (max-width: 375px) {
-        .container {
-            flex-direction: column;
-        }
-
-        .contact-cards {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .contact-card {
-            width: 100%;
-            max-width: 320px;
-        }
-
-        header {
-            padding: 20px 10px;
-        }
-    }
-
-    @media screen and (max-width: 320px) {
-        .container {
-            flex-direction: column;
-        }
-
-        .contact-cards {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .contact-card {
-            width: 100%;
-            max-width: 300px;
-        }
-
-        .hero {
-            padding: 100px 10px;
-        }
-
-        .logo img {
-            width: 80px;
-        }
-
-        .ul li {
-            flex-direction: column;
-        }
-    }
-
-    .contact-section {
-        padding: 80px 0;
-        min-height: 80vh;
-    }
-
-    .section-title {
-        color: #fff;
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .section-subtitle {
-        color: rgba(255, 255, 255, 0.8);
-        text-align: center;
-        margin-bottom: 50px;
-        font-size: 1.2rem;
-    }
-
-    .contact-cards {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-        justify-content: center;
-        margin-bottom: 60px;
-    }
-
-    .contact-card {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border-radius: 20px;
-        padding: 30px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-        width: 300px;
-    }
-
-    .contact-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-    .contact-card img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        margin-bottom: 20px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        transition: all 0.3s ease;
-    }
-
-    .contact-card:hover img {
-        border-color: #4CAF50;
-        transform: scale(1.1);
-    }
-
-    .contact-name {
-        color: #fff;
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin-bottom: 10px;
-    }
-
-    .contact-username {
-        color: #4CAF50;
-        font-size: 1.1rem;
-        margin-bottom: 10px;
-        font-weight: 500;
-    }
-
-    .contact-email {
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
-
-    .contact-phone {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1.1rem;
-        font-weight: 500;
-    }
-
-    .location-section {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(5px);
-        border-radius: 20px;
-        padding: 40px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        margin-bottom: 40px;
-    }
-
-    .location-title {
-        color: #fff;
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 2rem;
-        font-weight: 600;
-    }
-
-    .location-description {
-        color: rgba(255, 255, 255, 0.8);
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 1.1rem;
-    }
-
-    .location-address {
-        color: #4CAF50;
-        text-align: center;
-        margin-bottom: 30px;
-        font-size: 1.2rem;
-        font-weight: 500;
-    }
-
-    .map-container {
-        display: flex;
-        justify-content: center;
-    }
-
-    .map-container iframe {
-        border-radius: 15px;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .map-container iframe:hover {
-        border-color: #4CAF50;
-        transform: scale(1.02);
-    }
-
-    footer {
-        background: rgba(0, 0, 0, 0.8);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        color: rgba(255, 255, 255, 0.8);
-        padding: 20px 0;
-        text-align: center;
-    }
-</style>
-<style>
-    :root {
-        --primary-color: #1a365d;
-        --secondary-color: #2d5a87;
-        --accent-color: #e53e3e;
-        --gold-color: #ffd700;
-        --text-dark: #2d3748;
-        --text-light: #718096;
-        --bg-light: #f7fafc;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #a29d9d 0%, #666666 100%);
-        min-height: 100vh;
-        transition: all 0.3s ease;
-    }
-
-    .navbar {
-        background: rgba(255, 255, 255, 0.95) !important;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-
-    .navbar-brand {
-        font-size: 1.8rem;
-        font-weight: bold;
-        background: linear-gradient(45deg, #e53e3e, #ffd700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .nav-link {
-        font-weight: 600;
-        color: var(--text-dark) !important;
-        margin: 0 15px;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-
-    .nav-link:hover {
-        color: var(--accent-color) !important;
-        transform: translateY(-2px);
-    }
-
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 2px;
-        bottom: -5px;
-        left: 50%;
-        background: var(--accent-color);
-        transition: all 0.3s ease;
-    }
-
-    .nav-link:hover::after {
-        width: 100%;
-        left: 0;
-    }
-
-    .hero-section {
-        background: linear-gradient(135deg, rgba(26, 54, 93, 0.8), rgba(229, 62, 62, 0.8)),
-            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-        color: white;
-        padding: 150px 0;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="1s"/></circle><circle cx="40" cy="80" r="1" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0;1;0" dur="4s" repeatCount="indefinite" begin="2s"/></circle></svg>');
-        pointer-events: none;
-    }
-
-    .hero-title {
-        font-size: 4rem;
-        font-weight: bold;
-        margin-bottom: 1.5rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        animation: fadeInUp 1s ease;
-    }
-
-    .hero-subtitle {
-        font-size: 1.4rem;
-        margin-bottom: 2.5rem;
-        opacity: 0.9;
-        animation: fadeInUp 1s ease 0.2s both;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .btn-hero {
-        background: linear-gradient(45deg, #e53e3e, #ffd700);
-        border: none;
-        padding: 18px 45px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        border-radius: 50px;
-        color: white;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 25px rgba(229, 62, 62, 0.3);
-        animation: fadeInUp 1s ease 0.4s both;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-hero:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 35px rgba(229, 62, 62, 0.4);
-        color: white;
-    }
-
-    .btn-login {
-        background: linear-gradient(45deg, #2d5a87, #1a365d);
-        border: none;
-        padding: 10px 25px;
-        border-radius: 25px;
-        color: white;
-        font-weight: bold;
-        transition: all 0.3s ease;
-        margin-left: 15px;
-    }
-
-    .btn-login:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(45, 90, 135, 0.3);
-        color: white;
-    }
-
-    .theme-toggle {
-        background: none;
-        border: 2px solid var(--accent-color);
-        color: var(--accent-color);
-        padding: 8px 16px;
-        border-radius: 20px;
-        transition: all 0.3s ease;
-        font-weight: 600;
-    }
-
-    .theme-toggle:hover {
-        background: var(--accent-color);
-        color: white;
-        transform: translateY(-2px);
-    }
-
-    .floating-elements {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        pointer-events: none;
-    }
-
-    .floating-elements::before,
-    .floating-elements::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .floating-elements::before {
-        width: 120px;
-        height: 120px;
-        background: rgba(255, 215, 0, 0.1);
-        top: 20%;
-        left: 10%;
-        animation-delay: -2s;
-    }
-
-    .floating-elements::after {
-        width: 80px;
-        height: 80px;
-        background: rgba(229, 62, 62, 0.1);
-        top: 60%;
-        right: 15%;
-        animation-delay: -4s;
-    }
-
-    @keyframes float {
-
-        0%,
-        100% {
-            transform: translateY(0px) rotate(0deg);
-        }
-
-        50% {
-            transform: translateY(-30px) rotate(180deg);
-        }
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .features-section {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        padding: 80px 0;
-    }
-
-    .feature-card {
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        padding: 40px 30px;
-        text-align: center;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        margin-bottom: 30px;
-        height: 100%;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    }
-
-    .feature-icon {
-        font-size: 3.5rem;
-        margin-bottom: 25px;
-        background: linear-gradient(45deg, #e53e3e, #ffd700);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .feature-title {
-        font-size: 1.4rem;
-        font-weight: bold;
-        margin-bottom: 15px;
-        color: var(--text-dark);
-    }
-
-    .feature-description {
-        color: var(--text-light);
-        line-height: 1.6;
-    }
-
-    /* Dark theme */
-    body.dark-theme {
-        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
-    }
-
-    body.dark-theme .navbar {
-        background: rgba(26, 32, 44, 0.95) !important;
-    }
-
-    body.dark-theme .nav-link {
-        color: #e2e8f0 !important;
-    }
-
-    body.dark-theme .feature-card {
-        background: rgba(45, 55, 72, 0.95);
-        color: #e2e8f0;
-    }
-
-    body.dark-theme .feature-title {
-        color: #e2e8f0;
-    }
-
-    body.dark-theme .feature-description {
-        color: #a0aec0;
-    }
-
-    body.dark-theme .theme-toggle {
-        border-color: #ffd700;
-        color: #ffd700;
-    }
-
-    body.dark-theme .theme-toggle:hover {
-        background: #ffd700;
-        color: #1a202c;
-    }
-
-    @media (max-width: 768px) {
-        .hero-title {
-            font-size: 2.8rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1.1rem;
-            padding: 0 20px;
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
         }
 
         .navbar-brand {
-            font-size: 1.4rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #e53e3e, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-hero {
-            padding: 15px 35px;
+        .nav-link {
+            font-weight: 600;
+            color: var(--text-dark) !important;
+            margin: 0 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            color: var(--accent-color) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .cart-icon {
+            position: relative;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .cart-icon:hover {
+            color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .cart-counter {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-login {
+            background: linear-gradient(45deg, #2d5a87, #1a365d);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-left: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45, 90, 135, 0.3);
+            color: white;
+        }
+
+        .dropdown-toggle::after {
+            margin-left: 8px;
+        }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            padding: 10px 0;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* Contact Section Styles */
+        .contact-section {
+            padding: 80px 0;
+            min-height: 80vh;
+        }
+
+        .section-title {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+        }
+
+        .contact-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            width: 300px;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .contact-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover img {
+            border-color: #4CAF50;
+            transform: scale(1.1);
+        }
+
+        .contact-name {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .contact-username {
+            color: #4CAF50;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .contact-email {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-phone {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .location-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .location-title {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .location-description {
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-bottom: 30px;
             font-size: 1.1rem;
         }
 
-        .feature-card {
-            margin-bottom: 20px;
-        }
-    }
-
-    @media (max-width: 430px) {
-        .navbar-nav {
+        .location-address {
+            color: #4CAF50;
             text-align: center;
-            margin-top: 15px;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+            font-weight: 500;
         }
 
-        .hero-section {
-            padding: 120px 0;
+        .map-container {
+            display: flex;
+            justify-content: center;
         }
 
-        .hero-title {
-            font-size: 2.2rem;
+        .map-container iframe {
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .btn-hero {
-            padding: 12px 30px;
-            font-size: 1rem;
-        }
-    }
-
-    @media (max-width: 375px) {
-        .hero-title {
-            font-size: 2rem;
+        .map-container iframe:hover {
+            border-color: #4CAF50;
+            transform: scale(1.02);
         }
 
-        .feature-icon {
-            font-size: 2.8rem;
-        }
-    }
-
-    @media (max-width: 320px) {
-        .hero-title {
-            font-size: 1.8rem;
-        }
-
-        .hero-subtitle {
-            font-size: 1rem;
+        /* Additional Contact Features */
+        .contact-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .btn-hero {
-            padding: 10px 25px;
-            font-size: 0.9rem;
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
-    }
-</style>
+
+        .contact-method:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(10px);
+        }
+
+        .contact-method i {
+            font-size: 1.5rem;
+            color: #4CAF50;
+            margin-right: 15px;
+            width: 30px;
+        }
+
+        .contact-method-info h5 {
+            color: #fff;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .contact-method-info p {
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+        }
+
+        /* Dark theme */
+        body.dark-theme {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+        }
+
+        body.dark-theme .navbar {
+            background: rgba(26, 32, 44, 0.95) !important;
+        }
+
+        body.dark-theme .nav-link {
+            color: #e2e8f0 !important;
+        }
+
+        body.dark-theme .cart-icon {
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .cart-icon:hover {
+            color: #ffd700;
+        }
+
+        body.dark-theme .theme-toggle {
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        body.dark-theme .theme-toggle:hover {
+            background: #ffd700;
+            color: #1a202c;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            z-index: 1055;
+        }
+
+        .toast {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .toast-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .toast-body {
+            border-radius: 0 0 15px 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .contact-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .contact-card {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .navbar-nav {
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .contact-card {
+                max-width: 350px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .contact-card {
+                max-width: 320px;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .contact-card {
+                max-width: 300px;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .map-container iframe {
+                width: 100%;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand" href="index.html">usTuronMarket🇺🇿</a>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.html">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contacts.html">Contact us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="cart.html">Cart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="know-the-price.html">Know the price</a>
-                        </li>
-                    </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="products.html">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contacts.html">Contact us</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="know-the-price.html">Know the price</a>
+                    </li>
+                </ul>
 
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                            <i class="fas fa-moon"></i> Dark-mode
-                        </button>
-
-                        <button class="btn-login" onclick="login()">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </div>
+                <div class="d-flex align-items-center gap-2 flex-wrap" id="navbarActions">
+                    <!-- Navigation actions will be populated by JavaScript -->
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
     <main>
         <section class="contact-section">
             <div class="container">
                 <h1 class="section-title">Biz bilan bog'lanish</h1>
                 <p class="section-subtitle">Bizning jamoamiz bilan bog'laning va barcha savollaringizga javob oling</p>
+
+                <!-- Contact Information -->
+                <div class="contact-info">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="contact-method">
+                                <i class="fas fa-phone"></i>
+                                <div class="contact-method-info">
+                                    <h5>Telefon</h5>
+                                    <p>+998 97 007 34 33</p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <div class="contact-method-info">
+                                    <h5>Email</h5>
+                                    <p>shavkatovmurod2004@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="contact-method">
+                                <i class="fab fa-telegram"></i>
+                                <div class="contact-method-info">
+                                    <h5>Telegram</h5>
+                                    <p>@Turonmmarket</p>
+                                </div>
+                            </div>
+                            <div class="contact-method">
+                                <i class="fas fa-clock"></i>
+                                <div class="contact-method-info">
+                                    <h5>Ish vaqti</h5>
+                                    <p>9:00 - 18:00 (Dushanba-Shanba)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="contact-cards">
                     <div class="contact-card">
@@ -670,6 +572,12 @@
 
                 <div class="location-section">
                     <h2 class="location-title">Bizning lokatsiyalarimiz</h2>
+                    <div class="location-description">
+                        Toshkent shahrida joylashgan do'konlarimizga tashrif buyuring
+                    </div>
+                    <div class="location-address">
+                        📍 Toshkent shahri, O'zbekiston
+                    </div>
 
                     <div class="map-container">
                         <iframe
@@ -682,13 +590,48 @@
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Auto Parts Store. Barcha huquqlar himoyalangan.</p>
-    </footer>
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Theme toggle functionality
+        // Global variables
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Cart management functions
+        function updateCartCounter() {
+            const cartCounter = document.querySelector('.cart-counter');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+            if (cartCounter) {
+                if (totalItems > 0) {
+                    cartCounter.textContent = totalItems > 99 ? '99+' : totalItems;
+                    cartCounter.classList.remove('d-none');
+                } else {
+                    cartCounter.classList.add('d-none');
+                }
+            }
+        }
+
+        // Theme management
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                if (themeToggle) {
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+                }
+            } else {
+                body.classList.remove('dark-theme');
+                if (themeToggle) {
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
+                }
+            }
+        }
+
         function toggleTheme() {
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
@@ -696,40 +639,170 @@
             body.classList.toggle('dark-theme');
 
             if (body.classList.contains('dark-theme')) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
                 localStorage.setItem('theme', 'dark');
             } else {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark-mode';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark Mode';
                 localStorage.setItem('theme', 'light');
             }
         }
 
-        // Load saved theme
-        document.addEventListener('DOMContentLoaded', function () {
-            const savedTheme = localStorage.getItem('theme');
-            const themeToggle = document.getElementById('themeToggle');
+        // User management
+        function updateNavbarForUser() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const navbarActions = document.getElementById('navbarActions');
 
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
+            if (isLoggedIn && currentUser) {
+                navbarActions.innerHTML = `
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-counter d-none">0</span>
+                    </a>
+                    
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Dark Mode
+                    </button>
+                    
+                    <div class="dropdown">
+                        <button class="btn-login dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> ${currentUser.fullName.split(' ')[0]}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-cog"></i> Profil</a></li>
+                            <li><a class="dropdown-item" href="cart.html"><i class="fas fa-shopping-bag"></i> Buyurtmalar</a></li>
+                            <li><a class="dropdown-item" href="favorites.html"><i class="fas fa-heart"></i> Sevimlilar</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Chiqish</a></li>
+                        </ul>
+                    </div>
+                `;
+            } else {
+                navbarActions.innerHTML = `
+                    <a href="cart.html" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-counter d-none">0</span>
+                    </a>
+
+                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Dark Mode
+                    </button>
+                    
+                    <button class="btn-login" onclick="login()">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="btn-login" onclick="register()">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                `;
             }
-        });
 
-        // Login redirect
+            // Initialize theme after updating navbar
+            initializeTheme();
+            // Update cart counter after navbar is updated
+            updateCartCounter();
+        }
+
+        // Authentication functions
+        function logout() {
+            if (confirm('Haqiqatan ham tizimdan chiqmoqchimisiz?')) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('hasShownWelcome');
+
+                updateNavbarForUser();
+                showNotification('Tizimdan muvaffaqiyatli chiqdingiz!', 'info');
+            }
+        }
+
         function login() {
             window.location.href = 'login.html';
         }
 
-        // Add smooth scrolling animation to hero elements
-        document.addEventListener('DOMContentLoaded', function () {
-            const heroElements = document.querySelectorAll('.hero-title, .hero-subtitle, .btn-hero');
+        function register() {
+            window.location.href = 'register.html';
+        }
 
-            heroElements.forEach((element, index) => {
-                element.style.animationDelay = `${index * 0.2}s`;
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const toastContainer = document.querySelector('.toast-container');
+            const toastId = 'toast-' + Date.now();
+            
+            const toastHTML = `
+                <div class="toast" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'info' ? 'info-circle' : 'exclamation-triangle'} text-${type} me-2"></i>
+                        <strong class="me-auto">🇺🇸TuronMarket🇺🇿</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+
+            toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toastElement) {
+                    toastElement.remove();
+                }
+            }, 5000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load cart from localStorage
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Update UI based on user status
+            updateNavbarForUser();
+
+            // Add smooth scrolling animation
+            const elements = document.querySelectorAll('.section-title, .section-subtitle, .contact-card');
+            elements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
             });
         });
-    </script>
 
+        // Handle navbar collapse on mobile after click
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+                if (navbarCollapse.classList.contains('show')) {
+                    const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                    bsCollapse.hide();
+                }
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.background = document.body.classList.contains('dark-theme')
+                    ? 'rgba(26, 32, 44, 0.98)'
+                    : 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.style.background = document.body.classList.contains('dark-theme')
+                    ? 'rgba(26, 32, 44, 0.95)'
+                    : 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Cart event listener for storage changes
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'cart') {
+                cart = JSON.parse(e.newValue) || [];
+                updateCartCounter();
+            }
+        });
+    </script>
 </body>
 
 </html>
