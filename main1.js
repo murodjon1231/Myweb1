@@ -419,6 +419,7 @@ async function openEditModal(id) {
     }
 }
 
+
 async function updateProduct() {
     try {
         const id = document.getElementById('editProductId').value;
@@ -620,3 +621,287 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+// Enhanced product sorting and filtering functionality
+let allProducts = []; // Store all products for filtering
+let filteredProducts = []; // Store currently filtered products
+
+// Fetch and display products with enhanced sorting
+async function fetchAndDisplayProducts() {
+    try {
+        const response = await axios.get("https://6782ae7cc51d092c3dd06dbd.mockapi.io/product/auto_parts");
+        allProducts = response.data;
+        filteredProducts = [...allProducts];
+        displayProducts(filteredProducts);
+        updateProductCount();
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        document.getElementById('product-list').innerHTML = '<div class="error-message">Failed to load products. Please try again.</div>';
+    }
+}
+
+// Display products in grid
+function displayProducts(products) {
+    const productList = document.getElementById('product-list');
+    
+    if (products.length === 0) {
+        productList.innerHTML = '<div class="no-products">No products found matching your criteria.</div>';
+        return;
+    }
+
+    productList.innerHTML = products.map(product => {
+        const images = Array.isArray(product.images) ? product.images : (product.image ? [product.image] : []);
+        const mainImage = images.length > 0 ? images[0] : 'https://via.placeholder.com/300x250';
+        
+        return `
+            <div class="product-card" data-gender="${product.gender}" data-category="${product.category}" data-status="${product.status}" data-price="${product.price}">
+                <div class="product-image">
+                    <img src="${mainImage}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x250'">
+                    ${images.length > 1 ? `<span class="image-count">${images.length} photos</span>` : ''}
+                    <div class="product-badges">
+                        <span class="status-badge ${product.status}">${product.status === 'available' ? 'Available' : 'On Order'}</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-meta">
+                        <span class="gender-badge ${product.gender}">${getGenderLabel(product.gender)}</span>
+                        <span class="category-badge">${getCategoryLabel(product.category)}</span>
+                    </div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-price">$${product.price}</div>
+                    <div class="product-actions">
+                        <button class="btn-add-cart" onclick="addToCart('${product.id}')">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="btn-view-details" onclick="viewProductDetails('${product.id}')">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Enhanced sorting function
+function sortProducts(criteria) {
+    let sortedProducts = [...filteredProducts];
+    
+    switch (criteria) {
+        case 'name':
+            sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'price-low':
+            sortedProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            break;
+        case 'price-high':
+            sortedProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            break;
+        case 'gender-male':
+            filteredProducts = allProducts.filter(p => p.gender === 'male');
+            break;
+        case 'gender-female':
+            filteredProducts = allProducts.filter(p => p.gender === 'female');
+            break;
+        case 'gender-kids':
+            filteredProducts = allProducts.filter(p => p.gender === 'child');
+            break;
+        case 'status-available':
+            filteredProducts = allProducts.filter(p => p.status === 'available');
+            break;
+        case 'status-order':
+            filteredProducts = allProducts.filter(p => p.status === 'order');
+            break;
+        default:
+            filteredProducts = [...allProducts];
+            sortedProducts = filteredProducts;
+    }
+    
+    // Apply additional active filters
+    applyActiveFilters();
+    displayProducts(filteredProducts);
+    updateProductCount();
+}
+
+// New comprehensive filtering system
+function applyFilters() {
+    const genderFilter = document.getElementById('genderFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const priceFilter = document.getElementById('priceFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    filteredProducts = allProducts.filter(product => {
+        // Gender filter
+        if (genderFilter !== 'all' && product.gender !== genderFilter) {
+            return false;
+        }
+        
+        // Category filter
+        if (categoryFilter !== 'all' && product.category !== categoryFilter) {
+            return false;
+        }
+        
+        // Status filter
+        if (statusFilter !== 'all' && product.status !== statusFilter) {
+            return false;
+        }
+        
+        // Price filter
+        if (priceFilter !== 'all') {
+            const price = parseFloat(product.price);
+            switch (priceFilter) {
+                case '0-50':
+                    if (price > 50) return false;
+                    break;
+                case '50-100':
+                    if (price < 50 || price > 100) return false;
+                    break;
+                case '100-150':
+                    if (price < 100 || price > 150) return false;
+                    break;
+                case '150-200':
+                    if (price < 150 || price > 200) return false;
+                    break;
+                case '200+':
+                    if (price < 200) return false;
+                    break;
+            }
+        }
+        
+        return true;
+    });
+    
+    // Apply current sort
+    const sortValue = document.getElementById('sortSelect').value;
+    if (sortValue !== 'default') {
+        applySorting(sortValue);
+    }
+    
+    displayProducts(filteredProducts);
+    updateProductCount();
+}
+
+// Apply active filters (helper function)
+function applyActiveFilters() {
+    const genderFilter = document.getElementById('genderFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
+    const priceFilter = document.getElementById('priceFilter').value;
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    if (genderFilter !== 'default' && genderFilter !== 'all') {
+        filteredProducts = filteredProducts.filter(p => p.gender === genderFilter);
+    }
+    
+    if (categoryFilter !== 'all') {
+        filteredProducts = filteredProducts.filter(p => p.category === categoryFilter);
+    }
+    
+    if (priceFilter !== 'all') {
+        const price = parseFloat(product.price);
+        filteredProducts = filteredProducts.filter(product => {
+            const price = parseFloat(product.price);
+            switch (priceFilter) {
+                case '0-50': return price <= 50;
+                case '50-100': return price > 50 && price <= 100;
+                case '100-150': return price > 100 && price <= 150;
+                case '150-200': return price > 150 && price <= 200;
+                case '200+': return price > 200;
+                default: return true;
+            }
+        });
+    }
+}
+
+// Apply sorting to current filtered products
+function applySorting(sortType) {
+    switch (sortType) {
+        case 'name':
+            filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case 'price-low':
+            filteredProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+            break;
+        case 'price-high':
+            filteredProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+            break;
+    }
+}
+
+// Reset all filters
+function resetFilters() {
+    document.getElementById('sortSelect').value = 'default';
+    document.getElementById('genderFilter').value = 'all';
+    document.getElementById('categoryFilter').value = 'all';
+    document.getElementById('priceFilter').value = 'all';
+    document.getElementById('statusFilter').value = 'all';
+    
+    filteredProducts = [...allProducts];
+    displayProducts(filteredProducts);
+    updateProductCount();
+}
+
+// Helper functions
+function getGenderLabel(gender) {
+    switch (gender) {
+        case 'male': return 'Men';
+        case 'female': return 'Women';
+        case 'child': return 'Kids';
+        default: return 'Unisex';
+    }
+}
+
+function getCategoryLabel(category) {
+    switch (category) {
+        case 'kiyim': return 'Clothing';
+        case 'krosofka': return 'Sneakers';
+        case 'aksesuar': return 'Accessories';
+        case 'vitamin': return 'Vitamins';
+        case 'kosmetika': return 'Cosmetics';
+        default: return category || 'Other';
+    }
+}
+
+function updateProductCount() {
+    const countElement = document.getElementById('productCount');
+    if (countElement) {
+        countElement.textContent = `Showing ${filteredProducts.length} of ${allProducts.length} products`;
+    }
+}
+
+// Cart functionality
+function addToCart(productId) {
+    const product = allProducts.find(p => p.id === productId);
+    if (!product) return;
+    
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingItem = cart.find(item => item.id === productId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: Array.isArray(product.images) ? product.images[0] : product.image,
+            quantity: 1
+        });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showNotification('Product added to cart!', 'success');
+}
+
+function viewProductDetails(productId) {
+    // Implement product details view
+    const product = allProducts.find(p => p.id === productId);
+    console.log('View product:', product);
+    // You can implement a modal or redirect to product detail page
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    fetchAndDisplayProducts();
+});

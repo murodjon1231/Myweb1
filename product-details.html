@@ -12,327 +12,417 @@
     <link rel="stylesheet" href="Theme.css">
 
     <style>
-        /* API Image Gallery Styles */
-        .api-image-gallery {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* Enhanced Product Details Styles */
+        .enhanced-product-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 20px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
         }
 
-        .api-thumbnail-list {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 0;
-            scrollbar-width: thin;
-            scrollbar-color: #ddd transparent;
-        }
-
-        .api-thumbnail-list::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .api-thumbnail-list::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        .api-thumbnail-list::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-
-        .api-thumbnail {
-            min-width: 80px;
-            height: 80px;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s ease;
+        .product-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #007bff;
             position: relative;
         }
 
-        .api-thumbnail:hover {
-            transform: scale(1.05);
-            border-color: #007bff;
+        .product-header::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 6px;
+            background: linear-gradient(90deg, #007bff, #28a745);
+            border-radius: 3px;
         }
 
-        .api-thumbnail.active {
-            border-color: #007bff;
-            box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+        .product-title-main {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #007bff, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
         }
 
-        .api-thumbnail img {
+        .product-id-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #6f42c1, #e83e8c);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .enhanced-image-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .enhanced-main-image {
             width: 100%;
-            height: 100%;
+            height: 500px;
             object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
         }
 
-        .api-thumbnail:hover img {
-            transform: scale(1.1);
-        }
-
-        .api-main-image-container {
-            position: relative;
-            width: 100%;
-            border-radius: 30px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .api-main-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .api-main-image-container:hover img {
+        .enhanced-main-image:hover {
             transform: scale(1.02);
         }
 
-        .api-image-navigation {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+        .enhanced-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-card.basic-info {
+            border-left-color: #007bff;
+        }
+
+        .info-card.pricing-info {
+            border-left-color: #28a745;
+        }
+
+        .info-card.category-info {
+            border-left-color: #ffc107;
+        }
+
+        .info-card.description-info {
+            border-left-color: #6f42c1;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
             display: flex;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            align-items: center;
+            gap: 10px;
         }
 
-        .api-main-image-container:hover .api-image-navigation {
-            opacity: 1;
-        }
-
-        .api-nav-btn {
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
+        .card-title i {
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .api-nav-btn:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: scale(1.1);
-        }
-
-        .api-nav-btn i {
-            font-size: 18px;
-            color: #333;
-        }
-
-        .api-image-counter {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
+            font-size: 1rem;
+        }
+
+        .basic-info .card-title i {
+            background: #007bff;
+        }
+
+        .pricing-info .card-title i {
+            background: #28a745;
+        }
+
+        .category-info .card-title i {
+            background: #ffc107;
+        }
+
+        .description-info .card-title i {
+            background: #6f42c1;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
             font-weight: 600;
+            color: #495057;
+            font-size: 0.95rem;
         }
 
-        .api-image-grid {
+        .info-value {
+            font-weight: 500;
+            color: #212529;
+            text-align: right;
+            max-width: 60%;
+            word-wrap: break-word;
+        }
+
+        .price-display {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #28a745;
+            text-align: center;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .description-text {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #495057;
+            text-align: justify;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #6f42c1;
+        }
+
+        .image-gallery-enhanced {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .gallery-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #495057;
+        }
+
+        .enhanced-image-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
 
-        .api-grid-image {
+        .gallery-image-container {
+            position: relative;
             aspect-ratio: 1;
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 3px solid transparent;
-            position: relative;
         }
 
-        .api-grid-image:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 123, 255, 0.3);
-            border-color: #007bff;
+        .gallery-image-container:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
         }
 
-        .api-grid-image.active {
-            border-color: #28a745;
-            box-shadow: 0 0 25px rgba(40, 167, 69, 0.4);
-        }
-
-        .api-grid-image img {
+        .gallery-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
 
-        .api-grid-image:hover img {
+        .gallery-image-container:hover .gallery-image {
             transform: scale(1.1);
         }
 
-        .api-images-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 30px;
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0, 123, 255, 0.8), rgba(40, 167, 69, 0.8));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .gallery-image-container:hover .image-overlay {
+            opacity: 1;
+        }
+
+        .action-section {
+            background: white;
             border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .enhanced-action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin: 30px 0;
         }
 
-        .api-images-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .api-loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 200px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #007bff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Size selection styles */
-        .size-selection {
-            margin: 20px 0;
-        }
-
-        .size-options {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .size-option {
-            padding: 10px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+        .enhanced-btn {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            border: none;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: white;
-            min-width: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .enhanced-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-add-cart {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .btn-buy-now {
+            background: linear-gradient(45deg, #28a745, #1e7e34);
+            color: white;
+        }
+
+        .btn-back {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            color: white;
+        }
+
+        .loading-enhanced {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            font-size: 1.2rem;
+            color: #495057;
+        }
+
+        .loading-spinner-enhanced {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .error-enhanced {
             text-align: center;
-            font-weight: 600;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
 
-        .size-option:hover {
-            border-color: #007bff;
-            transform: translateY(-2px);
+        .error-enhanced i {
+            color: #dc3545;
+            margin-bottom: 20px;
         }
 
-        .size-option.selected {
-            background: #007bff;
-            color: white;
-            border-color: #007bff;
+        .error-enhanced h3 {
+            color: #495057;
+            margin-bottom: 15px;
         }
 
-        /* Cart notification styles */
-        .cart-notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 25px;
+        /* Additional API Data Sections */
+        .additional-data-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .data-section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #495057;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .raw-data-display {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
             border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            z-index: 10000;
-            transform: translateX(400px);
-            transition: all 0.3s ease;
-            max-width: 350px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
             word-wrap: break-word;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .cart-notification.success {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
-        }
-
-        .cart-notification.info {
-            background: linear-gradient(45deg, #2196F3, #1976D2);
-        }
-
-        .cart-notification.warning {
-            background: linear-gradient(45deg, #FF9800, #F57C00);
-        }
-
-        .cart-notification.show {
-            transform: translateX(0);
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
-            .api-main-image-container {
-                height: 300px;
-            }
-
-            .api-thumbnail {
-                min-width: 60px;
-                height: 60px;
-            }
-
-            .api-images-section {
+            .enhanced-product-container {
                 padding: 20px;
             }
-
-            .size-options {
-                justify-content: center;
+            
+            .product-title-main {
+                font-size: 2rem;
+            }
+            
+            .enhanced-main-image {
+                height: 300px;
+            }
+            
+            .enhanced-info-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .enhanced-action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .enhanced-btn {
+                width: 100%;
+                max-width: 300px;
             }
         }
     </style>
@@ -384,12 +474,15 @@
     <main>
         <section class="product-details-section">
             <div class="container-fluid px-4">
-                <a href="products.html" class="back-btn">
+                <a href="products.html" class="enhanced-btn btn-back" style="display: inline-flex; margin-bottom: 20px;">
                     <i class="fas fa-arrow-left"></i> Back to Products
                 </a>
 
                 <div id="productContent">
-                    <div class="loading">Loading product details...</div>
+                    <div class="loading-enhanced">
+                        <div class="loading-spinner-enhanced"></div>
+                        Loading product details...
+                    </div>
                 </div>
             </div>
         </section>
@@ -400,9 +493,6 @@
         const API_URL = "https://6782ae7cc51d092c3dd06dbd.mockapi.io/product/auto_parts";
         let currentProduct = null;
         let allProducts = [];
-        let currentImageIndex = 0;
-        let productImages = [];
-        let selectedSize = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -423,8 +513,7 @@
                 currentProduct = allProducts.find(product => product.id == productId);
 
                 if (currentProduct) {
-                    productImages = getProductImages(currentProduct);
-                    displayProductDetails(currentProduct);
+                    displayEnhancedProductDetails(currentProduct);
                 } else {
                     showError('Product not found');
                 }
@@ -434,13 +523,181 @@
             }
         }
 
+        function displayEnhancedProductDetails(product) {
+            const productContent = document.getElementById('productContent');
+
+            // Get all available images
+            const productImages = getProductImages(product);
+
+            productContent.innerHTML = `
+                <div class="enhanced-product-container">
+                    <!-- Product Header -->
+                    <div class="product-header">
+                        <div class="product-id-badge">
+                            <i class="fas fa-tag"></i> Product ID: ${product.id}
+                        </div>
+                        <h1 class="product-title-main">${product.name || 'No Name Available'}</h1>
+                    </div>
+
+                    <!-- Main Image Section -->
+                    <div class="enhanced-image-section">
+                        <img src="${product.image || './logo.png'}" alt="${product.name}" class="enhanced-main-image" onerror="this.src='./logo.png'">
+                    </div>
+
+                    <!-- Information Grid -->
+                    <div class="enhanced-info-grid">
+                        <!-- Basic Information -->
+                        <div class="info-card basic-info">
+                            <div class="card-title">
+                                <i class="fas fa-info-circle"></i>
+                                Basic Information
+                            </div>
+                            ${createInfoItems([
+                                { label: 'Product Name', value: product.name || 'Not specified' },
+                                { label: 'Product ID', value: product.id || 'Not specified' },
+                                { label: 'Gender/Category', value: product.gender || 'Not specified' },
+                                { label: 'Brand', value: product.brand || 'Not specified' },
+                                { label: 'Model', value: product.model || 'Not specified' },
+                                { label: 'Color', value: product.color || 'Not specified' }
+                            ])}
+                        </div>
+
+                        <!-- Pricing Information -->
+                        <div class="info-card pricing-info">
+                            <div class="card-title">
+                                <i class="fas fa-dollar-sign"></i>
+                                Pricing Information
+                            </div>
+                            <div class="price-display">$${product.price || '0.00'}</div>
+                            ${createInfoItems([
+                                { label: 'Base Price', value: `$${product.price || '0.00'}` },
+                                { label: 'Currency', value: 'USD' },
+                                { label: 'Tax Included', value: 'Yes' },
+                                { label: 'Shipping', value: 'Free' }
+                            ])}
+                        </div>
+
+                        <!-- Category Information -->
+                        <div class="info-card category-info">
+                            <div class="card-title">
+                                <i class="fas fa-tags"></i>
+                                Category Details
+                            </div>
+                            ${createInfoItems([
+                                { label: 'Main Category', value: product.gender || 'General' },
+                                { label: 'Sub Category', value: extractCategory(product.name) },
+                                { label: 'Product Type', value: getProductType(product) },
+                                { label: 'Target Audience', value: product.gender || 'Universal' }
+                            ])}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="info-card description-info">
+                            <div class="card-title">
+                                <i class="fas fa-align-left"></i>
+                                Description
+                            </div>
+                            <div class="description-text">
+                                ${product.description || 'No description available for this product.'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Gallery -->
+                    ${productImages.length > 1 ? `
+                    <div class="image-gallery-enhanced">
+                        <h2 class="gallery-title">
+                            <i class="fas fa-images"></i> Product Gallery (${productImages.length} images)
+                        </h2>
+                        <div class="enhanced-image-grid">
+                            ${productImages.map((img, index) => `
+                                <div class="gallery-image-container" onclick="changeMainImage('${img}')">
+                                    <img src="${img}" alt="Product view ${index + 1}" class="gallery-image" onerror="this.src='./logo.png'">
+                                    <div class="image-overlay">
+                                        <i class="fas fa-eye"></i> View
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+
+                    <!-- Raw API Data Section -->
+                    <div class="additional-data-section">
+                        <h2 class="data-section-title">
+                            <i class="fas fa-database"></i> Complete API Data
+                        </h2>
+                        <div class="raw-data-display">${JSON.stringify(product, null, 2)}</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-section">
+                        <h3>Ready to Purchase?</h3>
+                        <div class="enhanced-action-buttons">
+                            <button class="enhanced-btn btn-add-cart" onclick="addToCart()">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                            <button class="enhanced-btn btn-buy-now" onclick="buyNow()">
+                                <i class="fas fa-bolt"></i> Buy Now
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 8px; color: #28a745;">
+                                    <i class="fas fa-truck"></i>
+                                    <span>Free Delivery</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; color: #007bff;">
+                                    <i class="fas fa-undo"></i>
+                                    <span>30-Day Returns</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; color: #6f42c1;">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>2-Year Warranty</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createInfoItems(items) {
+            return items.map(item => `
+                <div class="info-item">
+                    <span class="info-label">${item.label}:</span>
+                    <span class="info-value">${item.value}</span>
+                </div>
+            `).join('');
+        }
+
+        function extractCategory(name) {
+            if (!name) return 'General';
+            const lowerName = name.toLowerCase();
+            if (lowerName.includes('shoe') || lowerName.includes('sneaker')) return 'Footwear';
+            if (lowerName.includes('shirt') || lowerName.includes('top')) return 'Clothing';
+            if (lowerName.includes('bag') || lowerName.includes('backpack')) return 'Accessories';
+            if (lowerName.includes('watch')) return 'Timepieces';
+            return 'General';
+        }
+
+        function getProductType(product) {
+            if (product.gender) {
+                if (product.gender.toLowerCase().includes('men')) return "Men's Product";
+                if (product.gender.toLowerCase().includes('women')) return "Women's Product";
+                if (product.gender.toLowerCase().includes('kid')) return "Kids' Product";
+            }
+            return 'Universal Product';
+        }
+
         function getProductImages(product) {
             const images = [];
-
+            
             if (product.image) {
                 images.push(product.image);
             }
-
+            
             if (product.images && Array.isArray(product.images)) {
                 product.images.forEach(img => {
                     if (img && !images.includes(img)) {
@@ -448,176 +705,17 @@
                     }
                 });
             }
-
-            if (images.length === 1) {
-                for (let i = 0; i < 4; i++) {
-                    images.push(product.image);
-                }
-            }
-
+            
+            // If only one image, don't duplicate it
             return images;
         }
 
-        function displayProductDetails(product) {
-            const productContent = document.getElementById('productContent');
-
-            // Create size options if it's footwear/clothing
-            const sizeOptions = ['7', '8', '9', '10', '11', '12'];
-            const showSizes = product.gender && (product.gender.toLowerCase().includes('shoes') ||
-                product.name.toLowerCase().includes('shoe') ||
-                product.name.toLowerCase().includes('sneaker'));
-
-            productContent.innerHTML = `
-                <div class="product-detail-container">
-                    <div class="row">
-                        <!-- Left side - Image Gallery -->
-                        <div class="col-lg-7">
-                            <div class="api-image-gallery">
-                                <div class="api-thumbnail-list">
-                                    ${productImages.map((img, index) => `
-                                        <div class="api-thumbnail ${index === 0 ? 'active' : ''}" onclick="changeMainImage(${index})">
-                                            <img src="${img}" alt="Product view ${index + 1}" onerror="this.src='./logo.png'">
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                
-                                <div class="api-main-image-container">
-                                    <img id="mainImage" src="${productImages[0] || product.image}" alt="${product.name}" onerror="this.src='./logo.png'">
-                                    <div class="api-image-navigation">
-                                        <button class="api-nav-btn prev" onclick="previousImage()">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </button>
-                                        <button class="api-nav-btn next" onclick="nextImage()">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                    <div class="api-image-counter">
-                                        <span id="imageCounter">1 / ${productImages.length}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right side - Product Info -->
-                        <div class="col-lg-5">
-                            <div class="product-info">
-                                <div class="rating-badge">
-                                    <i class="fas fa-star"></i> Highly Rated
-                                </div>
-                                
-                                <h1 class="product-title">${product.name}</h1>
-                                <p class="product-category">${product.gender || 'Unisex'}</p>
-                                
-                                <div class="product-price">$${product.price}</div>
-                                
-                                <div class="product-description">
-                                    <p>${product.description}</p>
-                                </div>
-
-                                ${showSizes ? `
-                                <div class="size-selection">
-                                    <label class="form-label"><strong>Select Size:</strong></label>
-                                    <div class="size-options">
-                                        ${sizeOptions.map(size => `
-                                            <div class="size-option" onclick="selectSize('${size}')" data-size="${size}">
-                                                ${size}
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                                ` : ''}
-
-                                <div class="action-buttons mt-4">
-                                    <button class="btn btn-primary btn-lg me-2" onclick="addToCart()">
-                                        <i class="fas fa-cart-plus"></i> Add to Cart
-                                    </button>
-                                    <button class="btn btn-success btn-lg" onclick="buyNow()">
-                                        <i class="fas fa-bolt"></i> Buy Now
-                                    </button>
-                                </div>
-
-                                <div class="product-features mt-4">
-                                    <div class="feature">
-                                        <i class="fas fa-truck"></i>
-                                        <span>Free delivery</span>
-                                    </div>
-                                    <div class="feature">
-                                        <i class="fas fa-undo"></i>
-                                        <span>Free 30-day returns</span>
-                                    </div>
-                                    <div class="feature">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <span>2-year warranty</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Images Section -->
-                    <div class="api-images-section">
-                        <h2 class="api-images-title">
-                            <i class="fas fa-images"></i> ${product.name} Images (${productImages.length} total)
-                        </h2>
-                        <div class="api-image-grid">
-                            ${productImages.map((img, index) => `
-                                <div class="api-grid-image" onclick="changeMainImage(${index})">
-                                    <img src="${img}" alt="${product.name} image ${index + 1}" onerror="this.src='./logo.png'">
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function selectSize(size) {
-            selectedSize = size;
-
-            // Update visual selection
-            document.querySelectorAll('.size-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-
-            document.querySelector(`[data-size="${size}"]`).classList.add('selected');
-        }
-
-        function changeMainImage(index) {
-            if (!productImages.length) return;
-
-            currentImageIndex = index;
-            const mainImage = document.getElementById('mainImage');
-            const imageCounter = document.getElementById('imageCounter');
-
-            if (mainImage && imageCounter) {
-                mainImage.src = productImages[index];
-                imageCounter.textContent = `${index + 1} / ${productImages.length}`;
-
-                document.querySelectorAll('.api-thumbnail').forEach((thumb, i) => {
-                    thumb.classList.toggle('active', i === index);
-                });
-
-                document.querySelectorAll('.api-grid-image').forEach((gridImg, i) => {
-                    gridImg.classList.toggle('active', i === index);
-                });
-
-                if (window.innerWidth <= 768) {
-                    document.querySelector('.api-main-image-container').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }
+        function changeMainImage(imageSrc) {
+            const mainImage = document.querySelector('.enhanced-main-image');
+            if (mainImage) {
+                mainImage.src = imageSrc;
+                mainImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-        }
-
-        function previousImage() {
-            currentImageIndex = currentImageIndex > 0 ? currentImageIndex - 1 : productImages.length - 1;
-            changeMainImage(currentImageIndex);
-        }
-
-        function nextImage() {
-            currentImageIndex = currentImageIndex < productImages.length - 1 ? currentImageIndex + 1 : 0;
-            changeMainImage(currentImageIndex);
         }
 
         function addToCart() {
@@ -626,71 +724,34 @@
                 return;
             }
 
-            // Check if size is required but not selected
-            const showSizes = currentProduct.gender && (currentProduct.gender.toLowerCase().includes('shoes') ||
-                currentProduct.name.toLowerCase().includes('shoe') ||
-                currentProduct.name.toLowerCase().includes('sneaker'));
-
-            if (showSizes && !selectedSize) {
-                showNotification('Please select a size!', 'warning');
-                return;
-            }
-
-            // Get existing cart from localStorage
+            // Get existing cart
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-            // Create cart item
             const cartItem = {
                 id: currentProduct.id,
                 name: currentProduct.name,
-                price: parseFloat(currentProduct.price),
+                price: parseFloat(currentProduct.price) || 0,
                 image: currentProduct.image,
-                quantity: 1,
-                ...(selectedSize && { size: selectedSize })
+                quantity: 1
             };
 
-            // Check if item already exists in cart
-            const existingItemIndex = cart.findIndex(item =>
-                item.id === cartItem.id &&
-                (!selectedSize || item.size === selectedSize)
-            );
+            // Check if item exists
+            const existingItemIndex = cart.findIndex(item => item.id === cartItem.id);
 
             if (existingItemIndex > -1) {
-                // Update quantity if item exists
                 cart[existingItemIndex].quantity += 1;
                 showNotification(`${currentProduct.name} quantity updated in cart!`, 'success');
             } else {
-                // Add new item to cart
                 cart.push(cartItem);
                 showNotification(`${currentProduct.name} added to cart!`, 'success');
             }
 
-            // Save to localStorage
             localStorage.setItem('cart', JSON.stringify(cart));
         }
 
         function buyNow() {
-            if (!currentProduct) {
-                showNotification('Product not found!', 'warning');
-                return;
-            }
-
-            // Check if size is required but not selected
-            const showSizes = currentProduct.gender && (currentProduct.gender.toLowerCase().includes('shoes') ||
-                currentProduct.name.toLowerCase().includes('shoe') ||
-                currentProduct.name.toLowerCase().includes('sneaker'));
-
-            if (showSizes && !selectedSize) {
-                showNotification('Please select a size!', 'warning');
-                return;
-            }
-
-            // Add to cart first
             addToCart();
-
-            // Show notification and redirect
             showNotification('Redirecting to checkout...', 'info');
-
             setTimeout(() => {
                 window.location.href = 'cart.html';
             }, 1500);
@@ -699,11 +760,11 @@
         function showError(message) {
             const productContent = document.getElementById('productContent');
             productContent.innerHTML = `
-                <div class="error-message text-center">
-                    <i class="fas fa-exclamation-triangle fa-3x text-warning"></i>
+                <div class="error-enhanced">
+                    <i class="fas fa-exclamation-triangle fa-4x"></i>
                     <h3>${message}</h3>
                     <p>Please try again or go back to products.</p>
-                    <a href="products.html" class="btn btn-primary">
+                    <a href="products.html" class="enhanced-btn btn-back">
                         <i class="fas fa-arrow-left"></i> Back to Products
                     </a>
                 </div>
@@ -711,8 +772,27 @@
         }
 
         function showNotification(message, type = 'info') {
+            // Create a simple notification
             const notification = document.createElement('div');
-            notification.className = `cart-notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                max-width: 350px;
+                word-wrap: break-word;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                background: ${type === 'success' ? 'linear-gradient(45deg, #4CAF50, #45a049)' : 
+                           type === 'warning' ? 'linear-gradient(45deg, #FF9800, #F57C00)' : 
+                           'linear-gradient(45deg, #2196F3, #1976D2)'};
+                transform: translateX(400px);
+                transition: all 0.3s ease;
+            `;
+            
             notification.innerHTML = `
                 <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
                 ${message}
@@ -720,14 +800,12 @@
 
             document.body.appendChild(notification);
 
-            // Show notification
             setTimeout(() => {
-                notification.classList.add('show');
+                notification.style.transform = 'translateX(0)';
             }, 100);
 
-            // Hide notification
             setTimeout(() => {
-                notification.classList.remove('show');
+                notification.style.transform = 'translateX(400px)';
                 setTimeout(() => {
                     if (notification.parentNode) {
                         document.body.removeChild(notification);

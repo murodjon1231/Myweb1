@@ -37,7 +37,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="contacts.html">Contact us</a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link" href="know-the-price.html">Know the price</a>
                         </li>
@@ -69,55 +69,116 @@
         <section class="products-section">
             <div class="container">
                 <h1 class="section-title">Our Products</h1>
-                
-                <!-- Sorting Controls -->
+
+                <!-- Replace your existing sorting-controls section with this enhanced version -->
                 <div class="sorting-controls mb-4">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-md-10">
-                            <div class="d-flex flex-wrap gap-3 justify-content-center align-items-center">
-                                <div class="sort-group">
-                                    <label for="sortSelect" class="form-label text-white me-2">Sort by:</label>
-                                    <select id="sortSelect" class="form-select" onchange="sortProducts(this.value)"
-                                        style="min-width: 150px;">
-                                        <option value="default">Default</option>
-                                        <option value="name">Name (A-Z)</option>
-                                        <option value="price-low">Price (Low to High)</option>
-                                        <option value="price-high">Price (High to Low)</option>
-                                    </select>
-                                </div>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="filter-panel">
+                                    <div class="filter-header">
+                                        <h5><i class="fas fa-filter"></i> Filter & Sort Products</h5>
+                                        <div class="product-count-display">
+                                            <span id="productCount">Loading...</span>
+                                        </div>
+                                    </div>
 
-                                <div class="sort-group">
-                                    <label for="genderFilter" class="form-label text-white me-2">Gender:</label>
-                                    <select id="genderFilter" class="form-select" onchange="sortProducts(this.value)"
-                                        style="min-width: 120px;">
-                                        <option value="default">All</option>
-                                        <option value="gender-male">Male</option>
-                                        <option value="gender-female">Female</option>
-                                        <option value="gender-kids">Child</option>
-                                    </select>
-                                </div>
+                                    <div class="filter-controls">
+                                        <div class="filter-row">
+                                            <!-- Sort Control -->
+                                            <div class="filter-group">
+                                                <label for="sortSelect" class="filter-label">
+                                                    <i class="fas fa-sort"></i> Sort by:
+                                                </label>
+                                                <select id="sortSelect" class="filter-select"
+                                                    onchange="applySorting(this.value)">
+                                                    <option value="default">Default</option>
+                                                    <option value="name">Name (A-Z)</option>
+                                                    <option value="price-low">Price (Low to High)</option>
+                                                    <option value="price-high">Price (High to Low)</option>
+                                                </select>
+                                            </div>
 
-                                <div class="sort-group">
-                                    <label for="statusFilter" class="form-label text-white me-2">Status:</label>
-                                    <select id="statusFilter" class="form-select" onchange="sortProducts(this.value)"
-                                        style="min-width: 120px;">
-                                        <option value="default">All</option>
-                                        <option value="status-available">Available</option>
-                                        <option value="status-order">On Order</option>
-                                    </select>
-                                </div>
+                                            <!-- Gender Filter -->
+                                            <div class="filter-group">
+                                                <label for="genderFilter" class="filter-label">
+                                                    <i class="fas fa-users"></i> Gender:
+                                                </label>
+                                                <select id="genderFilter" class="filter-select"
+                                                    onchange="applyFilters()">
+                                                    <option value="all">All</option>
+                                                    <option value="male">Men</option>
+                                                    <option value="female">Women</option>
+                                                    <option value="child">Kids</option>
+                                                </select>
+                                            </div>
 
-                                <button class="btn btn-outline-light" onclick="resetFilters()">
-                                    <i class="fas fa-refresh"></i> Reset
-                                </button>
+                                            <!-- Category Filter -->
+                                            <div class="filter-group">
+                                                <label for="categoryFilter" class="filter-label">
+                                                    <i class="fas fa-tags"></i> Category:
+                                                </label>
+                                                <select id="categoryFilter" class="filter-select"
+                                                    onchange="applyFilters()">
+                                                    <option value="all">All Categories</option>
+                                                    <option value="krosofka">Sneakers</option>
+                                                    <option value="kiyim">Clothing</option>
+                                                    <option value="aksesuar">Accessories</option>
+                                                    <option value="kosmetika">Cosmetics</option>
+                                                    <option value="vitamin">Vitamins</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="filter-row">
+                                            <!-- Price Filter -->
+                                            <div class="filter-group">
+                                                <label for="priceFilter" class="filter-label">
+                                                    <i class="fas fa-dollar-sign"></i> Price Range:
+                                                </label>
+                                                <select id="priceFilter" class="filter-select"
+                                                    onchange="applyFilters()">
+                                                    <option value="all">All Prices</option>
+                                                    <option value="0-50">$0 - $50</option>
+                                                    <option value="50-100">$50 - $100</option>
+                                                    <option value="100-150">$100 - $150</option>
+                                                    <option value="150-200">$150 - $200</option>
+                                                    <option value="200+">$200+</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Status Filter -->
+                                            <div class="filter-group">
+                                                <label for="statusFilter" class="filter-label">
+                                                    <i class="fas fa-check-circle"></i> Status:
+                                                </label>
+                                                <select id="statusFilter" class="filter-select"
+                                                    onchange="applyFilters()">
+                                                    <option value="all">All Status</option>
+                                                    <option value="available">Available</option>
+                                                    <option value="order">On Order</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Reset Button -->
+                                            <div class="filter-group">
+                                                <button class="btn-reset" onclick="resetFilters()">
+                                                    <i class="fas fa-refresh"></i> Reset All
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Products Grid -->
-                <div id="product-list" class="products-grid">
-                    <div class="loading">Loading products...</div>
+                <!-- Product Grid Container -->
+                <div class="container">
+                    <div id="product-list" class="products-grid">
+                        <div class="loading">Loading products...</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -159,9 +220,9 @@
 
             // Initialize cart counter
             updateCartCountDisplay();
-            
+
             // Add cart update listener
-            window.addEventListener('storage', function(e) {
+            window.addEventListener('storage', function (e) {
                 if (e.key === 'cart') {
                     updateCartCountDisplay();
                 }
@@ -173,10 +234,10 @@
             const cartCounter = document.getElementById('cartCounter');
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            
+
             if (cartCounter) {
                 cartCounter.textContent = totalItems;
-                
+
                 // Add pulsing animation when count changes
                 if (totalItems > 0) {
                     cartCounter.classList.add('has-items');
@@ -210,10 +271,10 @@
             });
         });
 
-       
+
 
         // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', function (event) {
             const cartModal = document.getElementById('cartModal');
             if (event.target === cartModal) {
                 closeCartModal();
@@ -221,10 +282,10 @@
         });
 
         // Add click event to cart icon
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const cartIcon = document.querySelector('.cart-icon-container');
             if (cartIcon) {
-                cartIcon.addEventListener('click', function(e) {
+                cartIcon.addEventListener('click', function (e) {
                     e.preventDefault();
                     window.location.href = 'cart.html';
                 });
