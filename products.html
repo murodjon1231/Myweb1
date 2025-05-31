@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="product.css">
     <link rel="stylesheet" href="Theme.css">
     <link rel="stylesheet" href="cart-counter.css">
-    
+
     <style>
         /* Enhanced sorting controls styling */
         .advanced-sorting-controls {
@@ -253,6 +253,7 @@
                 opacity: 0;
                 transform: scale(0.8);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -282,7 +283,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="contacts.html">Contact us</a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link" href="know-the-price.html">Know the price</a>
                         </li>
@@ -314,7 +315,7 @@
         <section class="products-section">
             <div class="container">
                 <h1 class="section-title">Our Products</h1>
-                
+
                 <!-- Enhanced Sorting Controls -->
                 <div class="advanced-sorting-controls">
                     <!-- Search Section -->
@@ -326,7 +327,8 @@
                         <div class="filter-grid">
                             <div class="filter-group">
                                 <label for="searchInput">Search by name or description</label>
-                                <input type="text" id="searchInput" class="enhanced-select" placeholder="Type to search..." />
+                                <input type="text" id="searchInput" class="enhanced-select"
+                                    placeholder="Type to search..." />
                             </div>
                         </div>
                     </div>
@@ -395,12 +397,14 @@
 
                             <div class="filter-group">
                                 <label for="minPrice">Min Price ($)</label>
-                                <input type="number" id="minPrice" class="enhanced-select" placeholder="0" min="0" step="0.01" />
+                                <input type="number" id="minPrice" class="enhanced-select" placeholder="0" min="0"
+                                    step="0.01" />
                             </div>
 
                             <div class="filter-group">
                                 <label for="maxPrice">Max Price ($)</label>
-                                <input type="number" id="maxPrice" class="enhanced-select" placeholder="999" min="0" step="0.01" />
+                                <input type="number" id="maxPrice" class="enhanced-select" placeholder="999" min="0"
+                                    step="0.01" />
                             </div>
                         </div>
                     </div>
@@ -457,7 +461,7 @@
             try {
                 const response = await fetch(API_URL);
                 const products = await response.json();
-                
+
                 allProducts = products;
                 filteredProducts = [...products];
 
@@ -506,7 +510,7 @@
         // Enhanced display products function
         function displayProducts(products) {
             const productList = document.getElementById('product-list');
-            
+
             if (products.length === 0) {
                 productList.innerHTML = `
                     <div class="col-12 text-center" style="color: #fff; padding: 50px;">
@@ -545,7 +549,7 @@
                             <p class="card-text fw-bold text-success fs-5 price">Price: $${product.price}</p>
                             <div class="mt-auto">
                                 <div class="card-buttons d-flex justify-content-between gap-3"> 
-                                    <button class="btn btn-primary" onclick="viewProductDetails(${product.id})">
+                                    <button class="btn btn-primary" onclick="window.location.href='product-details.html?id=${product.id}'">
                                         <i class="fas fa-eye"></i> View Details
                                     </button>
                                 </div>
@@ -611,7 +615,7 @@
 
             // Apply search filter
             if (searchTerm) {
-                filtered = filtered.filter(product => 
+                filtered = filtered.filter(product =>
                     product.name.toLowerCase().includes(searchTerm) ||
                     product.description.toLowerCase().includes(searchTerm) ||
                     (product.category && product.category.toLowerCase().includes(searchTerm)) ||
@@ -695,7 +699,7 @@
                 updateResultsInfo(filtered.length, allProducts.length);
                 updateActiveFilters();
                 productsGrid.classList.remove('updating');
-                
+
                 // Show notification
                 if (filtered.length === 0) {
                     showNotification('No products match your criteria', 'warning');
@@ -722,7 +726,7 @@
             displayProducts(allProducts);
             updateResultsInfo(allProducts.length, allProducts.length);
             updateActiveFilters();
-            
+
             showNotification('All filters reset', 'info');
         }
 
@@ -765,8 +769,8 @@
             if (maxPrice) filters.push({ type: 'maxPrice', value: maxPrice, label: `Max: $${maxPrice}` });
 
             if (filters.length > 0) {
-            activeFilters.style.display = 'flex';
-            activeFilters.innerHTML = filters.map(filter => `
+                activeFilters.style.display = 'flex';
+                activeFilters.innerHTML = filters.map(filter => `
                 <div class="filter-tag">
                     ${filter.label}
                     <span class="remove-filter" onclick="removeFilter('${filter.type}', '${filter.value}')">
@@ -774,83 +778,83 @@
                     </span>
                 </div>
             `).join('');
-        } else {
-            activeFilters.style.display = 'none';
+            } else {
+                activeFilters.style.display = 'none';
+            }
         }
-    }
 
-    // Remove individual filter
-    function removeFilter(type, value) {
-        switch (type) {
-            case 'search':
-                document.getElementById('searchInput').value = '';
-                break;
-            case 'category':
-                document.getElementById('categoryFilter').value = 'all';
-                break;
-            case 'brand':
-                document.getElementById('brandFilter').value = 'all';
-                break;
-            case 'gender':
-                document.getElementById('genderFilter').value = 'all';
-                break;
-            case 'status':
-                document.getElementById('statusFilter').value = 'all';
-                break;
-            case 'sort':
-                document.getElementById('sortSelect').value = 'default';
-                break;
-            case 'minPrice':
-                document.getElementById('minPrice').value = '';
-                break;
-            case 'maxPrice':
-                document.getElementById('maxPrice').value = '';
-                break;
+        // Remove individual filter
+        function removeFilter(type, value) {
+            switch (type) {
+                case 'search':
+                    document.getElementById('searchInput').value = '';
+                    break;
+                case 'category':
+                    document.getElementById('categoryFilter').value = 'all';
+                    break;
+                case 'brand':
+                    document.getElementById('brandFilter').value = 'all';
+                    break;
+                case 'gender':
+                    document.getElementById('genderFilter').value = 'all';
+                    break;
+                case 'status':
+                    document.getElementById('statusFilter').value = 'all';
+                    break;
+                case 'sort':
+                    document.getElementById('sortSelect').value = 'default';
+                    break;
+                case 'minPrice':
+                    document.getElementById('minPrice').value = '';
+                    break;
+                case 'maxPrice':
+                    document.getElementById('maxPrice').value = '';
+                    break;
+            }
+            applyAllFilters();
         }
-        applyAllFilters();
-    }
 
-    // Initialize event listeners
-    function initializeEventListeners() {
-        // Real-time search
-        document.getElementById('searchInput').addEventListener('input', debounce(applyAllFilters, 300));
-        
-        // Filter change events
-        document.getElementById('categoryFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('brandFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('genderFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('statusFilter').addEventListener('change', applyAllFilters);
-        document.getElementById('sortSelect').addEventListener('change', applyAllFilters);
-        
-        // Price range events
-        document.getElementById('minPrice').addEventListener('input', debounce(applyAllFilters, 500));
-        document.getElementById('maxPrice').addEventListener('input', debounce(applyAllFilters, 500));
-    }
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Real-time search
+            document.getElementById('searchInput').addEventListener('input', debounce(applyAllFilters, 300));
 
-    // Debounce function for performance
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
+            // Filter change events
+            document.getElementById('categoryFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('brandFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('genderFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('statusFilter').addEventListener('change', applyAllFilters);
+            document.getElementById('sortSelect').addEventListener('change', applyAllFilters);
+
+            // Price range events
+            document.getElementById('minPrice').addEventListener('input', debounce(applyAllFilters, 500));
+            document.getElementById('maxPrice').addEventListener('input', debounce(applyAllFilters, 500));
+        }
+
+        // Debounce function for performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
                 clearTimeout(timeout);
-                func(...args);
+                timeout = setTimeout(later, wait);
             };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
+        }
 
-    // Show notification
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.innerHTML = `
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
             <i class="fas fa-${getNotificationIcon(type)}"></i>
             <span>${message}</span>
         `;
-        
-        // Add styles
-        notification.style.cssText = `
+
+            // Add styles
+            notification.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
@@ -865,44 +869,44 @@
             gap: 10px;
             animation: slideInRight 0.3s ease;
         `;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease';
+
+            document.body.appendChild(notification);
+
             setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
-        }, 3000);
-    }
-
-    function getNotificationIcon(type) {
-        switch (type) {
-            case 'success': return 'check-circle';
-            case 'warning': return 'exclamation-triangle';
-            case 'error': return 'times-circle';
-            default: return 'info-circle';
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
         }
-    }
 
-    function getNotificationColor(type) {
-        switch (type) {
-            case 'success': return 'linear-gradient(45deg, #27ae60, #2ecc71)';
-            case 'warning': return 'linear-gradient(45deg, #f39c12, #e67e22)';
-            case 'error': return 'linear-gradient(45deg, #e74c3c, #c0392b)';
-            default: return 'linear-gradient(45deg, #3498db, #2980b9)';
+        function getNotificationIcon(type) {
+            switch (type) {
+                case 'success': return 'check-circle';
+                case 'warning': return 'exclamation-triangle';
+                case 'error': return 'times-circle';
+                default: return 'info-circle';
+            }
         }
-    }
 
-    // View product details
-    function viewProductDetails(productId) {
-        const product = allProducts.find(p => p.id == productId);
-        if (!product) return;
+        function getNotificationColor(type) {
+            switch (type) {
+                case 'success': return 'linear-gradient(45deg, #27ae60, #2ecc71)';
+                case 'warning': return 'linear-gradient(45deg, #f39c12, #e67e22)';
+                case 'error': return 'linear-gradient(45deg, #e74c3c, #c0392b)';
+                default: return 'linear-gradient(45deg, #3498db, #2980b9)';
+            }
+        }
 
-        // Create modal
-        const modal = document.createElement('div');
-        modal.className = 'product-modal';
-        modal.innerHTML = `
+        // View product details
+        function viewProductDetails(productId) {
+            const product = allProducts.find(p => p.id == productId);
+            if (!product) return;
+
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'product-modal';
+            modal.innerHTML = `
             <div class="modal-backdrop" onclick="closeProductModal()"></div>
             <div class="modal-content">
                 <div class="modal-header">
@@ -943,8 +947,8 @@
             </div>
         `;
 
-        // Add modal styles
-        const modalStyles = `
+            // Add modal styles
+            const modalStyles = `
             .product-modal {
                 position: fixed;
                 top: 0;
@@ -1022,31 +1026,31 @@
             }
         `;
 
-        if (!document.getElementById('modal-styles')) {
-            const styleSheet = document.createElement('style');
-            styleSheet.id = 'modal-styles';
-            styleSheet.textContent = modalStyles;
-            document.head.appendChild(styleSheet);
+            if (!document.getElementById('modal-styles')) {
+                const styleSheet = document.createElement('style');
+                styleSheet.id = 'modal-styles';
+                styleSheet.textContent = modalStyles;
+                document.head.appendChild(styleSheet);
+            }
+
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
         }
 
-        document.body.appendChild(modal);
-        document.body.style.overflow = 'hidden';
-    }
-
-    // Close product modal
-    function closeProductModal() {
-        const modal = document.querySelector('.product-modal');
-        if (modal) {
-            modal.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => {
-                document.body.removeChild(modal);
-                document.body.style.overflow = '';
-            }, 300);
+        // Close product modal
+        function closeProductModal() {
+            const modal = document.querySelector('.product-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(modal);
+                    document.body.style.overflow = '';
+                }, 300);
+            }
         }
-    }
 
-    // Add keyframe for fadeOut
-    const additionalStyles = `
+        // Add keyframe for fadeOut
+        const additionalStyles = `
         @keyframes fadeOut {
             from { opacity: 1; }
             to { opacity: 0; }
@@ -1061,43 +1065,43 @@
         }
     `;
 
-    const additionalStyleSheet = document.createElement('style');
-    additionalStyleSheet.textContent = additionalStyles;
-    document.head.appendChild(additionalStyleSheet);
+        const additionalStyleSheet = document.createElement('style');
+        additionalStyleSheet.textContent = additionalStyles;
+        document.head.appendChild(additionalStyleSheet);
 
-    // Cart functions
-    function addToCart(productId) {
-        const product = allProducts.find(p => p.id == productId);
-        if (!product) return;
+        // Cart functions
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id == productId);
+            if (!product) return;
 
-        const existingItem = cart.find(item => item.id == productId);
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({ ...product, quantity: 1 });
+            const existingItem = cart.find(item => item.id == productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            sessionStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            showNotification(`${product.name} added to cart!`, 'success');
+            closeProductModal();
         }
 
-        sessionStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        showNotification(`${product.name} added to cart!`, 'success');
-        closeProductModal();
-    }
+        function updateCartCount() {
+            const cartCounter = document.getElementById('cartCounter');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCounter.textContent = totalItems;
+            cartCounter.style.display = totalItems > 0 ? 'block' : 'none';
+        }
 
-    function updateCartCount() {
-        const cartCounter = document.getElementById('cartCounter');
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCounter.textContent = totalItems;
-        cartCounter.style.display = totalItems > 0 ? 'block' : 'none';
-    }
+        function updateCartUI() {
+            updateCartCount();
+        }
 
-    function updateCartUI() {
-        updateCartCount();
-    }
-
-    // Show error message
-    function showErrorMessage() {
-        const productList = document.getElementById('product-list');
-        productList.innerHTML = `
+        // Show error message
+        function showErrorMessage() {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = `
             <div class="col-12 text-center" style="color: #fff; padding: 50px;">
                 <i class="fas fa-exclamation-triangle" style="font-size: 4rem; margin-bottom: 20px; color: #e74c3c;"></i>
                 <h3>Error Loading Products</h3>
@@ -1107,58 +1111,58 @@
                 </button>
             </div>
         `;
-    }
-
-    // Theme functions
-    function initializeTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            updateThemeButton(true);
         }
-    }
 
-    function toggleTheme() {
-        const isDark = document.body.classList.toggle('dark-theme');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        updateThemeButton(isDark);
-    }
-
-    function updateThemeButton(isDark) {
-        const themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.innerHTML = isDark 
-                ? '<i class="fas fa-sun"></i> Light-mode' 
-                : '<i class="fas fa-moon"></i> Dark-mode';
-        }
-    }
-
-    // Login function
-    function login() {
-        showNotification('Login functionality coming soon!', 'info');
-    }
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey || e.metaKey) {
-            switch (e.key) {
-                case 'k':
-                    e.preventDefault();
-                    document.getElementById('searchInput').focus();
-                    break;
-                case 'r':
-                    e.preventDefault();
-                    resetAllFilters();
-                    break;
+        // Theme functions
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                updateThemeButton(true);
             }
         }
-        if (e.key === 'Escape') {
-            closeProductModal();
-        }
-    });
 
-    // Add loading animation styles
-    const loadingStyles = `
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            updateThemeButton(isDark);
+        }
+
+        function updateThemeButton(isDark) {
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.innerHTML = isDark
+                    ? '<i class="fas fa-sun"></i> Light-mode'
+                    : '<i class="fas fa-moon"></i> Dark-mode';
+            }
+        }
+
+        // Login function
+        function login() {
+            showNotification('Login functionality coming soon!', 'info');
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'k':
+                        e.preventDefault();
+                        document.getElementById('searchInput').focus();
+                        break;
+                    case 'r':
+                        e.preventDefault();
+                        resetAllFilters();
+                        break;
+                }
+            }
+            if (e.key === 'Escape') {
+                closeProductModal();
+            }
+        });
+
+        // Add loading animation styles
+        const loadingStyles = `
         .loading {
             text-align: center;
             padding: 50px;
@@ -1181,9 +1185,10 @@
         }
     `;
 
-    const loadingStyleSheet = document.createElement('style');
-    loadingStyleSheet.textContent = loadingStyles;
-    document.head.appendChild(loadingStyleSheet);
+        const loadingStyleSheet = document.createElement('style');
+        loadingStyleSheet.textContent = loadingStyles;
+        document.head.appendChild(loadingStyleSheet);
     </script>
 </body>
+
 </html>
