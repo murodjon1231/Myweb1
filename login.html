@@ -129,6 +129,32 @@
             .login-container { margin: 1rem; }
             .login-header, .login-body { padding: 1.5rem; }
         }
+        .input-group {
+            position: relative;
+        }
+        #togglePassword {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border: 2px solid #e9ecef;
+            border-left: none;
+            background: white;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        #togglePassword:hover {
+            color: #007bff;
+        }
+        .dark-theme #togglePassword {
+            background: #343a40;
+            border-color: #6c757d;
+            color: #fff;
+        }
+        .dark-theme #togglePassword:hover {
+            color: #007bff;
+        }
+        .form-control {
+            border-right: none;
+        }
     </style>
 </head>
 <body>
@@ -154,7 +180,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Parol</label>
-                            <input type="password" class="form-control" id="password" required placeholder="Parolingizni kiriting">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password" required placeholder="Parolingizni kiriting">
+                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="rememberMe">
@@ -185,16 +216,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Demo users
-        const demoUsers = [
-            { id: 1, fullName: 'Admin User', email: 'admin@test.com', password: '123456', createdAt: new Date().toISOString() },
-            { id: 2, fullName: 'John Doe', email: 'john@test.com', password: '123456', createdAt: new Date().toISOString() }
-        ];
-
-        // Initialize demo users if not exists
-        if (!localStorage.getItem('users')) {
-            localStorage.setItem('users', JSON.stringify(demoUsers));
-        }
+        const API_URL = "https://6782ae7cc51d092c3dd06dbd.mockapi.io/product/users";
 
         // Show alert function
         function showAlert(message, type = 'danger') {
@@ -209,34 +231,49 @@
         }
 
         // Handle login form
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('rememberMe').checked;
             
-            // Get users from localStorage
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            // Find user
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                // Successful login
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                localStorage.setItem('isLoggedIn', 'true');
-                if (rememberMe) {
-                    localStorage.setItem('rememberLogin', 'true');
+            try {
+                // Get users from API
+                const response = await fetch(API_URL);
+                const users = await response.json();
+                
+                // Find user
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    // Successful login
+                    const userSession = {
+                        id: user.id,
+                        fullName: user.fullName,
+                        email: user.email,
+                        phone: user.phone,
+                        loginTime: new Date().toISOString()
+                    };
+
+                    localStorage.setItem('currentUser', JSON.stringify(userSession));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    if (rememberMe) {
+                        localStorage.setItem('rememberLogin', 'true');
+                    }
+                    
+                    showAlert('Muvaffaqiyatli kirdingiz! Yo\'naltirilmoqda...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    showAlert('Email yoki parol noto\'g\'ri!');
                 }
-                
-                showAlert('Muvaffaqiyatli kirdingiz! Yo\'naltirilmoqda...', 'success');
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
-            } else {
-                showAlert('Email yoki parol noto\'g\'ri!');
+            } catch (error) {
+                console.error('Login error:', error);
+                showAlert('Tizimga kirishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.');
             }
         });
 
@@ -256,6 +293,21 @@
                     document.getElementById('rememberMe').checked = true;
                 }
             }
+        });
+
+        // Password visibility toggle
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            // Toggle password visibility
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Toggle icon
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
         });
     </script>
 </body>
