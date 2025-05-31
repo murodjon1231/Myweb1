@@ -61,25 +61,54 @@
             margin-bottom: 10px;
         }
 
+        /* Fixed Image Section - Main improvements here */
         .enhanced-image-section {
             background: white;
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
         }
 
         .enhanced-main-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
+            max-width: 100%;
+            max-height: 500px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
             border-radius: 15px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
+            background: #f8f9fa;
         }
 
         .enhanced-main-image:hover {
-            transform: scale(1.02);
+            transform: scale(1.05);
+        }
+
+        /* Image placeholder for broken images */
+        .image-placeholder {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.2rem;
+            border: 2px dashed #dee2e6;
+        }
+
+        .image-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
         }
 
         .enhanced-info-grid {
@@ -201,6 +230,7 @@
             border-left: 4px solid #6f42c1;
         }
 
+        /* Improved Image Gallery */
         .image-gallery-enhanced {
             background: white;
             border-radius: 20px;
@@ -231,6 +261,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: all 0.3s ease;
+            background: #f8f9fa;
         }
 
         .gallery-image-container:hover {
@@ -361,37 +392,6 @@
             margin-bottom: 15px;
         }
 
-        /* Additional API Data Sections */
-        .additional-data-section {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .data-section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: #495057;
-            border-bottom: 3px solid #007bff;
-            padding-bottom: 10px;
-        }
-
-        .raw-data-display {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            max-height: 400px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -407,6 +407,12 @@
             }
             
             .enhanced-main-image {
+                max-height: 300px;
+            }
+            
+            .image-placeholder {
+                width: 100%;
+                max-width: 300px;
                 height: 300px;
             }
             
@@ -541,7 +547,13 @@
 
                     <!-- Main Image Section -->
                     <div class="enhanced-image-section">
-                        <img src="${product.image || './logo.png'}" alt="${product.name}" class="enhanced-main-image" onerror="this.src='./logo.png'">
+                        ${product.image ? 
+                            `<img src="${product.image}" alt="${product.name}" class="enhanced-main-image" onerror="showImagePlaceholder(this)">` :
+                            `<div class="image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <span>No Image Available</span>
+                            </div>`
+                        }
                     </div>
 
                     <!-- Information Grid -->
@@ -612,7 +624,7 @@
                         <div class="enhanced-image-grid">
                             ${productImages.map((img, index) => `
                                 <div class="gallery-image-container" onclick="changeMainImage('${img}')">
-                                    <img src="${img}" alt="Product view ${index + 1}" class="gallery-image" onerror="this.src='./logo.png'">
+                                    <img src="${img}" alt="Product view ${index + 1}" class="gallery-image" onerror="showImagePlaceholder(this)">
                                     <div class="image-overlay">
                                         <i class="fas fa-eye"></i> View
                                     </div>
@@ -621,14 +633,6 @@
                         </div>
                     </div>
                     ` : ''}
-
-                    <!-- Raw API Data Section -->
-                    <div class="additional-data-section">
-                        <h2 class="data-section-title">
-                            <i class="fas fa-database"></i> Complete API Data
-                        </h2>
-                        <div class="raw-data-display">${JSON.stringify(product, null, 2)}</div>
-                    </div>
 
                     <!-- Action Buttons -->
                     <div class="action-section">
@@ -706,7 +710,6 @@
                 });
             }
             
-            // If only one image, don't duplicate it
             return images;
         }
 
@@ -716,6 +719,16 @@
                 mainImage.src = imageSrc;
                 mainImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
+        }
+
+        function showImagePlaceholder(imgElement) {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'image-placeholder';
+            placeholder.innerHTML = `
+                <i class="fas fa-image"></i>
+                <span>Image not available</span>
+            `;
+            imgElement.parentNode.replaceChild(placeholder, imgElement);
         }
 
         function addToCart() {
