@@ -9,94 +9,168 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="Theme.css">
+    <link rel="stylesheet" href="footer.css">
     <link rel="icon" href="./ChatGPT Image 28 мая 2025 г., 22_39_24.png">
+    <script src="load-navbar.js"></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="products.html">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contacts.html">Contact us</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="nav-link" href="know-the-price.html">Know the price</a>
-                    </li>
-                </ul>
-
-                <div class="d-flex align-items-center gap-2 flex-wrap" id="navbarActions">
-                    <!-- Navigation actions will be populated by JavaScript -->
-                </div>
+    <main style="margin-top: 76px;">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="floating-elements"></div>
+            <div class="container">
+                <h1 class="hero-title" id="heroTitle">Premium Amerika brendlari</h1>
+                <p class="hero-subtitle" id="heroSubtitle">O'zbekistondagi eng yaxshi Amerika kiyim va poyafzal brendlari.
+                    Sifat kafolati va tez yetkazib berish bilan tanishing!</p>
+                <a href="products.html" class="btn-hero">
+                    <i class="fas fa-shopping-bag"></i> Xarid qilish
+                </a>
             </div>
-        </div>
-    </nav>
+        </section>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="floating-elements"></div>
-        <div class="container">
-            <h1 class="hero-title" id="heroTitle">Premium Amerika brendlari</h1>
-            <p class="hero-subtitle" id="heroSubtitle">O'zbekistondagi eng yaxshi Amerika kiyim va poyafzal brendlari.
-                Sifat kafolati va tez yetkazib berish bilan tanishing!</p>
-            <a href="products.html" class="btn-hero">
-                <i class="fas fa-shopping-bag"></i> Xarid qilish
-            </a>
-        </div>
-    </section>
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- Men's Category -->
+                    <div class="col-md-6">
+                        <div class="category-card mens">
+                            <div class="category-content">
+                                <h2 class="category-title">Mens</h2>
+                                <p class="category-description">Premium erkaklar kiyimlari va poyafzallari</p>
+                                <a href="products.html?gender=male" class="category-btn">
+                                    <span>Xarid qilish</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Features Section -->
-    <section class="features-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-star"></i>
+                    <!-- Women's Category -->
+                    <div class="col-md-6">
+                        <div class="category-card womens">
+                            <div class="category-content">
+                                <h2 class="category-title">Womens</h2>
+                                <p class="category-description">Premium ayollar kiyimlari va poyafzallari</p>
+                                <a href="products.html?gender=female" class="category-btn">
+                                    <span>Xarid qilish</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
                         </div>
-                        <h4 class="feature-title">Premium Sifat</h4>
-                        <p class="feature-description">Faqat original Amerika brendlari. Nike, Adidas, Levi's, Calvin
-                            Klein va boshqa mashhur brendlar.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-shipping-fast"></i>
-                        </div>
-                        <h4 class="feature-title">Tez Yetkazib Berish</h4>
-                        <p class="feature-description">O'zbekiston bo'ylab 1-3 kun ichida yetkazib berish. Bepul
-                            yetkazib berish 500,000 so'mdan yuqori xaridlar uchun.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h4 class="feature-title">Kafolat</h4>
-                        <p class="feature-description">Barcha mahsulotlar yahshi kelishiga kafolat beramiz!</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Toast Container -->
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050"></div>
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h4 class="feature-title">Premium Sifat</h4>
+                            <p class="feature-description">Faqat original Amerika brendlari. Nike, Adidas, Levi's, Calvin
+                                Klein va boshqa mashhur brendlar.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <h4 class="feature-title">Tez Yetkazib Berish</h4>
+                            <p class="feature-description">O'zbekiston bo'ylab 1-3 kun ichida yetkazib berish. Bepul
+                                yetkazib berish 500,000 so'mdan yuqori xaridlar uchun.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4 class="feature-title">Kafolat</h4>
+                            <p class="feature-description">Barcha mahsulotlar yahshi kelishiga kafolat beramiz!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <!-- About Section -->
+                    <div class="footer-section">
+                        <h3>Biz haqimizda</h3>
+                        <p>TuronMarket - O'zbekistondagi eng yirik Amerika brendlari do'koni. Sifatli mahsulotlar va tez yetkazib berish xizmati.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-telegram"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div class="footer-section">
+                        <h3>Tezkor havolalar</h3>
+                        <ul class="footer-links">
+                            <li><a href="index.html"><i class="fas fa-home"></i> Bosh sahifa</a></li>
+                            <li><a href="products.html"><i class="fas fa-shopping-bag"></i> Mahsulotlar</a></li>
+                            <li><a href="contacts.html"><i class="fas fa-envelope"></i> Bog'lanish</a></li>
+                            <li><a href="know-the-price.html"><i class="fas fa-dollar-sign"></i> Narxlarni bilish</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="footer-section">
+                        <h3>Bog'lanish</h3>
+                        <div class="contact-info">
+                            <div class="contact-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>123 Turon ko'chasi, Tashkent, O'zbekiston</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+998 97 007 34 33</span>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>shavkatovmurod2004@gmail.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="footer-section">
+                        <h3>Yangiliklardan xabardor bo'ling</h3>
+                        <p>Yangi mahsulotlar va maxsus takliflar haqida birinchilardan bo'lib xabardor bo'ling!</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="Email manzilingiz">
+                            <button type="submit" class="newsletter-button">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <div class="footer-logo">🇺🇸TuronMarket🇺🇿</div>
+                    <p>&copy; 2024 TuronMarket. Barcha huquqlar himoyalangan.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1050"></div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>

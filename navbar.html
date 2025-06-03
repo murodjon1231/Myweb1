@@ -1,0 +1,114 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Men
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="products.html?gender=male&category=clothing">Clothing</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=male&category=shoes">Shoes</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=male&category=sportswear">Sportswear</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=male&category=accessories">Accessories</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Women
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="products.html?gender=female&category=clothing">Clothing</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=female&category=shoes">Shoes</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=female&category=sportswear">Sportswear</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=female&category=accessories">Accessories</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Kids
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="products.html?gender=kids&category=clothing">Clothing</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=kids&category=shoes">Shoes</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=kids&category=sportswear">Sportswear</a></li>
+                        <li><a class="dropdown-item" href="products.html?gender=kids&category=accessories">Accessories</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Accessories
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="products.html?category=watches">Watches</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=jewelry">Jewelry</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=bags">Bags</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=sunglasses">Sunglasses</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=belts">Belts</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                        Vitamins
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="products.html?category=vitamins&type=multivitamins">Multivitamins</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=vitamins&type=minerals">Minerals</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=vitamins&type=supplements">Supplements</a></li>
+                        <li><a class="dropdown-item" href="products.html?category=vitamins&type=protein">Protein</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contacts.html">Contact us</a>
+                </li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-2 flex-wrap" id="navbarActions">
+                <!-- Dynamic content will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+// Set active nav link based on current page
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
+    // Handle dropdown active states
+    const urlParams = new URLSearchParams(window.location.search);
+    const gender = urlParams.get('gender');
+    const category = urlParams.get('category');
+
+    if (gender || category) {
+        const dropdownLinks = document.querySelectorAll('.dropdown-item');
+        dropdownLinks.forEach(link => {
+            const linkUrl = new URL(link.href);
+            const linkParams = new URLSearchParams(linkUrl.search);
+            
+            if (linkParams.get('gender') === gender && linkParams.get('category') === category) {
+                link.classList.add('active');
+                link.closest('.nav-item').querySelector('.nav-link').classList.add('active');
+            }
+        });
+    }
+});
+</script> 

@@ -4,492 +4,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - TuronMarket</title>
+    <title>🇺🇸TuronMarket🇺🇿 - Savat</title>
     <link rel="icon" href="./ChatGPT Image 28 мая 2025 г., 22_39_24.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="cart.css">
     <link rel="stylesheet" href="Theme.css">
+    <link rel="stylesheet" href="footer.css">
+    <script src="load-navbar.js"></script>
 
     <style>
-        /* Cart icon styles */
-        .cart-icon {
-            position: relative;
-            display: inline-block;
-            color: var(--primary-color, #007bff);
+        .cart-container {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cart-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .cart-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-empty i {
+            font-size: 4rem;
+            color: #cbd5e0;
+            margin-bottom: 20px;
+        }
+
+        .cart-empty h3 {
+            font-size: 1.8rem;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .cart-empty p {
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .cart-items {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: auto 3fr 1fr auto;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            align-items: center;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-details h3 {
             font-size: 1.2rem;
-            padding: 8px 12px;
-            background: transparent;
-            border: 2px solid var(--primary-color, #007bff);
-            border-radius: 50px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .item-details p {
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .item-size {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #edf2f7;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-top: 5px;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f7fafc;
+            padding: 8px;
+            border-radius: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #4a5568;
+            font-size: 1rem;
+            cursor: pointer;
             transition: all 0.3s ease;
-            text-decoration: none;
-            margin-left: 10px;
-        }
-
-        .cart-icon:hover {
-            background: var(--primary-color, #007bff);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .cart-counter {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #dc3545;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-            border: 2px solid white;
-            min-width: 20px;
         }
 
-        .cart-counter.hidden {
-            display: none;
+        .quantity-btn:hover {
+            background: #e2e8f0;
+            color: #2d3748;
         }
 
-        /* Dark theme adjustments */
-        .dark-theme .cart-icon {
-            color: #ffc107;
-            border-color: #ffc107;
+        .quantity-value {
+            font-weight: 600;
+            color: #2d3748;
+            min-width: 30px;
+            text-align: center;
         }
 
-        .dark-theme .cart-icon:hover {
-            background: #ffc107;
-            color: #000;
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #e53e3e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .remove-btn:hover {
+            background: #fed7d7;
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+
+        .summary-total {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .checkout-form {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #4299e1, #3182ce);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(49, 130, 206, 0.3);
+        }
+
+        .checkout-btn:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .cart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .item-image {
+                margin: 0 auto;
+            }
+
+            .item-actions {
+                justify-content: center;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+        }
+
+        /* Dark Theme Styles */
+        .dark-theme .cart-title {
+            color: #e2e8f0;
+        }
+
+        .dark-theme .cart-empty,
+        .dark-theme .cart-items,
+        .dark-theme .cart-summary {
+            background: #2d3748;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark-theme .cart-empty i {
+            color: #4a5568;
+        }
+
+        .dark-theme .cart-empty h3 {
+            color: #e2e8f0;
+        }
+
+        .dark-theme .cart-empty p {
+            color: #a0aec0;
+        }
+
+        .dark-theme .cart-item {
+            border-bottom-color: #4a5568;
+        }
+
+        .dark-theme .item-details h3 {
+            color: #e2e8f0;
+        }
+
+        .dark-theme .item-details p {
+            color: #a0aec0;
+        }
+
+        .dark-theme .item-size {
+            background: #4a5568;
+            color: #e2e8f0;
+        }
+
+        .dark-theme .item-price {
+            color: #e2e8f0;
+        }
+
+        .dark-theme .quantity-control {
+            background: #4a5568;
+        }
+
+        .dark-theme .quantity-btn {
+            background: #2d3748;
+            color: #e2e8f0;
+        }
+
+        .dark-theme .quantity-btn:hover {
+            background: #4a5568;
+        }
+
+        .dark-theme .quantity-value {
+            color: #e2e8f0;
+        }
+
+        .dark-theme .remove-btn:hover {
+            background: #63171b;
+        }
+
+        .dark-theme .summary-title {
+            color: #e2e8f0;
+            border-bottom-color: #4a5568;
+        }
+
+        .dark-theme .summary-item {
+            color: #a0aec0;
+        }
+
+        .dark-theme .summary-total {
+            color: #e2e8f0;
+            border-top-color: #4a5568;
+        }
+
+        .dark-theme .form-label {
+            color: #e2e8f0;
+        }
+
+        .dark-theme .form-control {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #e2e8f0;
+        }
+
+        .dark-theme .form-control:focus {
+            border-color: #90cdf4;
+            box-shadow: 0 0 0 3px rgba(144, 205, 244, 0.2);
+        }
+
+        .dark-theme .checkout-btn:disabled {
+            background: #4a5568;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="products.html">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contacts.html">Contact us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="know-the-price.html">Know the price</a>
-                        </li>
-                    </ul>
-
-                    <div class="d-flex align-items-center gap-2 flex-wrap" id="navbarActions">
-                        <!-- Dynamic content will be inserted here -->
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-
     <main style="margin-top: 76px;">
-        <section class="cart-section">
-            <div class="container">
-                <h1 class="section-title">
-                    <i class="fas fa-shopping-cart"></i> Shopping Cart
-                </h1>
-
                 <div class="cart-container">
-                    <div id="cartItems">
-                        <div class="loading">Loading cart...</div>
+            <div class="cart-header">
+                <h1 class="cart-title">Savat</h1>
                     </div>
 
-                    <div id="cartSummary" style="display: none;">
-                        <div class="cart-summary">
-                            <div class="summary-row">
-                                <span>Subtotal:</span>
-                                <span id="subtotal">$0.00</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Advance Payment (30%):</span>
-                                <span id="advancePayment">$0.00</span>
-                            </div>
-                            <div class="summary-row total-row">
-                                <span>Total:</span>
-                                <span class="price" id="totalPrice">$0.00</span>
-                            </div>
-                        </div>
-
-                        <div class="checkout-form">
-                            <h4 style="color: #fff; margin-bottom: 25px; text-align: center;">
-                                <i class="fas fa-user"></i> Customer Information
-                            </h4>
-                            <form id="checkoutForm">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="firstName" class="form-label">First Name *</label>
-                                        <input type="text" class="form-control" id="firstName" required
-                                            placeholder="Enter your first name">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="lastName" class="form-label">Last Name *</label>
-                                        <input type="text" class="form-control" id="lastName" required
-                                            placeholder="Enter your last name">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="telegram" class="form-label">Telegram Username *</label>
-                                        <input type="text" class="form-control" id="telegram" required
-                                            placeholder="@username or any format">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="phone" class="form-label">Phone Number *</label>
-                                        <input type="tel" class="form-control" id="phone" required
-                                            placeholder="+998 XX XXX XX XX">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">Delivery Address *</label>
-                                    <textarea class="form-control" id="address" rows="3" required
-                                        placeholder="Enter your full delivery address"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="notes" class="form-label">Additional Notes (Optional)</label>
-                                    <textarea class="form-control" id="notes" rows="2"
-                                        placeholder="Any special instructions or notes"></textarea>
-                                </div>
-                                <button type="submit" class="checkout-btn">
-                                    <i class="fas fa-paper-plane"></i> Place Order
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div id="cartContent">
+                <!-- Cart content will be loaded here -->
             </div>
-        </section>
+        </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- About Section -->
+                <div class="footer-section">
+                    <h3>Biz haqimizda</h3>
+                    <p>TuronMarket - O'zbekistondagi eng yirik Amerika brendlari do'koni. Sifatli mahsulotlar va tez yetkazib berish xizmati.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
 
-    <script>
-        const TELEGRAM_BOT_TOKEN = '7670633072:AAFqhahrboKp7w3k3tSsk4SQP1RFrXUq1m4';
-        
-        // Multiple recipients - add your chat IDs here
-        const TELEGRAM_RECIPIENTS = [
-            '6226950895',  // First recipient
-            '7856355769',  // Second recipient (replace with actual chat ID)
-            '0987654321'   // Third recipient (replace with actual chat ID)
-        ];
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h3>Tezkor havolalar</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Bosh sahifa</a></li>
+                        <li><a href="products.html"><i class="fas fa-shopping-bag"></i> Mahsulotlar</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-envelope"></i> Bog'lanish</a></li>
+                        <li><a href="know-the-price.html"><i class="fas fa-dollar-sign"></i> Narxlarni bilish</a></li>
+                    </ul>
+                </div>
 
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h3>Bog'lanish</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Turon ko'chasi, Tashkent, O'zbekiston</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+998 90 123 45 67</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@turonmarket.uz</span>
+                        </div>
+                    </div>
+                </div>
 
-        // Update cart counter
-        function updateCartCounter() {
-            const cartCounter = document.querySelector('.cart-counter');
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            
-            if (cartCounter) {
-                if (totalItems > 0) {
-                    cartCounter.textContent = totalItems > 99 ? '99+' : totalItems;
-                    cartCounter.classList.remove('hidden');
-                } else {
-                    cartCounter.classList.add('hidden');
-                }
-            }
-        }
-
-        // Theme toggle functionality
-        function toggleTheme() {
-            const body = document.body;
-            const themeToggle = document.getElementById('themeToggle');
-
-            body.classList.toggle('dark-theme');
-
-            if (body.classList.contains('dark-theme')) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Dark-mode';
-                localStorage.setItem('theme', 'light');
-            }
-        }
-
-        // Update navbar for authenticated user
-        function updateNavbarForUser() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const navbarActions = document.getElementById('navbarActions');
-
-            if (isLoggedIn && currentUser) {
-                // User is logged in
-                navbarActions.innerHTML = `
-                    <a href="cart.html" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-counter hidden">0</span>
-                    </a>
-                    
-                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                        <i class="fas fa-moon"></i> Dark-mode
-                    </button>
-                    
-                    <div class="dropdown">
-                        <button class="btn-login dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user"></i> ${currentUser.fullName.split(' ')[0]}
+                <!-- Newsletter -->
+                <div class="footer-section">
+                    <h3>Yangiliklardan xabardor bo'ling</h3>
+                    <p>Yangi mahsulotlar va maxsus takliflar haqida birinchilardan bo'lib xabardor bo'ling!</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Email manzilingiz">
+                        <button type="submit" class="newsletter-button">
+                            <i class="fas fa-paper-plane"></i>
                         </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-cog"></i> Profil</a></li>
-                            <li><a class="dropdown-item" href="cart.html"><i class="fas fa-shopping-bag"></i> Buyurtmalar</a></li>
-                            <li><a class="dropdown-item" href="favorites.html"><i class="fas fa-heart"></i> Sevimlilar</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Chiqish</a></li>
-                        </ul>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-logo">🇺🇸TuronMarket🇺🇿</div>
+                <p>&copy; 2024 TuronMarket. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let cart = [];
+
+        // Load cart on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
+            loadCart();
+            updateCartCounter();
+        });
+
+        // Load cart content
+        function loadCart() {
+            const cartContent = document.getElementById('cartContent');
+            
+            if (!cart || cart.length === 0) {
+                cartContent.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Savatingiz bo'sh</h3>
+                        <p>Hali hech qanday mahsulot qo'shilmagan.</p>
+                        <a href="products.html" class="checkout-btn">
+                            Xarid qilishni boshlash
+                        </a>
                     </div>
                 `;
-            } else {
-                // User is not logged in
-                navbarActions.innerHTML = `
-                    <a href="cart.html" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-counter hidden">0</span>
-                    </a>
-                    
-                    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                        <i class="fas fa-moon"></i> Dark-mode
-                    </button>
-                    
-                    <button class="btn-login" onclick="login()">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
-                    <button class="btn-login" onclick="register()">
-                        <i class="fas fa-user-plus"></i> Register
-                    </button>
-                `;
+                return;
             }
-            
-            // Update cart counter after navbar is updated
-            updateCartCounter();
-        }
 
-        // Logout function
-        function logout() {
-            if (confirm('Haqiqatan ham tizimdan chiqmoqchimisiz?')) {
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('hasShownWelcome');
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const shipping = 0; // Free shipping
+            const total = subtotal + shipping;
 
-                // Update UI
-                updateNavbarForUser();
+            // Get user data if logged in
+            const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 
-                // Show logout message
-                showNotification('Tizimdan muvaffaqiyatli chiqdingiz!', 'info');
-            }
-        }
-
-        // Login redirect
-        function login() {
-            window.location.href = 'login.html';
-        }
-
-        // Register redirect
-        function register() {
-            window.location.href = 'register.html';
-        }
-
-        // Generic notification function
-        function showNotification(message, type = 'info') {
-            const toastHTML = `
-                <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-                    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="toast-header">
-                            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'info' ? 'info-circle' : 'exclamation-triangle'} text-${type} me-2"></i>
-                            <strong class="me-auto">🇺🇸TuronMarket🇺🇿</strong>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+            cartContent.innerHTML = `
+                <div class="cart-grid">
+                    <div class="cart-items">
+                        ${cart.map((item, index) => `
+                            <div class="cart-item">
+                    <div class="item-image">
+                                    <img src="${item.image}" alt="${item.name}" onerror="this.src='placeholder.jpg'">
+                    </div>
+                    <div class="item-details">
+                                    <h3>${item.name}</h3>
+                                    <p>Narxi: $${item.price}</p>
+                                    ${item.size ? `<span class="item-size">O'lcham: ${item.size}</span>` : ''}
+                                </div>
+                                <div class="item-price">
+                                    $${(item.price * item.quantity).toFixed(2)}
                         </div>
-                        <div class="toast-body">
-                            ${message}
+                        <div class="item-actions">
+                                    <div class="quantity-control">
+                                        <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                        <span class="quantity-value">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                    </div>
+                                    <button class="remove-btn" onclick="removeItem(${index})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="cart-summary">
+                        <h2 class="summary-title">Buyurtma ma'lumotlari</h2>
+                        <div class="summary-item">
+                            <span>Mahsulotlar narxi:</span>
+                            <span>$${subtotal.toFixed(2)}</span>
                         </div>
+                        <div class="summary-item">
+                            <span>Yetkazib berish:</span>
+                            <span>Bepul</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Jami:</span>
+                            <span>$${total.toFixed(2)}</span>
+                            </div>
+                            
+                        <form class="checkout-form" id="checkoutForm">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">Ismingiz *</label>
+                                <input type="text" class="form-control" id="firstName" required 
+                                       value="${isLoggedIn ? (currentUser.firstName || '') : ''}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Familiyangiz *</label>
+                                <input type="text" class="form-control" id="lastName" required
+                                       value="${isLoggedIn ? (currentUser.lastName || '') : ''}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="telegram">Telegram username *</label>
+                                <input type="text" class="form-control" id="telegram" required
+                                       value="${isLoggedIn ? (currentUser.telegram || '') : ''}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Telefon raqamingiz *</label>
+                                <input type="tel" class="form-control" id="phone" required
+                                       value="${isLoggedIn ? (currentUser.phone || '') : ''}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="address">Manzilingiz *</label>
+                                <textarea class="form-control" id="address" rows="3" required>${isLoggedIn ? (currentUser.address || '') : ''}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="notes">Qo'shimcha ma'lumot</label>
+                                <textarea class="form-control" id="notes" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="checkout-btn">
+                                Buyurtma berish
+                            </button>
+                        </form>
                     </div>
                 </div>
             `;
 
-            document.body.insertAdjacentHTML('beforeend', toastHTML);
-
-            // Auto remove after 5 seconds
-            setTimeout(() => {
-                const toasts = document.querySelectorAll('.toast');
-                toasts.forEach(toast => {
-                    if (toast.querySelector('.toast-body').textContent.trim() === message) {
-                        toast.remove();
-                    }
-                });
-            }, 5000);
+            // Add form submit handler
+            document.getElementById('checkoutForm').addEventListener('submit', handleCheckout);
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Update navbar based on user status
-            updateNavbarForUser();
+        // Update item quantity
+        function updateQuantity(index, change) {
+            const item = cart[index];
+            const newQuantity = item.quantity + change;
 
-            // Load saved theme
-            const savedTheme = localStorage.getItem('theme');
-            const themeToggle = document.getElementById('themeToggle');
-
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                if (themeToggle) {
-                    themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light-mode';
-                }
-            }
-
-            // Auto-fill form if user is logged in
-            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-            if (isLoggedIn && currentUser) {
-                const nameParts = currentUser.fullName.split(' ');
-                document.getElementById('firstName').value = nameParts[0] || '';
-                document.getElementById('lastName').value = nameParts.slice(1).join(' ') || '';
-                if (currentUser.phone) {
-                    document.getElementById('phone').value = currentUser.phone;
-                }
-                if (currentUser.address) {
-                    document.getElementById('address').value = currentUser.address;
-                }
-                if (currentUser.telegram) {
-                    document.getElementById('telegram').value = currentUser.telegram;
-                }
-            }
-
-            // Load cart and initialize
-            loadCart();
-            updateCartSummary();
-        });
-
-        function loadCart() {
-            const cartItemsContainer = document.getElementById('cartItems');
-            const cartSummary = document.getElementById('cartSummary');
-
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <h3>Your cart is empty</h3>
-                        <p>Looks like you haven't added any products to your cart yet.</p>
-                        <a href="products.html" class="continue-shopping">
-                            <i class="fas fa-arrow-left"></i> Continue Shopping
-                        </a>
-                    </div>
-                `;
-                cartSummary.style.display = 'none';
+            if (newQuantity < 1) {
+                removeItem(index);
                 return;
             }
 
-            cartItemsContainer.innerHTML = cart.map((item, index) => `
-                <div class="cart-item" data-id="${item.id}" data-size="${item.size || ''}" data-index="${index}">
-                    <div class="item-image">
-                        <img src="${item.image}" alt="${item.name}" onerror="this.src='./logo.png'">
-                    </div>
-                    <div class="item-details">
-                        <div class="item-header">
-                            <h5 class="item-name">${item.name}</h5>
-                            <div class="item-price">$${item.price}</div>
-                        </div>
-                        
-                        <div class="item-info">
-                            ${item.size ? `
-                                <div class="item-size">
-                                    <i class="fas fa-shoe-prints"></i>
-                                    <span>Size: <strong>${item.size}</strong></span>
-                                </div>
-                            ` : ''}
-                            
-                            <div class="item-subtotal">
-                                <i class="fas fa-calculator"></i>
-                                <span>Subtotal: <strong>$${(item.price * item.quantity).toFixed(2)}</strong></span>
-                            </div>
-                        </div>
-
-                        <div class="item-actions">
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" onclick="updateQuantity(${index}, -1)" ${item.quantity <= 1 ? 'disabled' : ''}>
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <span class="quantity-display">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            
-                            <button class="remove-btn" onclick="removeFromCart(${index})">
-                                <i class="fas fa-trash"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            cartSummary.style.display = 'block';
-        }
-
-        function updateQuantity(index, change) {
-            if (cart[index]) {
-                cart[index].quantity += change;
-                if (cart[index].quantity <= 0) {
-                    removeFromCart(index);
-                } else {
+            item.quantity = newQuantity;
                     localStorage.setItem('cart', JSON.stringify(cart));
                     loadCart();
-                    updateCartSummary();
                     updateCartCounter();
-                    showNotification(`Quantity updated for ${cart[index].name}`, 'success');
-                }
-            }
         }
 
-        function removeFromCart(index) {
-            const item = cart[index];
+        // Remove item from cart
+        function removeItem(index) {
             cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
-
             loadCart();
-            updateCartSummary();
             updateCartCounter();
-
-            if (item) {
-                showNotification(`${item.name} removed from cart`, 'info');
-            }
+            showNotification('Mahsulot savatdan o\'chirildi', 'info');
         }
 
-        function updateCartSummary() {
-            if (cart.length === 0) return;
-
-            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-            const advancePayment = subtotal * 0.3; // 30% advance payment
-            const total = subtotal;
-
-            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-            document.getElementById('advancePayment').textContent = `$${advancePayment.toFixed(2)}`;
-            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
-        }
-
-        document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+        // Handle checkout
+        async function handleCheckout(e) {
             e.preventDefault();
 
-            if (cart.length === 0) {
-                showNotification('Your cart is empty!', 'warning');
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            if (!isLoggedIn) {
+                showNotification('Iltimos, avval tizimga kiring!', 'warning');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
+            if (!cart || cart.length === 0) {
+                showNotification('Savatingiz bo\'sh!', 'warning');
                 return;
             }
 
@@ -501,24 +648,18 @@
             const notes = document.getElementById('notes').value.trim();
 
             if (!firstName || !lastName || !telegram || !phone || !address) {
-                showNotification('Please fill in all required fields!', 'warning');
+                showNotification('Iltimos, barcha maydonlarni to\'ldiring!', 'warning');
                 return;
             }
 
-            // Disable submit button
-            const submitBtn = document.querySelector('.checkout-btn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-
-            try {
+            // Calculate totals
                 const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
                 const advancePayment = subtotal * 0.3;
 
-                // Store payment data for payment page
+            // Save payment data for payment page
                 const paymentData = {
-                    subtotal: subtotal,
-                    advancePayment: advancePayment,
+                subtotal,
+                advancePayment,
                     customerInfo: {
                         firstName,
                         lastName,
@@ -527,52 +668,84 @@
                         address,
                         notes
                     },
-                    cart: [...cart],
-                    orderNumber: '#' + Date.now().toString().slice(-6)
+                cart: [...cart]
                 };
 
                 localStorage.setItem('paymentData', JSON.stringify(paymentData));
 
-                showNotification('Order details saved! Redirecting to payment...', 'success');
-
-                // Redirect to payment page after delay
+            // Redirect to payment page
+            showNotification('To\'lov sahifasiga o\'tkazilmoqda...', 'info');
                 setTimeout(() => {
                     window.location.href = 'payment.html';
-                }, 2000);
+            }, 1500);
+        }
 
-            } catch (error) {
-                console.error('Error processing order:', error);
-                showNotification('Failed to process order. Please try again.', 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
-            }
-        });
-
-        // Handle navbar collapse on mobile after click
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                const navbarCollapse = document.querySelector('.navbar-collapse');
-                if (navbarCollapse.classList.contains('show')) {
-                    const bsCollapse = new bootstrap.Collapse(navbarCollapse);
-                    bsCollapse.hide();
-                }
+        // Show notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = type === 'success' ? 'check-circle' :
+                        type === 'error' ? 'times-circle' :
+                        type === 'warning' ? 'exclamation-triangle' :
+                        'info-circle';
+            
+            const gradient = type === 'success' ? 'linear-gradient(45deg, #48bb78, #38a169)' :
+                            type === 'error' ? 'linear-gradient(45deg, #f56565, #c53030)' :
+                            type === 'warning' ? 'linear-gradient(45deg, #ed8936, #dd6b20)' :
+                            'linear-gradient(45deg, #4299e1, #2b6cb0)';
+            
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 10px;
+                background: ${gradient};
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                transform: translateX(120%);
+                transition: transform 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            requestAnimationFrame(() => {
+                notification.style.transform = 'translateX(0)';
             });
-        });
-        
-        // Add scroll effect to navbar
-        window.addEventListener('scroll', function () {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.background = document.body.classList.contains('dark-theme')
-                    ? 'rgba(52, 58, 64, 0.98)'
-                    : 'rgba(255, 255, 255, 0.98)';
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(120%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Update cart counter
+        function updateCartCounter() {
+            const cartCounter = document.querySelector('.cart-counter');
+            if (!cartCounter) return;
+
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            
+            if (totalItems > 0) {
+                cartCounter.textContent = totalItems > 99 ? '99+' : totalItems;
+                cartCounter.classList.remove('hidden');
             } else {
-                navbar.style.background = document.body.classList.contains('dark-theme')
-                    ? 'rgba(52, 58, 64, 0.95)'
-                    : 'rgba(255, 255, 255, 0.95)';
+                cartCounter.classList.add('hidden');
             }
-        });
+        }
     </script>
 </body>
 

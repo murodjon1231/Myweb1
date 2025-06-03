@@ -475,3 +475,94 @@ body.dark-theme .theme-toggle:hover {
         justify-content: center;
     }
 }
+
+/* Categories Section */
+.categories-section {
+    padding: 60px 0;
+    background: var(--bg-color);
+}
+
+.category-card {
+    position: relative;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.category-card.mens {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1490367532201-b9bc1dc483f6?q=80&w=1000') center/cover;
+}
+
+.category-card.womens {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000') center/cover;
+}
+
+.category-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+}
+
+.category-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.category-description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.category-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 25px;
+    background: white;
+    color: #333;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+    background: #f8f9fa;
+    transform: translateX(5px);
+    color: #333;
+}
+
+.category-btn i {
+    transition: transform 0.3s ease;
+}
+
+.category-btn:hover i {
+    transform: translateX(5px);
+}
+
+/* Dark theme styles for categories */
+.dark-theme .category-btn {
+    background: #2d3748;
+    color: white;
+}
+
+.dark-theme .category-btn:hover {
+    background: #4a5568;
+    color: white;
+}

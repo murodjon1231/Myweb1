@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="product-deatils.css">
     <link rel="stylesheet" href="Theme.css">
+    <link rel="stylesheet" href="footer.css">
+    <script src="load-navbar.js"></script>
 
     <style>
         /* Enhanced Product Details Styles */
@@ -785,40 +787,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="index.html">🇺🇸TuronMarket🇺🇿</a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav mx-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="products.html">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contacts.html">Contact us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="know-the-price.html">Know the price</a>
-                        </li>
-                    </ul>
-
-                    <div class="d-flex align-items-center gap-2 flex-wrap" id="navbarActions">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
+    <main style="margin-top: 76px;">
         <section class="product-details-section">
             <div class="container-fluid px-4">
                 <a href="products.html" class="enhanced-btn btn-back" style="display: inline-flex; margin-bottom: 20px;">
@@ -834,6 +803,73 @@
             </div>
         </section>
     </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- About Section -->
+                <div class="footer-section">
+                    <h3>Biz haqimizda</h3>
+                    <p>TuronMarket - O'zbekistondagi eng yirik Amerika brendlari do'koni. Sifatli mahsulotlar va tez yetkazib berish xizmati.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h3>Tezkor havolalar</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Bosh sahifa</a></li>
+                        <li><a href="products.html"><i class="fas fa-shopping-bag"></i> Mahsulotlar</a></li>
+                        <li><a href="contacts.html"><i class="fas fa-envelope"></i> Bog'lanish</a></li>
+                        <li><a href="know-the-price.html"><i class="fas fa-dollar-sign"></i> Narxlarni bilish</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h3>Bog'lanish</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Turon ko'chasi, Tashkent, O'zbekiston</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+998 90 123 45 67</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>info@turonmarket.uz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="footer-section">
+                    <h3>Yangiliklardan xabardor bo'ling</h3>
+                    <p>Yangi mahsulotlar va maxsus takliflar haqida birinchilardan bo'lib xabardor bo'ling!</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Email manzilingiz">
+                        <button type="submit" class="newsletter-button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-logo">🇺🇸TuronMarket🇺🇿</div>
+                <p>&copy; 2024 TuronMarket. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -984,6 +1020,15 @@
                     <!-- Action Buttons -->
                     <div class="action-section">
                         <h3>Ready to Purchase?</h3>
+                        
+                        <!-- Size Selection -->
+                        <div class="size-selection" style="margin-bottom: 30px;">
+                            <h4 style="margin-bottom: 15px;">Select Size</h4>
+                            <div class="size-grid" id="sizeGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 10px; max-width: 400px; margin: 0 auto;">
+                                <!-- Sizes will be loaded dynamically -->
+                            </div>
+                        </div>
+
                         <div class="enhanced-action-buttons">
                             <button class="enhanced-btn btn-add-cart" onclick="addToCart()">
                                 <i class="fas fa-cart-plus"></i> Add to Cart
@@ -1012,6 +1057,9 @@
                     </div>
                 </div>
             `;
+
+            // After the product details are displayed, load sizes
+            loadSizes(product);
         }
 
         function createInfoItems(items) {
@@ -1079,8 +1127,27 @@
         }
 
         function addToCart() {
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!isLoggedIn || !currentUser) {
+                showNotification('Iltimos, avval tizimga kiring!', 'warning');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
             if (!currentProduct) {
                 showNotification('Product not found!', 'warning');
+                return;
+            }
+
+            // Check if size is required but not selected
+            const needsSize = document.querySelector('.size-selection').style.display !== 'none';
+            if (needsSize && !currentProduct.selectedSize) {
+                showNotification('Please select a size first!', 'warning');
                 return;
             }
 
@@ -1092,11 +1159,14 @@
                 name: currentProduct.name,
                 price: parseFloat(currentProduct.price) || 0,
                 image: currentProduct.image,
-                quantity: 1
+                quantity: 1,
+                size: currentProduct.selectedSize // Add size to cart item
             };
 
-            // Check if item exists
-            const existingItemIndex = cart.findIndex(item => item.id === cartItem.id);
+            // Check if item with same size exists
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === cartItem.id && item.size === cartItem.size
+            );
 
             if (existingItemIndex > -1) {
                 cart[existingItemIndex].quantity += 1;
@@ -1107,13 +1177,26 @@
             }
 
             localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCounter();
         }
 
         function buyNow() {
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!isLoggedIn || !currentUser) {
+                showNotification('Iltimos, avval tizimga kiring!', 'warning');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
             addToCart();
-            showNotification('Redirecting to checkout...', 'info');
+            showNotification('To\'lov sahifasiga o\'tkazilmoqda...', 'info');
             setTimeout(() => {
-                window.location.href = 'cart.html';
+                window.location.href = 'payment.html';
             }, 1500);
         }
 
@@ -1324,6 +1407,75 @@
                     : 'rgba(255, 255, 255, 0.95)';
             }
         });
+
+        // Add after fetchProductDetails function
+        function loadSizes(product) {
+            const sizeGrid = document.getElementById('sizeGrid');
+            let sizes = [];
+
+            // Define sizes based on product category/type
+            if (product.category?.toLowerCase().includes('shoes') || 
+                product.name?.toLowerCase().includes('shoes') || 
+                product.name?.toLowerCase().includes('sneaker')) {
+                // Shoe sizes
+                sizes = ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+            } else if (product.category?.toLowerCase().includes('clothing') || 
+                     product.name?.toLowerCase().includes('shirt') || 
+                     product.name?.toLowerCase().includes('pants') ||
+                     product.name?.toLowerCase().includes('jacket')) {
+                // Clothing sizes
+                sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+            } else {
+                // Default - hide size selection
+                document.querySelector('.size-selection').style.display = 'none';
+                return;
+            }
+
+            // Create size buttons
+            sizeGrid.innerHTML = sizes.map(size => `
+                <button class="size-btn" 
+                        onclick="selectSize('${size}')"
+                        style="padding: 10px;
+                               border: 2px solid #ddd;
+                               border-radius: 8px;
+                               background: white;
+                               cursor: pointer;
+                               transition: all 0.3s ease;
+                               font-weight: 600;">
+                    ${size}
+                </button>
+            `).join('');
+
+            // Add styles for dark theme
+            if (document.body.classList.contains('dark-theme')) {
+                document.querySelectorAll('.size-btn').forEach(btn => {
+                    btn.style.background = '#2d3748';
+                    btn.style.color = 'white';
+                    btn.style.borderColor = '#4a5568';
+                });
+            }
+        }
+
+        function selectSize(size) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.style.background = document.body.classList.contains('dark-theme') ? '#2d3748' : 'white';
+                btn.style.borderColor = document.body.classList.contains('dark-theme') ? '#4a5568' : '#ddd';
+                btn.style.color = document.body.classList.contains('dark-theme') ? 'white' : 'black';
+            });
+
+            // Add active class to selected button
+            const selectedBtn = Array.from(document.querySelectorAll('.size-btn'))
+                                   .find(btn => btn.textContent.trim() === size);
+            if (selectedBtn) {
+                selectedBtn.style.background = '#007bff';
+                selectedBtn.style.borderColor = '#0056b3';
+                selectedBtn.style.color = 'white';
+            }
+
+            // Save selected size
+            currentProduct.selectedSize = size;
+        }
     </script>
 </body>
 
