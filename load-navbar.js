@@ -69,7 +69,7 @@ function updateNavbarForUser() {
             </a>
             
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i> Dark Mode
+                <i class="fas fa-moon"></i>
             </button>
             
             <div class="dropdown">
@@ -93,7 +93,7 @@ function updateNavbarForUser() {
             </a>
             
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i> Dark Mode
+                <i class="fas fa-moon"></i>
             </button>
             
             <a href="login.html" class="btn-login">
