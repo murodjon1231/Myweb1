@@ -33,7 +33,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #a29d9d 0%, #666666 100%);
             min-height: 100vh;
-            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -257,14 +256,101 @@
             text-decoration: none;
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
             .register-container {
                 padding: 30px 20px;
-                margin: 10px;
+                margin: 15px;
+                width: 90%;
             }
 
             .register-title {
                 font-size: 2rem;
+            }
+
+            .register-subtitle {
+                font-size: 1rem;
+            }
+
+            .form-control {
+                padding: 12px 15px;
+            }
+
+            .btn-register {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+
+            .back-btn, .theme-toggle {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+
+            .register-container {
+                padding: 20px 15px;
+                margin: 10px;
+                width: 95%;
+            }
+
+            .register-title {
+                font-size: 1.8rem;
+            }
+
+            .form-label {
+                font-size: 0.9rem;
+            }
+
+            .form-control {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .input-group .form-control {
+                padding-left: 40px;
+            }
+
+            .input-group-text {
+                left: 10px;
+                font-size: 0.9rem;
+            }
+
+            .back-btn, .theme-toggle {
+                top: 10px;
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer-section {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .register-container {
+                padding: 15px 10px;
+            }
+
+            .register-title {
+                font-size: 1.5rem;
+            }
+
+            .btn-register {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
             }
         }
 
@@ -295,6 +381,76 @@
         }
         .dark-theme .toggle-password:hover {
             color: var(--primary-color);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        main {
+            padding-top: 76px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 0;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+                padding-left: 15px;
+            }
+
+            .navbar-toggler {
+                margin-right: 15px;
+            }
+
+            .navbar-nav {
+                padding: 1rem;
+                background: rgba(255, 255, 255, 0.98);
+            }
+
+            .nav-item {
+                margin: 0.5rem 0;
+            }
+
+            .nav-link {
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+            }
+
+            .nav-link:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            main {
+                padding-top: 62px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.4rem 0.6rem;
+            }
+
+            main {
+                padding-top: 56px;
+            }
         }
     </style>
 </head>

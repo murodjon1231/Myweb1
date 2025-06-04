@@ -17,7 +17,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #a29d9d 0%, #666666 100%);
             min-height: 100vh;
-            display: flex;
             align-items: center;
             padding: 2rem 0;
         }
@@ -128,9 +127,116 @@
             color: rgba(255, 255, 255, 0.8);
             transform: translateX(-5px);
         }
+        @media (max-width: 768px) {
+            .login-container {
+                width: 90%;
+                margin: 15px auto;
+            }
+
+            .login-card {
+                padding: 30px 25px;
+            }
+
+            .login-header {
+                padding: 1.5rem;
+            }
+
+            .login-logo {
+                font-size: 2.5rem;
+            }
+
+            .login-body {
+                padding: 1.5rem;
+            }
+
+            .form-control {
+                padding: 12px 15px;
+            }
+
+            .back-home {
+                top: 15px;
+                left: 15px;
+                font-size: 1rem;
+            }
+        }
         @media (max-width: 576px) {
-            .login-container { margin: 1rem; }
-            .login-header, .login-body { padding: 1.5rem; }
+            body {
+                padding: 10px;
+            }
+
+            .login-container {
+                width: 95%;
+                margin: 10px auto;
+            }
+
+            .login-card {
+                padding: 25px 20px;
+            }
+
+            .login-header {
+                padding: 1.2rem;
+            }
+
+            .login-logo {
+                font-size: 2rem;
+            }
+
+            .form-control {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .btn-login {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .back-home {
+                top: 10px;
+                left: 10px;
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer-section {
+                text-align: center;
+            }
+        }
+        @media (max-width: 375px) {
+            .login-container {
+                margin: 5px auto;
+            }
+
+            .login-card {
+                padding: 20px 15px;
+            }
+
+            .login-header {
+                padding: 1rem;
+            }
+
+            .login-logo {
+                font-size: 1.8rem;
+            }
+
+            .form-control {
+                padding: 8px 10px;
+                font-size: 0.85rem;
+            }
+
+            .btn-login {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .divider {
+                margin: 1rem 0;
+            }
         }
         .input-group {
             position: relative;
@@ -157,6 +263,91 @@
         }
         .form-control {
             border-right: none;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        main {
+            padding-top: 76px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem 0;
+            }
+
+            .navbar-brand {
+                font-size: 1.4rem;
+                padding-left: 15px;
+            }
+
+            .navbar-toggler {
+                margin-right: 15px;
+            }
+
+            .navbar-nav {
+                padding: 1rem;
+                background: rgba(255, 255, 255, 0.98);
+            }
+
+            .nav-item {
+                margin: 0.5rem 0;
+            }
+
+            .nav-link {
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+            }
+
+            .nav-link:hover {
+                background: rgba(0, 0, 0, 0.05);
+            }
+
+            main {
+                padding-top: 62px;
+            }
+
+            .login-section {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+
+            .navbar-toggler {
+                padding: 0.4rem 0.6rem;
+            }
+
+            main {
+                padding-top: 56px;
+            }
+
+            .login-section {
+                padding: 1rem 0.5rem;
+            }
         }
     </style>
 </head>
