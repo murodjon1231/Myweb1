@@ -79,6 +79,64 @@
     </div>
 </nav>
 
+<!-- Know The Price Modal -->
+<div class="modal fade" id="knowPriceModal" tabindex="-1" aria-labelledby="knowPriceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="knowPriceModalLabel">💰 Narxni Bilish</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="priceForm">
+                    <div class="form-group">
+                        <label for="fullName">
+                            <span class="icon">👤</span>Ism va Familiya
+                        </label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Ismingiz va familiyangizni kiriting">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">
+                            <span class="icon">📱</span>Telefon Raqami
+                        </label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="+998901234567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productUrl">
+                            <span class="icon">🔗</span>Mahsulot Havolasi (URL)
+                        </label>
+                        <input type="url" id="productUrl" name="productUrl" required placeholder="https://example.com/product">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productName">
+                            <span class="icon">📦</span>Mahsulot Nomi
+                        </label>
+                        <textarea id="productName" name="productName" required placeholder="Mahsulot nomini kiriting"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">📤 So'rov Yuborish</span>
+                        <div class="loading">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                </form>
+
+                <div class="success-message" id="successMessage">
+                    ✅ So'rovingiz muvaffaqiyatli yuborildi! Tez orada javob beramiz.
+                </div>
+
+                <div class="error-message" id="errorMessage">
+                    ❌ Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Set active nav link based on current page
 document.addEventListener('DOMContentLoaded', function() {
@@ -110,5 +168,115 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Add message icon to navbar
+    addMessageIcon();
 });
-</script> 
+
+// Add message icon to navbar
+function addMessageIcon() {
+    const navbarActions = document.getElementById('navbarActions');
+    const messageButton = document.createElement('button');
+    messageButton.className = 'btn btn-outline-primary message-btn';
+    messageButton.innerHTML = '<i class="fas fa-comment-dots"></i>';
+    messageButton.setAttribute('data-bs-toggle', 'modal');
+    messageButton.setAttribute('data-bs-target', '#knowPriceModal');
+    messageButton.title = 'Narxni bilish';
+    
+    // Insert message button before the first child of navbarActions
+    navbarActions.insertBefore(messageButton, navbarActions.firstChild);
+}
+</script>
+
+<style>
+.message-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+.message-btn:hover {
+    transform: scale(1.1);
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header .btn-close {
+    color: white;
+    filter: brightness(0) invert(1);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.success-message,
+.error-message {
+    display: none;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.success-message {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.error-message {
+    background-color: #f44336;
+    color: white;
+}
+</style> 

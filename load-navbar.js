@@ -63,13 +63,8 @@ function updateNavbarForUser() {
 
     if (isLoggedIn && currentUser) {
         navbarActions.innerHTML = `
-            <a href="cart.html" class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-counter hidden">0</span>
-            </a>
-            
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i>
+                <i class="fas fa-moon"></i> Dark-mode
             </button>
             
             <div class="dropdown">
@@ -77,31 +72,26 @@ function updateNavbarForUser() {
                     <i class="fas fa-user"></i> ${currentUser.fullName.split(' ')[0]}
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-cog"></i> Profile</a></li>
-                    <li><a class="dropdown-item" href="cart.html"><i class="fas fa-shopping-bag"></i> Orders</a></li>
-                    <li><a class="dropdown-item" href="favorites.html"><i class="fas fa-heart"></i> Favorites</a></li>
+                    <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user-cog"></i> Profil</a></li>
+                    <li><a class="dropdown-item" href="cart.html"><i class="fas fa-shopping-bag"></i> Buyurtmalar</a></li>
+                    <li><a class="dropdown-item" href="favorites.html"><i class="fas fa-heart"></i> Sevimlilar</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Chiqish</a></li>
                 </ul>
             </div>
         `;
     } else {
         navbarActions.innerHTML = `
-            <a href="cart.html" class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-counter hidden">0</span>
-            </a>
-            
             <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
-                <i class="fas fa-moon"></i>
+                <i class="fas fa-moon"></i> Dark-mode
             </button>
             
-            <a href="login.html" class="btn-login">
+            <button class="btn-login" onclick="login()">
                 <i class="fas fa-sign-in-alt"></i> Login
-            </a>
-            <a href="register.html" class="btn-login">
+            </button>
+            <button class="btn-login" onclick="register()">
                 <i class="fas fa-user-plus"></i> Register
-            </a>
+            </button>
         `;
     }
     

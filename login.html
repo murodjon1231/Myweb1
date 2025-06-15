@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="footer.css">
     <script src="load-navbar.js"></script>
+    <script src="floating-message.js"></script>
 
     <style>
         :root {
@@ -497,7 +498,7 @@
         <i class="fas fa-moon"></i> Qorong'u
     </button>
 
-    <main>
+    <main >
 
         <div class="container">
             <div class="login-container">
@@ -723,10 +724,10 @@
 
             // Update toggle button
             if (isDark) {
-                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> Yorug\'';
                 localStorage.setItem('theme', 'dark');
             } else {
-                themeToggle.innerHTML = '<i class="fas fa-moon"></i> ';
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> Qorong\'u';
                 localStorage.setItem('theme', 'light');
             }
 
