@@ -1209,10 +1209,95 @@
                 color: #90cdf4;
             }
         }
+
+        /* Updated Size Grid Styles */
+        .size-grid {
+            display: grid;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .clothing-sizes {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .shoe-sizes {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .size-btn {
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .size-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #e2e8f0;
+            border-color: #cbd5e0;
+            color: #a0aec0;
+        }
+
+        .dark-theme .size-btn.disabled {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #718096;
+        }
     </style>
 </head>
 
 <body>
+    <!-- Size Selection Modal -->
+    <div class="modal fade" id="sizeSelectionModal" tabindex="-1" aria-labelledby="sizeSelectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sizeSelectionModalLabel">Select Size</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="size-options">
+                        <!-- Clothing Sizes -->
+                        <div class="size-grid clothing-sizes" style="display: none;">
+                            <button class="size-btn" data-size="XS">XS</button>
+                            <button class="size-btn" data-size="S">S</button>
+                            <button class="size-btn" data-size="M">M</button>
+                            <button class="size-btn" data-size="L">L</button>
+                            <button class="size-btn" data-size="XL">XL</button>
+                            <button class="size-btn" data-size="XXL">XXL</button>
+                        </div>
+                        <!-- Shoe Sizes -->
+                        <div class="size-grid shoe-sizes" style="display: none;">
+                            <button class="size-btn" data-size="36">36</button>
+                            <button class="size-btn" data-size="37">37</button>
+                            <button class="size-btn" data-size="38">38</button>
+                            <button class="size-btn" data-size="39">39</button>
+                            <button class="size-btn" data-size="40">40</button>
+                            <button class="size-btn" data-size="41">41</button>
+                            <button class="size-btn" data-size="42">42</button>
+                            <button class="size-btn" data-size="43">43</button>
+                            <button class="size-btn" data-size="44">44</button>
+                            <button class="size-btn" data-size="45">45</button>
+                        </div>
+                    </div>
+                    <div class="selected-size-info mt-3">
+                        <p class="text-center">Selected Size: <span id="selectedSize">None</span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmSizeBtn" disabled>Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <main style="margin-top: 76px;">
         <section class="products-section">
             <div class="container">
@@ -1848,29 +1933,124 @@
             }
         }
 
-        // Add to cart functionality
+        // Add to cart functionality with size selection
         function addToCart(productId) {
             const product = allProducts.find(p => p.id === productId.toString());
             if (!product) return;
 
-            const cartItem = cart.find(item => item.id === productId.toString());
-            
-            if (cartItem) {
-                cartItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
-                });
+            // Check if product has sizes and available quantities
+            if (!product.sizes || product.sizes.length === 0) {
+                showNotification('Bu mahsulotdan hozir mavjud emas', 'error');
+                return;
             }
 
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCounter();
-            showNotification(`${product.name} added to cart!`, 'success');
+            // Check if any size has available quantity
+            const hasAvailableSizes = product.sizes.some(size => size.quantity > 0);
+            if (!hasAvailableSizes) {
+                showNotification('Bu mahsulotdan hozir mavjud emas', 'error');
+                return;
+            }
+
+            // Show size selection modal
+            const sizeModal = new bootstrap.Modal(document.getElementById('sizeSelectionModal'));
+            
+            // Show appropriate size grid based on product category
+            const clothingSizes = document.querySelector('.clothing-sizes');
+            const shoeSizes = document.querySelector('.shoe-sizes');
+            
+            if (product.category === 'shoes') {
+                clothingSizes.style.display = 'none';
+                shoeSizes.style.display = 'grid';
+                
+                // Update shoe size buttons based on available sizes
+                const sizeButtons = shoeSizes.querySelectorAll('.size-btn');
+                sizeButtons.forEach(button => {
+                    const size = button.dataset.size;
+                    const availableSize = product.sizes.find(s => s.size === size);
+                    if (availableSize && availableSize.quantity > 0) {
+                        button.disabled = false;
+                        button.classList.remove('disabled');
+                    } else {
+                        button.disabled = true;
+                        button.classList.add('disabled');
+                    }
+                });
+            } else {
+                clothingSizes.style.display = 'grid';
+                shoeSizes.style.display = 'none';
+            }
+
+            sizeModal.show();
+
+            // Store the product ID for later use
+            document.getElementById('confirmSizeBtn').dataset.productId = productId;
         }
+
+        // Size Selection Modal Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            const selectedSizeSpan = document.getElementById('selectedSize');
+            const confirmSizeBtn = document.getElementById('confirmSizeBtn');
+            let selectedSize = null;
+
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove selected class from all buttons in the current size grid
+                    const currentGrid = this.closest('.size-grid');
+                    currentGrid.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+                    
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                    
+                    // Update selected size
+                    selectedSize = this.dataset.size;
+                    selectedSizeSpan.textContent = selectedSize;
+                    
+                    // Enable confirm button
+                    confirmSizeBtn.disabled = false;
+                });
+            });
+
+            // Handle confirm button click
+            confirmSizeBtn.addEventListener('click', function() {
+                if (selectedSize) {
+                    const productId = this.dataset.productId;
+                    const product = allProducts.find(p => p.id === productId.toString());
+                    
+                    if (product) {
+                        const cartItem = cart.find(item => item.id === productId.toString());
+                        
+                        if (cartItem) {
+                            cartItem.quantity += 1;
+                        } else {
+                            cart.push({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                image: product.image,
+                                quantity: 1,
+                                size: selectedSize,
+                                category: product.category
+                            });
+                        }
+
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        updateCartCounter();
+                        showNotification(`${product.name} (Size: ${selectedSize}) added to cart!`, 'success');
+                    }
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('sizeSelectionModal'));
+                    modal.hide();
+                    
+                    // Reset selection
+                    selectedSize = null;
+                    selectedSizeSpan.textContent = 'None';
+                    document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('selected'));
+                    confirmSizeBtn.disabled = true;
+                }
+            });
+        });
 
         // Add to favorites functionality
         function addToFavorites(productId) {

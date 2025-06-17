@@ -784,10 +784,100 @@
                 margin: 5px 0;
             }
         }
+
+        /* Size Selection Modal Styles */
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .size-btn {
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            background: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .size-btn:hover {
+            border-color: #007bff;
+            background: #f8f9fa;
+        }
+
+        .size-btn.selected {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .selected-size-info {
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        #selectedSize {
+            font-weight: 600;
+            color: #007bff;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            background: linear-gradient(45deg, #007bff, #28a745);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .modal-header .btn-close {
+            color: white;
+            filter: brightness(0) invert(1);
+        }
     </style>
 </head>
 
 <body>
+    <!-- Size Selection Modal -->
+    <div class="modal fade" id="sizeSelectionModal" tabindex="-1" aria-labelledby="sizeSelectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sizeSelectionModalLabel">Select Size</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="size-options">
+                        <div class="size-grid">
+                            <button class="size-btn" data-size="XS">XS</button>
+                            <button class="size-btn" data-size="S">S</button>
+                            <button class="size-btn" data-size="M">M</button>
+                            <button class="size-btn" data-size="L">L</button>
+                            <button class="size-btn" data-size="XL">XL</button>
+                            <button class="size-btn" data-size="XXL">XXL</button>
+                        </div>
+                    </div>
+                    <div class="selected-size-info mt-3">
+                        <p class="text-center">Selected Size: <span id="selectedSize">None</span></p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmSizeBtn" disabled>Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="navbar-placeholder"></div>
+
     <main style="margin-top: 76px;">
         <section class="product-details-section">
             <div class="container-fluid px-4">
@@ -1477,6 +1567,49 @@
             // Save selected size
             currentProduct.selectedSize = size;
         }
+
+        // Size Selection Modal Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            const selectedSizeSpan = document.getElementById('selectedSize');
+            const confirmSizeBtn = document.getElementById('confirmSizeBtn');
+            let selectedSize = null;
+
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove selected class from all buttons
+                    sizeButtons.forEach(btn => btn.classList.remove('selected'));
+                    
+                    // Add selected class to clicked button
+                    this.classList.add('selected');
+                    
+                    // Update selected size
+                    selectedSize = this.dataset.size;
+                    selectedSizeSpan.textContent = selectedSize;
+                    
+                    // Enable confirm button
+                    confirmSizeBtn.disabled = false;
+                });
+            });
+
+            // Handle confirm button click
+            confirmSizeBtn.addEventListener('click', function() {
+                if (selectedSize) {
+                    // Add to cart with selected size
+                    addToCart(selectedSize);
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('sizeSelectionModal'));
+                    modal.hide();
+                    
+                    // Reset selection
+                    selectedSize = null;
+                    selectedSizeSpan.textContent = 'None';
+                    sizeButtons.forEach(btn => btn.classList.remove('selected'));
+                    confirmSizeBtn.disabled = true;
+                }
+            });
+        });
     </script>
 </body>
 
