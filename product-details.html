@@ -876,6 +876,25 @@
         </div>
     </div>
 
+    <!-- Image Gallery Modal (Pro) -->
+    <div class="modal fade" id="imageGalleryModal" tabindex="-1" aria-labelledby="imageGalleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content" style="background: rgba(0,0,0,0.85); border: none; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
+                <div class="modal-body p-0 position-relative" style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3 bg-white rounded-circle p-2" data-bs-dismiss="modal" aria-label="Close" style="z-index: 10; opacity: 0.8;"></button>
+                    <button id="galleryPrevBtn" type="button" class="btn btn-light position-absolute start-0 top-50 translate-middle-y ms-2" style="z-index: 10; border-radius: 50%; width: 48px; height: 48px; opacity: 0.8; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <img id="galleryModalImage" src="" alt="Product Image" style="max-width: 90vw; max-height: 75vh; border-radius: 18px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); background: #fff; transition: opacity 0.3s;" />
+                    <button id="galleryNextBtn" type="button" class="btn btn-light position-absolute end-0 top-50 translate-middle-y me-2" style="z-index: 10; border-radius: 50%; width: 48px; height: 48px; opacity: 0.8; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div id="galleryImageCounter" class="position-absolute bottom-0 start-50 translate-middle-x mb-3 px-3 py-1 rounded-pill bg-dark text-white fw-bold" style="opacity: 0.85; font-size: 1rem; letter-spacing: 1px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="navbar-placeholder"></div>
 
     <main style="margin-top: 76px;">
@@ -956,7 +975,7 @@
 
             <!-- Footer Bottom -->
             <div class="footer-bottom">
-                <div class="footer-logo">🇺🇸TuronMarket🇺🇿</div>
+                <div class="footer-logo">TuronMarket</div>
                 <p>&copy; 2024 TuronMarket. Barcha huquqlar himoyalangan.</p>
             </div>
         </div>
@@ -1097,7 +1116,7 @@
                         </h2>
                         <div class="enhanced-image-grid">
                             ${productImages.map((img, index) => `
-                                <div class="gallery-image-container" onclick="changeMainImage('${img}')">
+                                <div class="gallery-image-container" data-img-index="${index}" onclick="openGalleryModal(${index})">
                                     <img src="${img}" alt="Product view ${index + 1}" class="gallery-image" onerror="showImagePlaceholder(this)">
                                     <div class="image-overlay">
                                         <i class="fas fa-eye"></i> View
@@ -1236,9 +1255,12 @@
             }
 
             // Check if size is required but not selected
-            const needsSize = document.querySelector('.size-selection').style.display !== 'none';
+            const sizeSection = document.querySelector('.size-selection');
+            const needsSize = sizeSection && sizeSection.style.display !== 'none';
             if (needsSize && !currentProduct.selectedSize) {
-                showNotification('Please select a size first!', 'warning');
+                showNotification('Iltimos, avval razmer tanlang!', 'warning');
+                // Scroll to size section for better UX
+                sizeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -1251,7 +1273,8 @@
                 price: parseFloat(currentProduct.price) || 0,
                 image: currentProduct.image,
                 quantity: 1,
-                size: currentProduct.selectedSize // Add size to cart item
+                size: currentProduct.selectedSize, // Add size to cart item
+                descriptionURL: currentProduct.descriptionURL || currentProduct.website || ''
             };
 
             // Check if item with same size exists
@@ -1281,6 +1304,15 @@
                 setTimeout(() => {
                     window.location.href = 'login.html';
                 }, 1500);
+                return;
+            }
+
+            // Check if size is required but not selected
+            const sizeSection = document.querySelector('.size-selection');
+            const needsSize = sizeSection && sizeSection.style.display !== 'none';
+            if (needsSize && !currentProduct.selectedSize) {
+                showNotification('Iltimos, avval razmer tanlang!', 'warning');
+                sizeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -1547,6 +1579,7 @@
             }
         }
 
+        // Razmer tanlashda currentProduct.selectedSize ni to‘g‘ri saqlash
         function selectSize(size) {
             // Remove active class from all buttons
             document.querySelectorAll('.size-btn').forEach(btn => {
@@ -1610,6 +1643,60 @@
                 }
             });
         });
+
+        // Pro Gallery Modal logic
+        let galleryImages = [];
+        let currentGalleryIndex = 0;
+
+        function openGalleryModal(index) {
+            // Find all gallery images for this product
+            const productContent = document.getElementById('productContent');
+            galleryImages = Array.from(productContent.querySelectorAll('.gallery-image')).map(img => img.src);
+            currentGalleryIndex = index;
+            showGalleryImage(currentGalleryIndex);
+            const modal = new bootstrap.Modal(document.getElementById('imageGalleryModal'));
+            modal.show();
+        }
+
+        function showGalleryImage(idx) {
+            const imgEl = document.getElementById('galleryModalImage');
+            const counter = document.getElementById('galleryImageCounter');
+            if (!galleryImages.length) return;
+            // Fade out
+            imgEl.style.opacity = 0;
+            setTimeout(() => {
+                imgEl.src = galleryImages[idx];
+                imgEl.onload = () => { imgEl.style.opacity = 1; };
+                counter.textContent = `${idx + 1} / ${galleryImages.length}`;
+            }, 150);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Modal navigation
+            document.getElementById('galleryPrevBtn').onclick = function() {
+                if (galleryImages.length) {
+                    currentGalleryIndex = (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+                    showGalleryImage(currentGalleryIndex);
+                }
+            };
+            document.getElementById('galleryNextBtn').onclick = function() {
+                if (galleryImages.length) {
+                    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+                    showGalleryImage(currentGalleryIndex);
+                }
+            };
+            // Keyboard navigation
+            document.getElementById('imageGalleryModal').addEventListener('shown.bs.modal', function() {
+                document.addEventListener('keydown', galleryKeyHandler);
+            });
+            document.getElementById('imageGalleryModal').addEventListener('hidden.bs.modal', function() {
+                document.removeEventListener('keydown', galleryKeyHandler);
+            });
+        });
+        function galleryKeyHandler(e) {
+            if (e.key === 'ArrowLeft') document.getElementById('galleryPrevBtn').click();
+            if (e.key === 'ArrowRight') document.getElementById('galleryNextBtn').click();
+        }
     </script>
 </body>
 

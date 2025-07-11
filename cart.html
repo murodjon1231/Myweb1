@@ -464,7 +464,7 @@
 
             <!-- Footer Bottom -->
             <div class="footer-bottom">
-                <div class="footer-logo">🇺🇸TuronMarket🇺🇿</div>
+                <div class="footer-logo">TuronMarket</div>
                 <p>&copy; 2024 TuronMarket. Barcha huquqlar himoyalangan.</p>
             </div>
         </div>
@@ -556,34 +556,30 @@
                             <span>$${total.toFixed(2)}</span>
                             </div>
                             
-                        <form class="checkout-form" id="checkoutForm">
+                        <form class="checkout-form" id="checkoutForm" autocomplete="on">
                             <div class="form-group">
                                 <label class="form-label" for="firstName">Ismingiz *</label>
-                                <input type="text" class="form-control" id="firstName" required 
-                                       value="${isLoggedIn ? (currentUser.firstName || '') : ''}">
+                                <input type="text" class="form-control" id="firstName" required placeholder="Ismingiz" value="${isLoggedIn ? (currentUser.firstName || '') : ''}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="lastName">Familiyangiz *</label>
-                                <input type="text" class="form-control" id="lastName" required
-                                       value="${isLoggedIn ? (currentUser.lastName || '') : ''}">
+                                <input type="text" class="form-control" id="lastName" required placeholder="Familiyangiz" value="${isLoggedIn ? (currentUser.lastName || '') : ''}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="telegram">Telegram username *</label>
-                                <input type="text" class="form-control" id="telegram" required
-                                       value="${isLoggedIn ? (currentUser.telegram || '') : ''}">
+                                <input type="text" class="form-control" id="telegram" required placeholder="@username" value="${isLoggedIn ? (currentUser.telegram || '') : ''}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="phone">Telefon raqamingiz *</label>
-                                <input type="tel" class="form-control" id="phone" required
-                                       value="${isLoggedIn ? (currentUser.phone || '') : ''}">
+                                <input type="tel" class="form-control" id="phone" required placeholder="998901234567" value="${isLoggedIn ? (currentUser.phone || '') : ''}">
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="address">Manzilingiz *</label>
-                                <textarea class="form-control" id="address" rows="3" required>${isLoggedIn ? (currentUser.address || '') : ''}</textarea>
+                                <textarea class="form-control" id="address" rows="3" required placeholder="Manzilingiz">${isLoggedIn ? (currentUser.address || '') : ''}</textarea>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="notes">Qo'shimcha ma'lumot</label>
-                                <textarea class="form-control" id="notes" rows="2"></textarea>
+                                <textarea class="form-control" id="notes" rows="2" placeholder="Qo'shimcha izoh"></textarea>
                             </div>
                             <button type="submit" class="checkout-btn">
                                 Buyurtma berish
@@ -595,6 +591,20 @@
 
             // Add form submit handler
             document.getElementById('checkoutForm').addEventListener('submit', handleCheckout);
+
+            // Autofill on input change (real-time update for logged-in user)
+            if (isLoggedIn) {
+                const fields = ['firstName', 'lastName', 'telegram', 'phone', 'address'];
+                fields.forEach(field => {
+                    const input = document.getElementById(field);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            currentUser[field] = e.target.value;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        });
+                    }
+                });
+            }
         }
 
         // Update item quantity

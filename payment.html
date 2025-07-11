@@ -604,6 +604,7 @@
    Narxi: $${item.price}
    Soni: ${item.quantity}
    Jami: $${(item.price * item.quantity).toFixed(2)}
+   ${(item.descriptionURL || item.website) ? `<a href='${item.descriptionURL || item.website}'>Havola</a>` : ''}
 `).join('\n');
 
             // Create message for Telegram
@@ -647,6 +648,7 @@ ${cartItemsList}
                     }
                 } catch (error) {
                     console.error('Telegram xatosi:', error);
+                    showNotification('Telegramga habar yuborilmadi: ' + error.message, 'error');
                     // Continue with other recipients even if one fails
                 }
             }
